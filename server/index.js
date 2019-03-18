@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const { json } = require("body-parser");
+const cors = require("cors");
 
 const bikeCtrl = require("./controllers/bike_controller");
 const hikeCtrl = require("./controllers/hike_controller");
@@ -10,6 +11,7 @@ const shredCtrl = require("./controllers/shred_controller");
 
 const app = express();
 app.use(json());
+app.use(cors());
 
 app.use(
   session({
@@ -24,6 +26,7 @@ app.use(
 
 //biking
 app.get("/trails/biking", bikeCtrl.getBtrails);
+app.get("/trails/bikingOne", bikeCtrl.getOneBtrail);
 
 //hiking
 app.get("/trails/hiking", hikeCtrl.getHtrails);
