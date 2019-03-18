@@ -1,14 +1,19 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import {BrowserRouter as Router} from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
+import routes from './routes';
+
+import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <div>
-          <p>well-tread</p>
-        </div>
+      <Navbar/>
+      <Router>
+        {routes}
+      </Router>
       </div>
     );
   }
