@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Preferences from './Preferences/Preferences'; 
 
 //materialUI imports
 import { withStyles, createStyles, Theme , createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
@@ -40,29 +41,36 @@ export interface Props{
 }
 
 export interface State{
-    
+    preferencesIsOpen:boolean;
 }
 
 class Account extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            
+            preferencesIsOpen:false
         }
+        this.togglePreferences = this.togglePreferences.bind(this);
+    }
+
+    togglePreferences(){
+        const {preferencesIsOpen} = this.state;
+        this.setState({preferencesIsOpen:!preferencesIsOpen})
     }
     
     render(){
         const {classes} = this.props;
+        const {preferencesIsOpen} = this.state;
         return(
             <MuiThemeProvider theme={theme}>
 
             <div className={classes.userBar}>
-                <IconButton>
+                <IconButton onClick={()=>this.togglePreferences()}>
                     <SettingsIcon />
                 </IconButton>
             </div>
 
-            <Typography component= 'h2' variant='h2'>Map</Typography>
+            <Typography component='h2' variant='h2'>Map</Typography>
 
             <div className={classes.expansionPanels}>
 
@@ -93,6 +101,9 @@ class Account extends Component<Props, State>{
                     </ExpansionPanelDetails>
 
                 </ExpansionPanel>
+
+                <Preferences preferencesIsOpen={preferencesIsOpen} togglePreferences={this.togglePreferences}/>
+
             </div>
             </MuiThemeProvider>
         )

@@ -74,6 +74,9 @@ export interface Props{
         title:string;
         firebaseUI:string;
     }
+    location:{
+        search:string;
+    }
 }
 
 export interface State{
@@ -90,6 +93,16 @@ class Login extends Component<Props, State>{
             dialogIsOpen:false,
             anonymousLogin:false
         }
+
+        
+    }
+    
+
+    componentDidMount(){
+        console.log(this.props);
+        if(this.props.location.search === '?mode=select'){
+            this.setState({dialogIsOpen:true})
+        }
     }
     
     toggleDialog(){
@@ -98,12 +111,15 @@ class Login extends Component<Props, State>{
     }
 
     signInAnonymously(){
-        this.setState({anonymousLogin:true})
+        firebase.auth().signInAnonymously().then(() => {
+            this.setState({anonymousLogin:true})
+        })
     }
 
     render(){
         const {classes} = this.props;
         const {dialogIsOpen, anonymousLogin} = this.state;
+        
         return(
             
             <MuiThemeProvider theme={theme}>
