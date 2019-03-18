@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import firebase,{emailConfig, googleConfig} from '../../firebase';
 import FirebaseAuth from 'react-firebaseui/FirebaseAuth';
 
@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 
 const theme = createMuiTheme({
     palette:{
@@ -76,7 +77,8 @@ export interface Props{
     }
     location:{
         search:string;
-    }
+    },
+    LinkButton:any
 }
 
 export interface State{

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import {BrowserRouter as Router} from 'react-router-dom';
+
 import Navbar from './Components/Navbar/Navbar';
 import routes from './routes';
 
@@ -11,9 +11,7 @@ class App extends Component {
     return (
       <div className="App">
       <Navbar/>
-      <Router>
-        {routes}
-      </Router>
+      {routes}
       </div>
     );
   }
