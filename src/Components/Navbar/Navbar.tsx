@@ -11,12 +11,14 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Button, {ButtonProps} from '@material-ui/core/Button'
 
 // Material-UI Icon Imports
 import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
+import { ButtonBaseProps } from '@material-ui/core/ButtonBase';
 
 const theme = createMuiTheme({
     palette:{
@@ -35,6 +37,8 @@ const styles = (theme:Theme) => createStyles({
         flexDirection:'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        background: 'transparent',
+        position: 'relative'
     }
 })
 
@@ -48,11 +52,16 @@ export interface State{
     drawerOpen: boolean
 }
 
-interface LinkProps extends Props {
-    to: string;
-    replace?: boolean;
-    primary: string;
-  }
+//declare outside component
+interface LinkButtonProps extends ButtonProps{
+    to:string;
+    replace?:boolean;
+}
+//declare outside component
+const LinkButton = (props:LinkButtonProps) => (
+    <Button {...props} component={Link as any} />
+)
+  
 
 class Navbar extends Component<Props, State>{
     constructor(props:Props){
@@ -69,26 +78,13 @@ class Navbar extends Component<Props, State>{
         });
       };
 
-    // ListItemLinkShorthand=(props:LinkProps)=>{
-    //     const { primary, to } = props;
-    //     return (
-    //       <li>
-    //         <ListItem button component={Link} to={to}>
-    //             <ListItemText primary={primary} />
-    //         </ListItem>
-    //       </li>
-    //     );
-    //   }
-    
     render(){
         const {classes} = this.props
-        // const accountLink = (props: any) => <Link to="account" {...props} />
-        // const homeLink = (props: any) => <Link to="/" {...props} />
-
+        
         return(
             <MuiThemeProvider theme={theme}>
                 <AppBar className={classes.appBar}>
-                    <Typography variant='h5'>
+                    <Typography component='h6' variant='h6'>
                         Well Tread
                     </Typography>
                     <IconButton onClick={()=>this.toggleDrawer(true)}>
@@ -101,13 +97,13 @@ class Navbar extends Component<Props, State>{
                     onClose={()=>this.toggleDrawer(false)}
                     onOpen={()=>this.toggleDrawer(true)}
                 >
-                    <List component='nav'>
-                        <ListItem button >
-                            <ListItemIcon>
-                                <Home/>
-                            </ListItemIcon>
-                            <ListItemText primary='Home'/>
-                        </ListItem>
+                    {/* <List component='nav'>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <Home/>
+                                </ListItemIcon>
+                                <ListItemText primary='Home'/>
+                            </ListItem>
                             <ListItem button>
                                 <ListItemIcon>
                                     <AccountBox/>
@@ -120,7 +116,8 @@ class Navbar extends Component<Props, State>{
                             </ListItemIcon>
                             <ListItemText primary='Search for Trails'/>
                         </ListItem>
-                    </List>
+                    </List> */}
+                    <LinkButton to='/account'>Home</LinkButton>
                 </SwipeableDrawer>
             </MuiThemeProvider>
         )
