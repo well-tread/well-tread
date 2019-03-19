@@ -1,4 +1,8 @@
-.MuiTabs-scroller-137 {
+/* .MuiTabs-scroller-137 {
+  margin-top: 5em;
+  position: fixed;
+} */
+#tabs {
   margin-top: 3em;
 }
 .trailInfo {

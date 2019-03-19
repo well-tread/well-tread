@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  Theme,
+  createMuiTheme,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -8,6 +13,19 @@ import Whatshot from "@material-ui/icons/Whatshot";
 import Typography from "@material-ui/core/Typography";
 import "./trailpage.css";
 import axios from "axios";
+import Reviews from "./Reviews/Reviews";
+import Map from "./Map/Map";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#757575"
+    },
+    secondary: {
+      main: "#FF5722"
+    }
+  }
+});
 
 // const styles = {
 //   root: {
@@ -29,6 +47,9 @@ const styles = (theme: any) => ({
   },
   leftIcon: {
     marginRight: theme.spacing.unit
+  },
+  indicator: {
+    indicatorColor: "white"
   }
 });
 
@@ -37,22 +58,28 @@ export interface Props {
     root: string;
     button: string;
     leftIcon: string;
+    indicator: string;
   };
 }
 
 export interface State {
   value: number;
   trail: any;
+  color: any;
 }
 
 class TrailPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      value: 0,
-      trail: ""
+      value: 1,
+      trail: "",
+      color: "primary"
     };
   }
+  handleClick = (e: any) => {
+    this.setState({ color: "secondary" });
+  };
   handleChange = (e: any, value: number) => {
     this.setState({ value });
   };
@@ -75,27 +102,33 @@ class TrailPage extends Component<Props, State> {
             <img className="trailImage" src={element.imgMedium} alt="" />
             <Paper className={classes.root}>
               <div className="trailInfo">
-                <Typography variant="h4">{element.name}</Typography>
+                <Typography variant="h4" color="secondary">
+                  {element.name}
+                </Typography>
                 <div className="sideBySide">
-                  <Typography variant="h5" id="miles">
+                  <Typography variant="h5" id="miles" color="primary">
                     <strong>Miles: </strong>
                     {element.length}
                   </Typography>
-                  <Typography variant="h5" id="stars">
+                  <Typography variant="h5" id="stars" color="primary">
                     <strong> Stars: </strong> {element.stars}
                   </Typography>
                 </div>
-                <Typography variant="h5" id="info">
+                <Typography variant="h5" id="info" color="primary">
                   <strong>Difficulty: </strong> {element.difficulty}
                 </Typography>
+                <Typography variant="h5" id="info" color="primary">
+                  <strong>Condition: </strong> {element.conditionDetails}
+                </Typography>
 
-                <Typography variant="h5" id="info">
+                <Typography variant="h5" id="info" color="primary">
                   <strong>Description: </strong> {element.summary}
                 </Typography>
                 <Button
-                  variant="contained"
-                  color="default"
                   className={classes.button}
+                  color={this.state.color}
+                  variant="outlined"
+                  onClick={e => this.handleClick(e)}
                 >
                   <Whatshot className={classes.leftIcon} />
                   Favorite
@@ -109,23 +142,31 @@ class TrailPage extends Component<Props, State> {
       <div>loading...</div>
     );
     return (
-      <div>
-        {/* <Paper className={classes.root}> */}
-        <Tabs
-          value={this.state.value}
-          onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-          id="tabs"
-        >
-          <Tab label="Map" />
-          <Tab label="Trail" />
-          <Tab label="Reviews" />
-        </Tabs>
-        {/* </Paper> */}
-        {Trail0}
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <div>
+          {/* <Paper className={classes.root}> */}
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleChange}
+            indicatorColor="secondary"
+            textColor="secondary"
+            centered
+            id="tabs"
+            classes={{
+              indicator: classes.indicator
+            }}
+          >
+            >
+            <Tab label="Map" />
+            <Tab label="Trail" />
+            <Tab label="Reviews" />
+          </Tabs>
+          {this.state.value === 0 && <Map />}
+          {this.state.value === 1 && <div>{Trail0}</div>}
+          {this.state.value === 2 && <Reviews />}
+          {/* </Paper> */}
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
