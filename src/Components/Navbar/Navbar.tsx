@@ -11,14 +11,13 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import Button, {ButtonProps} from '@material-ui/core/Button'
+import {ButtonProps} from '@material-ui/core/Button'
 
 // Material-UI Icon Imports
 import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
-import { ButtonBaseProps } from '@material-ui/core/ButtonBase';
 
 const theme = createMuiTheme({
     palette:{
@@ -37,14 +36,19 @@ const styles = (theme:Theme) => createStyles({
         flexDirection:'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        background: 'transparent',
-        position: 'relative'
+        background: '#fff',
+        position: 'fixed',
+        zIndex: 9999,
+    },
+    dropDownMenu:{
+        paddingTop: '50px'
     }
 })
 
 export interface Props{
     classes:{
-        appBar: string,
+        appBar: any,
+        dropDownMenu: any,
     }
 }
 
@@ -52,14 +56,14 @@ export interface State{
     drawerOpen: boolean
 }
 
-//declare outside component
+
 interface LinkButtonProps extends ButtonProps{
     to:string;
     replace?:boolean;
 }
-//declare outside component
-const LinkButton = (props:LinkButtonProps) => (
-    <Button {...props} component={Link as any} />
+
+const LinkItem = (props:LinkButtonProps) => (
+    <ListItem {...props} component={Link as any} />
 )
   
 
@@ -74,7 +78,7 @@ class Navbar extends Component<Props, State>{
 
     toggleDrawer = (open:boolean) => {
         this.setState({
-          drawerOpen: open
+          drawerOpen: !this.state.drawerOpen
         });
       };
 
@@ -88,7 +92,7 @@ class Navbar extends Component<Props, State>{
                         Well Tread
                     </Typography>
                     <IconButton onClick={()=>this.toggleDrawer(true)}>
-                        <Menu/>
+                        <Menu color='primary'/>
                     </IconButton>
                 </AppBar>
                 <SwipeableDrawer
@@ -97,27 +101,26 @@ class Navbar extends Component<Props, State>{
                     onClose={()=>this.toggleDrawer(false)}
                     onOpen={()=>this.toggleDrawer(true)}
                 >
-                    {/* <List component='nav'>
-                            <ListItem button>
+                    <List component='nav' className={classes.dropDownMenu}>
+                            <LinkItem to='/'>
                                 <ListItemIcon>
                                     <Home/>
                                 </ListItemIcon>
                                 <ListItemText primary='Home'/>
-                            </ListItem>
-                            <ListItem button>
+                            </LinkItem>
+                            <LinkItem to='/account'>
                                 <ListItemIcon>
                                     <AccountBox/>
                                 </ListItemIcon>
                                 <ListItemText primary='Account'/>
-                            </ListItem>
-                        <ListItem button >
+                            </LinkItem>
+                        <LinkItem to='/search'>
                             <ListItemIcon>
                                 <Search/>
                             </ListItemIcon>
                             <ListItemText primary='Search for Trails'/>
-                        </ListItem>
-                    </List> */}
-                    <LinkButton to='/account'>Home</LinkButton>
+                        </LinkItem>
+                    </List>
                 </SwipeableDrawer>
             </MuiThemeProvider>
         )
