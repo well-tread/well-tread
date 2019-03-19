@@ -101,7 +101,9 @@ class Login extends Component<Props, State>{
     
 
     componentDidMount(){
-        console.log(this.props);
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log('USER', user)
+        })
         if(this.props.location.search === '?mode=select'){
             this.setState({dialogIsOpen:true})
         }
