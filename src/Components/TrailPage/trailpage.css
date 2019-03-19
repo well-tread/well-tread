@@ -1,3 +1,17 @@
 .MuiTabs-scroller-137 {
   margin-top: 3em;
 }
+.trailInfo {
+  width: 70vw;
+  margin: 0 auto;
+}
+.sideBySide {
+  display: flex;
+  justify-content: space-between;
+}
+#stars,
+#miles,
+#info {
+  margin: 1em;
+  text-align: left;
+}
