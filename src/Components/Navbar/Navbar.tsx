@@ -39,6 +39,7 @@ const styles = (theme:Theme) => createStyles({
         background: '#fff',
         position: 'fixed',
         zIndex: 9999,
+        boxShadow:'none'
     },
     dropDownMenu:{
         paddingTop: '50px'
@@ -88,11 +89,11 @@ class Navbar extends Component<Props, State>{
         return(
             <MuiThemeProvider theme={theme}>
                 <AppBar className={classes.appBar}>
-                    <Typography component='h6' variant='h6'>
+                    <Typography component='h6' variant='h6' color='primary'>
                         Well Tread
                     </Typography>
                     <IconButton onClick={()=>this.toggleDrawer(true)}>
-                        <Menu color='primary'/>
+                        <Menu color='secondary'/>
                     </IconButton>
                 </AppBar>
                 <SwipeableDrawer
