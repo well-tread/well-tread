@@ -7,6 +7,14 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+
+//Material-UI Icon Imports
+import DirectionWalk from '@material-ui/icons/DirectionsWalk'
+import DirectionBike from '@material-ui/icons/DirectionsBike'
+import Terrain from '@material-ui/icons/Terrain'
+import SearchIcon from '@material-ui/icons/Search'
 
 const theme = createMuiTheme({
     palette:{
@@ -20,14 +28,44 @@ const theme = createMuiTheme({
 })
 
 const styles = (theme:Theme) => createStyles({
-    paper:{
-        marginTop: '150px'
+    container:{
+        marginTop: '50px',
+        // padding:'50px 0',
+        // height: '500px',
+        // display: 'flex',
+        // alignItems:'center',
+        // justifyContent:'center',
+        width:'90%',
+        margin: 'auto'
+    },
+    formGroup:{
+        paddingBottom: theme.spacing.unit * 3
+    },
+    button:{
+        marginBottom: theme.spacing.unit * 3,
+        padding:'15px 0',
+        width: '80%',
+        margin: 'auto'
+    },
+    btnIcon:{
+        marginLeft: theme.spacing.unit * 2
+    },
+    textField:{
+        paddingBottom:'25px'
+    },
+    quote:{
+        paddingBottom: theme.spacing.unit * 1
     }
 })
 
 export interface Props{
     classes:{
-        paper: any
+        container: string,
+        formGroup: string,
+        btnIcon: any,
+        textField: string,
+        button: string,
+        quote: string
     }
 }
 
@@ -51,19 +89,61 @@ class Search extends Component<Props, State>{
         const {classes} = this.props
         return(
             <MuiThemeProvider theme={theme}>
-                <Paper className={classes.paper}>
-                    <TextField
-                        label='Enter a ZIP'
-                        value={this.state.zipInput}
-                        onChange={(e)=>this.handleChange(e)}
-                        name='zipInput'
-                    />
-                    <Paper>
-                        <Checkbox/>
-                        <Checkbox/>
-                        <Checkbox/>
-                    </Paper>
-                </Paper>
+                <div className={classes.container}>
+                    <div>
+                        <TextField
+                            label='Enter a ZIP'
+                            value={this.state.zipInput}
+                            onChange={(e)=>this.handleChange(e)}
+                            name='zipInput'
+                            className={classes.textField}
+                        />
+                        <FormGroup>
+                            <div className={classes.formGroup}>
+                                <FormControlLabel
+                                    control={
+                                       <Checkbox
+                                            icon={<DirectionWalk color='primary'/>}
+                                            checkedIcon={<DirectionWalk color='secondary'/>}
+                                       /> 
+                                    }
+                                    label='Hiking'
+                                    labelPlacement='bottom'
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            icon={<DirectionBike color='primary'/>}
+                                            checkedIcon={<DirectionBike color='secondary'/>}
+                                        />
+                                    }
+                                    label='Biking'
+                                    labelPlacement='bottom'
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            icon={<Terrain color='primary'/>}
+                                            checkedIcon={<Terrain color='secondary'/>}
+                                        />
+                                    }
+                                    label='Climbing'
+                                    labelPlacement='bottom'
+                                />
+                            </div>
+                            <Button color='secondary' variant='outlined' className={classes.button}>
+                                Search Trails
+                                <SearchIcon className={classes.btnIcon}/>
+                            </Button>
+                        </FormGroup>
+                        <Typography variant='caption' className={classes.quote}>
+                                Look deep into nature, and then you will understand everything better.
+                        </Typography>
+                        <Typography variant='caption'>
+                                -Albert Einstein 
+                        </Typography>
+                    </div>
+                </div>
             </MuiThemeProvider>
         )
     }
