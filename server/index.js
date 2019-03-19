@@ -26,13 +26,16 @@ app.use(
 
 //biking
 app.get("/trails/biking", bikeCtrl.getBtrails);
+app.post("/trails/biking", bikeCtrl.postBtrails);
 app.get("/trails/bikingOne", bikeCtrl.getOneBtrail);
 
 //hiking
 app.get("/trails/hiking", hikeCtrl.getHtrails);
+app.post("/trails/hiking", hikeCtrl.postHtrails);
 
 //climbing
 app.get("/trails/climbing", climbCtrl.getCtrails);
+app.post("/trails/climbing", climbCtrl.postCtrails);
 
 //shredding
 app.get("/trails/shredding", shredCtrl.getStrails);
