@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import axios from 'axios';
 import Quote from './Quote/Quote'
 
 //Material-UI Core Imports
@@ -6,8 +7,6 @@ import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from 
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
@@ -71,19 +70,65 @@ export interface Props{
 }
 
 export interface State{
-    zipInput:any
+    address:any,
+    isHikingChecked: boolean,
+    isBikingChecked: boolean,
+    isClimbingChecked: boolean,
+    hikingArr:any,
+    bikingArr:any,
+    climbingArr:any,
 }
 
 class Search extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            zipInput:''
+            address:'',
+            hikingArr:[],
+            bikingArr:[],
+            climbingArr:[],
+            isHikingChecked: false,
+            isBikingChecked: false,
+            isClimbingChecked: false,
         }
     }
 
     handleChange=(e:any)=>{
-        this.setState({zipInput:e.target.value})
+        this.setState({address:e.target.value})
+    }
+
+    toggleCheckboxes=(value:any, id:string)=>{
+        console.log(value)
+        this.setState(()=>{
+            return {...this.state, [id]:!value}
+        })
+    }
+
+    submitLocationSearch=()=>{
+        if(this.state.isHikingChecked){
+            axios.post(`/trails/hiking`, {address:this.state.address}).then(response=>{
+                this.setState({hikingArr:response.data})
+                console.log('hike', response.data)
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+        if(this.state.isBikingChecked){
+            axios.post(`/trails/biking`, {address:this.state.address}).then(response=>{
+                this.setState({bikingArr:response.data})
+                console.log('bike', response.data)
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+        if(this.state.isClimbingChecked){
+            axios.post(`/trails/climbing`, {address:this.state.address}).then(response=>{
+                this.setState({climbingArr:response.data})
+                console.log('climb', response.data)
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
     }
     
     render(){
@@ -93,19 +138,21 @@ class Search extends Component<Props, State>{
                 <div className={classes.container}>
                     <div>
                         <TextField
-                            label='Enter a ZIP'
-                            value={this.state.zipInput}
+                            label='Enter a Location'
+                            value={this.state.address}
                             onChange={(e)=>this.handleChange(e)}
-                            name='zipInput'
+                            name='address'
                             className={classes.textField}
                         />
-                        <FormGroup>
+                        <FormGroup onSubmit={()=>console.log('for now')}>
                             <div className={classes.formGroup}>
                                 <FormControlLabel
                                     control={
                                        <Checkbox
                                             icon={<DirectionWalk color='primary'/>}
                                             checkedIcon={<DirectionWalk color='secondary'/>}
+                                            checked={this.state.isHikingChecked}
+                                            onChange={(e)=>this.toggleCheckboxes(this.state.isHikingChecked, 'isHikingChecked')}
                                        /> 
                                     }
                                     label='Hiking'
@@ -116,6 +163,8 @@ class Search extends Component<Props, State>{
                                         <Checkbox
                                             icon={<DirectionBike color='primary'/>}
                                             checkedIcon={<DirectionBike color='secondary'/>}
+                                            checked={this.state.isBikingChecked}
+                                            onChange={(e)=>this.toggleCheckboxes(this.state.isBikingChecked, 'isBikingChecked')}
                                         />
                                     }
                                     label='Biking'
@@ -126,13 +175,20 @@ class Search extends Component<Props, State>{
                                         <Checkbox
                                             icon={<Terrain color='primary'/>}
                                             checkedIcon={<Terrain color='secondary'/>}
+                                            checked={this.state.isClimbingChecked}
+                                            onChange={(e)=>this.toggleCheckboxes(this.state.isClimbingChecked, 'isClimbingChecked')}
                                         />
                                     }
                                     label='Climbing'
                                     labelPlacement='bottom'
                                 />
                             </div>
-                            <Button color='secondary' variant='outlined' className={classes.button}>
+                            <Button 
+                                color='secondary' 
+                                variant='outlined' 
+                                className={classes.button}
+                                onClick={()=>this.submitLocationSearch()}
+                            >
                                 Search Trails
                                 <SearchIcon className={classes.btnIcon}/>
                             </Button>
