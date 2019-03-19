@@ -6,10 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import Typography from '@material-ui/core/Typography'
-
-const styles = (theme:Theme) => createStyles({
-
-})
+import Paper from '@material-ui/core/Paper'
 
 const theme = createMuiTheme({
     palette:{
@@ -22,8 +19,16 @@ const theme = createMuiTheme({
     }
 })
 
-export interface Props{
+const styles = (theme:Theme) => createStyles({
+    paper:{
+        marginTop: '150px'
+    }
+})
 
+export interface Props{
+    classes:{
+        paper: any
+    }
 }
 
 export interface State{
@@ -34,7 +39,7 @@ class Search extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            zipInput:'jhgkjg'
+            zipInput:''
         }
     }
 
@@ -43,14 +48,22 @@ class Search extends Component<Props, State>{
     }
     
     render(){
+        const {classes} = this.props
         return(
             <MuiThemeProvider theme={theme}>
-                <TextField
-                    label='Enter a ZIP'
-                    // value={this.state.zipInput}
-                    onChange={(e)=>this.handleChange(e.target.value)}
-                    name='zip'
-                />
+                <Paper className={classes.paper}>
+                    <TextField
+                        label='Enter a ZIP'
+                        value={this.state.zipInput}
+                        onChange={(e)=>this.handleChange(e)}
+                        name='zipInput'
+                    />
+                    <Paper>
+                        <Checkbox/>
+                        <Checkbox/>
+                        <Checkbox/>
+                    </Paper>
+                </Paper>
             </MuiThemeProvider>
         )
     }
