@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Quote from './Quote/Quote'
 
 //Material-UI Core Imports
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
@@ -136,12 +137,7 @@ class Search extends Component<Props, State>{
                                 <SearchIcon className={classes.btnIcon}/>
                             </Button>
                         </FormGroup>
-                        <Typography variant='caption' className={classes.quote}>
-                                Look deep into nature, and then you will understand everything better.
-                        </Typography>
-                        <Typography variant='caption'>
-                                -Albert Einstein 
-                        </Typography>
+                        <Quote/>
                     </div>
                 </div>
             </MuiThemeProvider>
