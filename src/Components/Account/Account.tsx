@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import Preferences from './Preferences/Preferences'; 
-
+import MapMarker from './MapMarker/MapMarker';
+import GoogleMapReact from 'google-map-react';
 import firebase from '../../firebase';
 
 //materialUI imports
@@ -15,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Badge from '@material-ui/core/Badge';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SettingsIcon from '@material-ui/icons/Settings';
+
 
 const theme = createMuiTheme({
     palette:{
@@ -30,7 +31,7 @@ const theme = createMuiTheme({
 
 const styles = (theme:Theme) =>createStyles({
     paper:{
-        backgroundColor:'#FCFCFC'
+        backgroundColor:'#F7F7F7'
     },
     expansionPanels:{
         
@@ -44,11 +45,25 @@ const styles = (theme:Theme) =>createStyles({
         justifyContent:'center',
         marginTop:'15%'
     },
+    iconButton:{
+        width:120,
+        height:120,
+        marginLeft:'auto',
+        marginRight:'auto'
+    },
     avatar:{
         width:100,
         height:100,
         fontSize:'2em',
         backgroundColor:'#FF5722',
+        margin:'auto'
+    },
+    mapDiv:{
+        height:'60vh',
+        width:'90vw',
+        marginLeft:'auto',
+        marginRight:'auto',
+        border:'2px solid #757575'
     }
 })
 
@@ -58,11 +73,14 @@ export interface Props{
         expansionPanels:string;
         expansionPanel:string;
         userBar:string;
-        avatar:string
+        avatar:string;
+        iconButton:string;
+        mapDiv:string;
     }
 }
 
 export interface State{
+    profilePicture:string;
     displayName:string;
     zipCode:string;
     uid:string;
@@ -76,6 +94,7 @@ class Account extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
+            profilePicture:'',
             displayName:'',
             zipCode:'',
             uid:'',
@@ -96,14 +115,28 @@ class Account extends Component<Props, State>{
 
                     if(snapshot1.val()){
                         const displayName = snapshot1.val().displayName;
-                        const zipCode = snapshot1.val().zipCode;
+
+                        let zipCode = snapshot1.val().zipCode;
                         if(zipCode && zipCode.zipCode){
-                            console.log(zipCode.zipCode)
-                            this.setState({displayName:displayName.displayName, zipCode:zipCode.zipCode, uid:user.uid, isBadgeHidden:true})
+                            zipCode=zipCode;
                         }
                         else{
-                            this.setState({displayName:displayName.displayName, uid:user.uid, isBadgeHidden:false})
+                            zipCode='';
                         }
+
+                        let profilePicture = snapshot1.val().profilePicture;
+                        if(profilePicture && profilePicture.profilePicture){
+                            profilePicture=profilePicture;
+                        }
+                        else{
+                            profilePicture='';
+                        }
+
+                        console.log(snapshot1.val());
+
+                        this.setState({profilePicture:profilePicture.profilePicture, displayName:displayName.displayName, zipCode:zipCode.zipCode, uid:user.uid, isBadgeHidden:true})
+                        
+                        
                     }
                     else{
                         firebase.database().ref(`users/${user.uid}/displayName`).set({
@@ -117,7 +150,7 @@ class Account extends Component<Props, State>{
         })
     }
 
-    componentDidUpdate(prevProps:Props, prevState:State){
+    componentDidUpdate(){
         const {zipCode, isBadgeHidden} = this.state;
         if(zipCode && !isBadgeHidden){
             this.setState({isBadgeHidden:true})
@@ -140,21 +173,32 @@ class Account extends Component<Props, State>{
     
     render(){
         const {classes} = this.props;
-        const {preferencesIsOpen, displayName, zipCode, uid, isBadgeHidden} = this.state;
+        const {preferencesIsOpen, displayName, zipCode, uid, isBadgeHidden, profilePicture} = this.state;
         return(
             <MuiThemeProvider theme={theme}>
             <Paper className={classes.paper}>
 
             <div className={classes.userBar}>
-                <IconButton onClick={()=>this.togglePreferences()}>
+                <IconButton className={classes.iconButton} onClick={()=>this.togglePreferences()}>
                     <Badge color='secondary' variant='dot' invisible={isBadgeHidden}>
-                    <Avatar className={classes.avatar} src='https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Foriginal%2F000%2F019%2F930%2F1421657233490.jpg&f=1'>T</Avatar>
+                    <Avatar className={classes.avatar} src={profilePicture}>T</Avatar>
                     </Badge>
                 </IconButton>
                 <Typography component='p'>{displayName}</Typography>
             </div>
 
-            <Typography component='h2' variant='h2'>Map</Typography>
+            <div className={classes.mapDiv}>
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: ''}}
+                defaultCenter={{lat:39.8333333, lng: -98.585522}}
+                defaultZoom={4}
+                options={{mapTypeId:'terrain'}}
+            >   
+                <MapMarker lat={38.4855} lng={-109.232} favorite={false} />
+                <MapMarker lat={39.4855} lng={-109.232} favorite={true} />
+
+            </GoogleMapReact>
+            </div>
 
             <div className={classes.expansionPanels}>
 

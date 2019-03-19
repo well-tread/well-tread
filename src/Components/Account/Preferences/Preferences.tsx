@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
-
 import firebase from '../../../firebase';
+
+
 //materialUI imports
 import { withStyles, createStyles, Theme , createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
@@ -99,6 +100,24 @@ class Preferences extends Component<Props, State>{
         }
     }
 
+    uploadProfilePicture(e:any){
+        const {uid, handleChange} = this.props;
+        let file = e.target.files[0];
+        let fileType=file.type;
+        if(fileType.indexOf('image/') !== -1){
+            firebase.storage().ref(`users/${uid}/profilePicture`).put(file).then(() =>{
+                firebase.storage().ref(`users/${uid}/profilePicture`).getDownloadURL().then((url) =>{
+                    firebase.database().ref(`users/${uid}/profilePicture`).set({
+                        profilePicture:url
+                    })
+                    console.log(url);
+                    handleChange(url, 'profilePicture');
+                })
+            })
+        }
+        
+    }
+
     confirmChanges(e:any){
         e.preventDefault();
         const {displayName, zipCode, uid} = this.props;
@@ -135,7 +154,7 @@ class Preferences extends Component<Props, State>{
 
                     <InputLabel className={classes.inputLabel}>
                         Upload Profile Picture
-                        <Input disableUnderline fullWidth type='file' />
+                        <Input disableUnderline fullWidth type='file' onChange={(e)=>this.uploadProfilePicture(e)}/>
                     </InputLabel>
 
                     <TextField required={true} className={classes.textField} onChange={(e)=>handleChange(e.target.value, 'displayName')} fullWidth variant='outlined' placeholder='Display Name' label='Display Name' value={displayName} />
