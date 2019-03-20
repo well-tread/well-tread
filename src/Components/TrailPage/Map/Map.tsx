@@ -35,6 +35,7 @@ class Map extends Component<Props, State> {
     <div className={classes.mapDiv}>
       <GoogleMapReact
                 bootstrapURLKeys={{ key: ''}}
+                yesIWantToUseGoogleMapApiInternals
                 defaultCenter={{lat:38.4855, lng: -109.232}}
                 defaultZoom={8}
                 options={{mapTypeId:'terrain'}}
