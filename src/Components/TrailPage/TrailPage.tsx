@@ -1,32 +1,32 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   withStyles,
   Theme,
   createMuiTheme,
   MuiThemeProvider
-} from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Button from "@material-ui/core/Button";
-import Whatshot from "@material-ui/icons/Whatshot";
-import Typography from "@material-ui/core/Typography";
+} from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
+import Whatshot from '@material-ui/icons/Whatshot';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
-import "./trailpage.css";
-import axios from "axios";
-import Reviews from "./Reviews/Reviews";
-import Map from "./Map/Map";
-
+import './trailpage.css';
+import axios from 'axios';
+import Reviews from './Reviews/Reviews';
+import Map from './Map/Map';
+import firebase from '../../firebase';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#757575"
+      main: '#757575'
     },
     secondary: {
-      main: "#FF5722"
+      main: '#FF5722'
     }
   }
 });
@@ -41,10 +41,10 @@ const styles = (theme: any) => ({
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    width: "70vw",
-    margin: "0 auto",
-    "margin-bottom": "2em",
-    "margin-top": "2em"
+    width: '70vw',
+    margin: '0 auto',
+    'margin-bottom': '2em',
+    'margin-top': '2em'
   },
   button: {
     margin: theme.spacing.unit
@@ -53,7 +53,7 @@ const styles = (theme: any) => ({
     marginRight: theme.spacing.unit
   },
   indicator: {
-    indicatorColor: "white"
+    indicatorColor: 'white'
   }
 });
 
@@ -71,6 +71,9 @@ export interface State {
   trail: any;
   color: any;
   open: boolean;
+  displayName: string;
+
+  profilePicture: string;
 }
 
 class TrailPage extends Component<Props, State> {
@@ -78,21 +81,39 @@ class TrailPage extends Component<Props, State> {
     super(props);
     this.state = {
       value: 1,
-      trail: "",
-      color: "primary",
-      open: false
+      trail: '',
+      color: 'primary',
+      open: false,
+      displayName: '',
+
+      profilePicture: ''
     };
   }
   handleClick = (e: any) => {
-    this.setState({ color: "secondary", open: true });
+    this.setState({ color: 'secondary', open: true });
   };
   handleChange = (e: any, value: number) => {
     this.setState({ value });
   };
-  handleClose = (e: any) =>{
-    this.setState({open: false})
-  }
+  handleClose = (e: any) => {
+    this.setState({ open: false });
+  };
   componentDidMount() {
+    firebase.auth().onAuthStateChanged((user: any) => {
+      firebase
+        .database()
+        .ref(`/users/${user.uid}`)
+        .once(`value`)
+        .then(snapshot => {
+          if (snapshot.val()) {
+            this.setState({
+              displayName: snapshot.val().displayName.displayName,
+
+              profilePicture: snapshot.val().profilePicture.profilePicture
+            });
+          }
+        });
+    });
     axios.get(`http://localhost:5050/trails/bikingOne`).then(res => {
       console.log(res.data);
       const response = res.data;
@@ -107,36 +128,38 @@ class TrailPage extends Component<Props, State> {
     let Trail0 = this.state.trail ? (
       this.state.trail.map((element: any, index: number) => {
         return (
-          <div className="trailContainer" key={index}>
-            <div className="trailImage" ><img src={element.imgMedium} alt="" /></div>
+          <div className='trailContainer' key={index}>
+            <div className='trailImage'>
+              <img src={element.imgMedium} alt='' />
+            </div>
             <Paper className={classes.root}>
-              <div className="trailInfo">
-                <Typography variant="h4" color="secondary">
+              <div className='trailInfo'>
+                <Typography variant='h4' color='secondary'>
                   {element.name}
                 </Typography>
-                <div className="sideBySide">
-                  <Typography variant="h5" id="miles" color="primary">
+                <div className='sideBySide'>
+                  <Typography variant='h5' id='miles' color='primary'>
                     <strong>Miles: </strong>
                     {element.length}
                   </Typography>
-                  <Typography variant="h5" id="stars" color="primary">
+                  <Typography variant='h5' id='stars' color='primary'>
                     <strong> Stars: </strong> {element.stars}
                   </Typography>
                 </div>
-                <Typography variant="h5" id="info" color="primary">
+                <Typography variant='h5' id='info' color='primary'>
                   <strong>Difficulty: </strong> {element.difficulty}
                 </Typography>
-                <Typography variant="h5" id="info" color="primary">
+                <Typography variant='h5' id='info' color='primary'>
                   <strong>Condition: </strong> {element.conditionDetails}
                 </Typography>
 
-                <Typography variant="h5" id="info" color="primary">
+                <Typography variant='h5' id='info' color='primary'>
                   <strong>Description: </strong> {element.summary}
                 </Typography>
                 <Button
                   className={classes.button}
                   color={this.state.color}
-                  variant="outlined"
+                  variant='outlined'
                   onClick={e => this.handleClick(e)}
                 >
                   <Whatshot className={classes.leftIcon} />
@@ -147,7 +170,7 @@ class TrailPage extends Component<Props, State> {
             <Snackbar
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               open={this.state.open}
               autoHideDuration={2500}
@@ -155,13 +178,12 @@ class TrailPage extends Component<Props, State> {
               message={<span>Trail Saved to Favorites</span>}
               action={[
                 <IconButton
-                  onClick={(e)=>this.handleClose(e)}
+                  onClick={e => this.handleClose(e)}
                   color='secondary'
                 >
-                  <CloseIcon/>
+                  <CloseIcon />
                 </IconButton>
               ]}
-                
             />
           </div>
         );
@@ -176,22 +198,28 @@ class TrailPage extends Component<Props, State> {
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="secondary"
-            textColor="secondary"
+            indicatorColor='secondary'
+            textColor='secondary'
             centered
-            id="tabs"
+            id='tabs'
             classes={{
               indicator: classes.indicator
             }}
           >
             >
-            <Tab label="Map" />
-            <Tab label="Trail" />
-            <Tab label="Reviews" />
+            <Tab label='Map' />
+            <Tab label='Trail' />
+            <Tab label='Reviews' />
           </Tabs>
           {this.state.value === 0 && <Map />}
           {this.state.value === 1 && <div>{Trail0}</div>}
-          {this.state.value === 2 && <Reviews />}
+          {this.state.value === 2 && (
+            <Reviews
+              trailID={4670265}
+              profilePicture={this.state.profilePicture}
+              displayName={this.state.displayName}
+            />
+          )}
           {/* </Paper> */}
         </div>
       </MuiThemeProvider>
