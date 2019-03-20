@@ -16,6 +16,20 @@ module.exports = {
         console.log(error);
       });
   },
+  getOneCtrail: (req, res) => {
+    axios
+      .get(
+        `https://www.mountainproject.com/data/get-routes?routeIds=${req.body.id}&key=200433049-e4cde3f7e98d856dd46b6f3ad4b8091f`
+      )
+      .then(result => res.send(result.data.routes))
+      //   .then(function(response) {
+
+      //     console.log(response.data.trails);
+      //   })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
   postCtrails: (req, res) => {
     let lat = 0
     let lng = 0

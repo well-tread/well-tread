@@ -19,6 +19,7 @@ import axios from 'axios';
 import Reviews from './Reviews/Reviews';
 import Map from './Map/Map';
 import firebase from '../../firebase';
+import Trail from './Trail/Trail';
 
 const theme = createMuiTheme({
   palette: {
@@ -64,6 +65,7 @@ export interface Props {
     leftIcon: string;
     indicator: string;
   };
+  match:any
 }
 
 export interface State {
@@ -99,6 +101,45 @@ class TrailPage extends Component<Props, State> {
     this.setState({ open: false });
   };
   componentDidMount() {
+    console.log(this.props);
+    const {id, trailtype} = this.props.match.params;
+
+    switch(trailtype){
+      case 'hiking':
+        axios.post(`http://localhost:5050/trails/hikingOne`,{id:id}).then(res => {
+          console.log(res.data);
+          const response = res.data;
+          this.setState({
+            trail: response
+          });
+        });
+      break;
+
+      case 'biking':
+        axios.post(`http://localhost:5050/trails/bikingOne`,{id:id}).then(res => {
+          console.log(res.data);
+          const response = res.data;
+          this.setState({
+            trail: response
+          });
+        });
+      break;
+
+      case 'climbing':
+        axios.post(`http://localhost:5050/trails/climbingOne`,{id:id}).then(res => {
+          console.log(res.data);
+          const response = res.data;
+          this.setState({
+            trail: response
+          });
+        });
+      break;
+
+      default:
+      alert('Incorrect trailtype at TrailPage.tsx');
+      break;
+    }
+
     firebase.auth().onAuthStateChanged((user: any) => {
       firebase
         .database()
@@ -114,17 +155,12 @@ class TrailPage extends Component<Props, State> {
           }
         });
     });
-    axios.get(`http://localhost:5050/trails/bikingOne`).then(res => {
-      console.log(res.data);
-      const response = res.data;
-      this.setState({
-        trail: response
-      });
-    });
+    
   }
 
   render() {
     const { classes } = this.props;
+    const {trail} = this.state;
     let Trail0 = this.state.trail ? (
       this.state.trail.map((element: any, index: number) => {
         return (
@@ -215,7 +251,7 @@ class TrailPage extends Component<Props, State> {
           {this.state.value === 1 && <div>{Trail0}</div>}
           {this.state.value === 2 && (
             <Reviews
-              trailID={4670265}
+              trailID={this.props.match.params.id}
               profilePicture={this.state.profilePicture}
               displayName={this.state.displayName}
             />

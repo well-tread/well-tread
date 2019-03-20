@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 
+import {Redirect} from 'react-router-dom';
+
 //materialUI imports
 import { withStyles, Theme, createMuiTheme, createStyles, MuiThemeProvider} from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -67,23 +69,29 @@ export interface Props{
         expansionPanelExpanded:string,
         expandMoreIcon:string
     },
-    icon:any
+    icon:any,
+    type:string
 }
 
 export interface State{
-    
+    isRedirecting:boolean
 }
 
 class Result extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            
+            isRedirecting:false
         }
+    }
+
+    redirectToTrailPage(){
+      this.setState({isRedirecting:true})
     }
     
     render(){
-        const {trail, classes, icon} = this.props;
+        const {isRedirecting} = this.state;
+        const {trail, classes, icon, type} = this.props;
         return(
             <MuiThemeProvider theme={theme}>
             <ExpansionPanel className={classes.expansionPanel} style={{backgroundImage:`url(${trail.imgMedium})`}} classes={{expanded:classes.expansionPanelExpanded}} >
@@ -100,11 +108,15 @@ class Result extends Component<Props, State>{
             </ExpansionPanelDetails>
 
             <ExpansionPanelActions>
-                <Button color='secondary' fullWidth>Trail Page</Button>
+                <Button color='secondary' onClick={()=>this.redirectToTrailPage()} fullWidth>Trail Page</Button>
                 <Button color='secondary' fullWidth>Favorite</Button>
             </ExpansionPanelActions>
 
             </ExpansionPanel>
+
+            {
+              isRedirecting ? <Redirect to={`/trails/${type}/${trail.id}`} /> : <div />
+            }
             </MuiThemeProvider>
         )
     }
