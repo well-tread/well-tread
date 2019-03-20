@@ -34,7 +34,7 @@ class Map extends Component<Props, State> {
     return (
     <div className={classes.mapDiv}>
       <GoogleMapReact
-                bootstrapURLKeys={{ key: 'AIzaSyCjbwLfRk4U4n9BgGwGqzPpWHHty4pw1sU'}}
+                bootstrapURLKeys={{ key: ''}}
                 defaultCenter={{lat:38.4855, lng: -109.232}}
                 defaultZoom={8}
                 options={{mapTypeId:'terrain'}}
