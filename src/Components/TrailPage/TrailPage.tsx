@@ -11,10 +11,14 @@ import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import Whatshot from "@material-ui/icons/Whatshot";
 import Typography from "@material-ui/core/Typography";
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 import "./trailpage.css";
 import axios from "axios";
 import Reviews from "./Reviews/Reviews";
 import Map from "./Map/Map";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -66,6 +70,7 @@ export interface State {
   value: number;
   trail: any;
   color: any;
+  open: boolean;
 }
 
 class TrailPage extends Component<Props, State> {
@@ -74,15 +79,19 @@ class TrailPage extends Component<Props, State> {
     this.state = {
       value: 1,
       trail: "",
-      color: "primary"
+      color: "primary",
+      open: false
     };
   }
   handleClick = (e: any) => {
-    this.setState({ color: "secondary" });
+    this.setState({ color: "secondary", open: true });
   };
   handleChange = (e: any, value: number) => {
     this.setState({ value });
   };
+  handleClose = (e: any) =>{
+    this.setState({open: false})
+  }
   componentDidMount() {
     axios.get(`http://localhost:5050/trails/bikingOne`).then(res => {
       console.log(res.data);
@@ -99,7 +108,7 @@ class TrailPage extends Component<Props, State> {
       this.state.trail.map((element: any, index: number) => {
         return (
           <div className="trailContainer" key={index}>
-            <img className="trailImage" src={element.imgMedium} alt="" />
+            <div className="trailImage" ><img src={element.imgMedium} alt="" /></div>
             <Paper className={classes.root}>
               <div className="trailInfo">
                 <Typography variant="h4" color="secondary">
@@ -135,6 +144,25 @@ class TrailPage extends Component<Props, State> {
                 </Button>
               </div>
             </Paper>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              open={this.state.open}
+              autoHideDuration={2500}
+              color='primary'
+              message={<span>Trail Saved to Favorites</span>}
+              action={[
+                <IconButton
+                  onClick={(e)=>this.handleClose(e)}
+                  color='secondary'
+                >
+                  <CloseIcon/>
+                </IconButton>
+              ]}
+                
+            />
           </div>
         );
       })
