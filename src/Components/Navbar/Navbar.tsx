@@ -37,9 +37,9 @@ const styles = (theme:Theme) => createStyles({
         justifyContent: 'space-around',
         alignItems: 'center',
         background: '#fff',
-        position: 'fixed',
+        position: 'sticky',
         zIndex: 9999,
-        boxShadow:'none'
+        boxShadow:'none',
     },
     dropDownMenu:{
         paddingTop: '50px'
