@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 // Material-UI Core Imports
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import {ButtonProps} from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
 
 // Material-UI Icon Imports
 import Menu from '@material-ui/icons/Menu';
@@ -58,15 +59,16 @@ export interface State{
 }
 
 
-interface LinkButtonProps extends ButtonProps{
+export interface LinkButtonProps extends ButtonProps{
     to:string;
     replace?:boolean;
 }
 
 const LinkItem = (props:LinkButtonProps) => (
-    <ListItem {...props} component={Link as any} />
+    <ListItem {...props} component={NavLink as any} alignItems='center'/>
 )
-  
+
+
 
 class Navbar extends Component<Props, State>{
     constructor(props:Props){
@@ -76,7 +78,7 @@ class Navbar extends Component<Props, State>{
         }
         this.toggleDrawer = this.toggleDrawer.bind(this)
     }
-
+    
     toggleDrawer = (open:boolean) => {
         this.setState({
           drawerOpen: !this.state.drawerOpen
@@ -90,7 +92,7 @@ class Navbar extends Component<Props, State>{
             <MuiThemeProvider theme={theme}>
                 <AppBar className={classes.appBar}>
                     <Typography component='h6' variant='h6' color='primary'>
-                        Well Tread
+                        WELL TREAD
                     </Typography>
                     <IconButton onClick={()=>this.toggleDrawer(true)}>
                         <Menu color='secondary'/>
@@ -103,19 +105,19 @@ class Navbar extends Component<Props, State>{
                     onOpen={()=>this.toggleDrawer(true)}
                 >
                     <List component='nav' className={classes.dropDownMenu}>
-                            <LinkItem to='/'>
+                            <LinkItem to='/' onClick={()=>this.toggleDrawer(false)}>
                                 <ListItemIcon>
                                     <Home/>
                                 </ListItemIcon>
                                 <ListItemText primary='Home'/>
                             </LinkItem>
-                            <LinkItem to='/account'>
+                            <LinkItem to='/account' onClick={()=>this.toggleDrawer(false)}>
                                 <ListItemIcon>
                                     <AccountBox/>
                                 </ListItemIcon>
                                 <ListItemText primary='Account'/>
                             </LinkItem>
-                        <LinkItem to='/search'>
+                        <LinkItem to='/search' onClick={()=>this.toggleDrawer(false)}>
                             <ListItemIcon>
                                 <Search/>
                             </ListItemIcon>
