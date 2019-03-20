@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import Quote from './Quote/Quote'
+import TrailResults from './TrailResults/TrailResults';
 
 //Material-UI Core Imports
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
@@ -74,6 +75,7 @@ export interface State{
     isHikingChecked: boolean,
     isBikingChecked: boolean,
     isClimbingChecked: boolean,
+    isResultsBack:boolean,
     hikingArr:any,
     bikingArr:any,
     climbingArr:any,
@@ -90,6 +92,15 @@ class Search extends Component<Props, State>{
             isHikingChecked: false,
             isBikingChecked: false,
             isClimbingChecked: false,
+            isResultsBack:false
+        }
+    }
+
+    componentDidUpdate(prevProps:Props, prevState:State){
+        const {hikingArr, bikingArr, climbingArr, isResultsBack} = this.state;
+        if(!isResultsBack && (hikingArr.length>0 || bikingArr.length>0 || climbingArr.length>0)){
+            console.log('updating');
+            this.setState({isResultsBack:true})
         }
     }
 
@@ -133,6 +144,7 @@ class Search extends Component<Props, State>{
     
     render(){
         const {classes} = this.props
+        const {isResultsBack} = this.state;
         return(
             <MuiThemeProvider theme={theme}>
                 <div className={classes.container}>
@@ -193,7 +205,10 @@ class Search extends Component<Props, State>{
                                 <SearchIcon className={classes.btnIcon}/>
                             </Button>
                         </FormGroup>
-                        <Quote/>
+
+                        {
+                            isResultsBack ? <TrailResults/> : <Quote />
+                        }
                     </div>
                 </div>
             </MuiThemeProvider>
