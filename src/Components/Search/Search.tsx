@@ -116,35 +116,38 @@ class Search extends Component<Props, State>{
     }
 
     submitLocationSearch=()=>{
-        if(this.state.isHikingChecked){
-            axios.post(`/trails/hiking`, {address:this.state.address}).then(response=>{
-                this.setState({hikingArr:response.data})
-                console.log('hike', response.data)
-            }).catch(err=>{
-                console.log(err)
-            })
-        }
-        if(this.state.isBikingChecked){
-            axios.post(`/trails/biking`, {address:this.state.address}).then(response=>{
-                this.setState({bikingArr:response.data})
-                console.log('bike', response.data)
-            }).catch(err=>{
-                console.log(err)
-            })
-        }
-        if(this.state.isClimbingChecked){
-            axios.post(`/trails/climbing`, {address:this.state.address}).then(response=>{
-                this.setState({climbingArr:response.data})
-                console.log('climb', response.data)
-            }).catch(err=>{
-                console.log(err)
-            })
-        }
+        this.setState({hikingArr:[],bikingArr:[],climbingArr:[]}, ()=>{
+            if(this.state.isHikingChecked){
+                axios.post(`/trails/hiking`, {address:this.state.address}).then(response=>{
+                    this.setState({hikingArr:response.data})
+                    console.log('hike', response.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+            if(this.state.isBikingChecked){
+                axios.post(`/trails/biking`, {address:this.state.address}).then(response=>{
+                    this.setState({bikingArr:response.data})
+                    console.log('bike', response.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+            if(this.state.isClimbingChecked){
+                axios.post(`/trails/climbing`, {address:this.state.address}).then(response=>{
+                    this.setState({climbingArr:response.data})
+                    console.log('climb', response.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+        })
+        
     }
     
     render(){
         const {classes} = this.props
-        const {isResultsBack} = this.state;
+        const {isResultsBack ,hikingArr, bikingArr, climbingArr} = this.state;
         return(
             <MuiThemeProvider theme={theme}>
                 <div className={classes.container}>
@@ -207,7 +210,7 @@ class Search extends Component<Props, State>{
                         </FormGroup>
 
                         {
-                            isResultsBack ? <TrailResults/> : <Quote />
+                            isResultsBack ? <TrailResults hikingArr={hikingArr} bikingArr={bikingArr} climbingArr={climbingArr}/> : <Quote />
                         }
                     </div>
                 </div>
