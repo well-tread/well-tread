@@ -20,7 +20,7 @@ module.exports = {
   getOneBtrail: (req, res) => {
     axios
       .get(
-        "https://www.mtbproject.com/data/get-trails-by-id?ids=4670265&key=200430946-fc66551e94fef44057cb0cc88316bbec"
+        `https://www.mtbproject.com/data/get-trails-by-id?ids=${req.body.id}&key=200430946-fc66551e94fef44057cb0cc88316bbec`
       )
       .then(result => res.send(result.data.trails))
       //   .then(function(response) {

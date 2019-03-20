@@ -16,6 +16,20 @@ module.exports = {
         console.log(error);
       });
   },
+  getOneHtrail: (req, res) => {
+    axios
+      .get(
+        `https://www.hikingproject.com/data/get-trails-by-id?ids=${req.body.id}&key=200430946-fc66551e94fef44057cb0cc88316bbec`
+      )
+      .then(result => res.send(result.data.trails))
+      //   .then(function(response) {
+
+      //     console.log(response.data.trails);
+      //   })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
   postHtrails: (req, res) => {
     let lat = 0
     let lng = 0

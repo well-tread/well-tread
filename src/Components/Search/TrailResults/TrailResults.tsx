@@ -30,19 +30,19 @@ class TrailResults extends Component<Props, State>{
             <div style={{width:'100%'}}>
                 {
                     hikingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<DirectionWalk />} />
+                        return <Result key={i} trail={trail} icon={<DirectionWalk />} type='hiking' />
                     })
                 }
 
                 {
                     bikingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<DirectionBike />}/>
+                        return <Result key={i} trail={trail} icon={<DirectionBike />} type='biking'/>
                     })
                 }
 
                 {
                     climbingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<Terrain />}/>
+                        return <Result key={i} trail={trail} icon={<Terrain />} type='climbing'/>
                     })
                 }
             </div>
