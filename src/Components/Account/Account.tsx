@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Preferences from "./Preferences/Preferences";
-import MapMarker from "./MapMarker/MapMarker";
-import GoogleMapReact from "google-map-react";
-import firebase from "../../firebase";
+import React, { Component } from 'react';
+import Preferences from './Preferences/Preferences';
+import MapMarker from './MapMarker/MapMarker';
+import GoogleMapReact from 'google-map-react';
+import firebase from '../../firebase';
 
 //materialUI imports
 import {
@@ -11,25 +11,25 @@ import {
   Theme,
   createMuiTheme,
   MuiThemeProvider
-} from "@material-ui/core/styles";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import Badge from "@material-ui/core/Badge";
+} from '@material-ui/core/styles';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import Badge from '@material-ui/core/Badge';
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#757575"
+      main: '#757575'
     },
     secondary: {
-      main: "#FF5722"
+      main: '#FF5722'
     }
   }
 });
@@ -37,37 +37,37 @@ const theme = createMuiTheme({
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      backgroundColor: "#F7F7F7"
+      backgroundColor: '#F7F7F7'
     },
     expansionPanels: {},
     expansionPanel: {
-      backgroundColor: "#F7F7F7"
+      backgroundColor: '#F7F7F7'
     },
     userBar: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      marginTop: "15%"
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      marginTop: '15%'
     },
     iconButton: {
       width: 120,
       height: 120,
-      marginLeft: "auto",
-      marginRight: "auto"
+      marginLeft: 'auto',
+      marginRight: 'auto'
     },
     avatar: {
       width: 100,
       height: 100,
-      fontSize: "2em",
-      backgroundColor: "#FF5722",
-      margin: "auto"
+      fontSize: '2em',
+      backgroundColor: '#FF5722',
+      margin: 'auto'
     },
     mapDiv: {
-      height: "60vh",
-      width: "90vw",
-      marginLeft: "auto",
-      marginRight: "auto",
-      border: "2px solid #757575"
+      height: '60vh',
+      width: '90vw',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      border: '2px solid #757575'
     }
   });
 
@@ -98,10 +98,10 @@ class Account extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      profilePicture: "",
-      displayName: "",
-      zipCode: "",
-      uid: "",
+      profilePicture: '',
+      displayName: '',
+      zipCode: '',
+      uid: '',
       preferencesIsOpen: false,
       isLoading: true,
       isAnonymous: true,
@@ -116,7 +116,7 @@ class Account extends Component<Props, State> {
       firebase
         .database()
         .ref(`/users/${user.uid}`)
-        .once("value")
+        .once('value')
         .then(snapshot1 => {
           // console.log(user)
 
@@ -127,14 +127,14 @@ class Account extends Component<Props, State> {
             if (zipCode && zipCode.zipCode) {
               zipCode = zipCode;
             } else {
-              zipCode = "";
+              zipCode = '';
             }
 
             let profilePicture = snapshot1.val().profilePicture;
             if (profilePicture && profilePicture.profilePicture) {
               profilePicture = profilePicture;
             } else {
-              profilePicture = "";
+              profilePicture = '';
             }
 
             console.log(snapshot1.val());
@@ -173,7 +173,7 @@ class Account extends Component<Props, State> {
 
   handleChange(value: string, id: string) {
     this.setState(() => {
-      if (value.length > 0 && id === "zipCode") {
+      if (value.length > 0 && id === 'zipCode') {
         return { ...this.state, isBadgeHidden: true, [id]: value };
       }
       return { ...this.state, [id]: value };
@@ -210,11 +210,11 @@ class Account extends Component<Props, State> {
           <div className={classes.mapDiv}>
             <GoogleMapReact
               bootstrapURLKeys={{
-                key: ""
+                key: ''
               }}
               defaultCenter={{ lat: 39.8333333, lng: -98.585522 }}
               defaultZoom={4}
-              options={{ mapTypeId: "terrain" }}
+              options={{ mapTypeId: 'terrain' }}
             >
               <MapMarker lat={38.4855} lng={-109.232} favorite={false} />
               <MapMarker lat={39.4855} lng={-109.232} favorite={true} />
