@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import TrailResults from './TrailResults/TrailResults';
+// import TrailResults from './TrailResults/TrailResults';
+import TrailResults from '../Search/TrailResults/TrailResults'
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   withStyles,
   Theme,
@@ -153,23 +155,23 @@ class Home extends Component<Props, State> {
               Top 5 Biking Trails Near You
             </Typography>
           </div>
-          <TrailResults
-            popularBikingTrails={popularBikingTrails}
-            popularHikingTrails={[]}
+          {this.state.popularBikingTrails.length > 0 ? <TrailResults
+            // popularBikingTrails={popularBikingTrails}
+            // popularHikingTrails={[]}
             hikingArr={[]}
-            bikingArr={[]}
+            bikingArr={popularBikingTrails}
             climbingArr={[]}
-          />
+          /> : <CircularProgress color='secondary'/>}
           <Typography variant='h5' color='primary' id='popular'>
             Top 5 Hiking Trails Near You
           </Typography>
-          <TrailResults
-            popularBikingTrails={[]}
-            hikingArr={[]}
-            popularHikingTrails={popularHikingTrails}
+          {this.state.popularHikingTrails.length > 0 ? <TrailResults
+            // popularBikingTrails={[]}
+            hikingArr={popularHikingTrails}
+            // popularHikingTrails={popularHikingTrails}
             bikingArr={[]}
             climbingArr={[]}
-          />
+          /> : <CircularProgress color='secondary'/>}
         </div>
       </MuiThemeProvider>
     );

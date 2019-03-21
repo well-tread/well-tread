@@ -36,26 +36,34 @@ const styles = (theme:Theme) => createStyles({
         // display: 'flex',
         // alignItems:'center',
         // justifyContent:'center',
-        width:'90%',
-        margin: 'auto'
+        width:'70%',
+        margin: 'auto',
+        // position:'fixed'
     },
     formGroup:{
-        paddingBottom: theme.spacing.unit * 3
+        paddingBottom: theme.spacing.unit * 1.5,
+        display:'flex',
+        justifyContent:'space-between',
+        // margin:'0 auto',
+        // width:'100%'
     },
     button:{
-        marginBottom: theme.spacing.unit * 3,
         padding:'15px 0',
-        width: '80%',
+        width: '100%',
         margin: 'auto'
     },
     btnIcon:{
-        marginLeft: theme.spacing.unit * 2
+        marginLeft: theme.spacing.unit * 3
     },
     textField:{
-        paddingBottom:'25px'
+        paddingBottom: theme.spacing.unit * 1.5,
+        width: '100%'
     },
     quote:{
         paddingBottom: theme.spacing.unit * 1
+    },
+    formGroupContainer:{
+        width: '100%'
     }
 })
 
@@ -66,7 +74,8 @@ export interface Props{
         btnIcon: any,
         textField: string,
         button: string,
-        quote: string
+        quote: string,
+        formGroupContainer:string,
     }
 }
 
@@ -159,7 +168,7 @@ class Search extends Component<Props, State>{
                             name='address'
                             className={classes.textField}
                         />
-                        <FormGroup onSubmit={()=>console.log('for now')}>
+                        <FormGroup onSubmit={()=>console.log('for now')} className={classes.formGroupContainer}>
                             <div className={classes.formGroup}>
                                 <FormControlLabel
                                     control={
@@ -208,12 +217,11 @@ class Search extends Component<Props, State>{
                                 <SearchIcon className={classes.btnIcon}/>
                             </Button>
                         </FormGroup>
-
-                        {
-                            isResultsBack ? <TrailResults hikingArr={hikingArr} bikingArr={bikingArr} climbingArr={climbingArr}/> : <Quote />
-                        }
                     </div>
                 </div>
+                {
+                    isResultsBack ? <TrailResults hikingArr={hikingArr} bikingArr={bikingArr} climbingArr={climbingArr}/> : <Quote/>
+                }
             </MuiThemeProvider>
         )
     }

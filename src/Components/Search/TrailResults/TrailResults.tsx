@@ -27,22 +27,22 @@ class TrailResults extends Component<Props, State>{
     render(){
         const {hikingArr, bikingArr, climbingArr} = this.props;
         return(
-            <div style={{width:'100%'}}>
+            <div style={{width:'100%', marginTop:'20px'}}>
                 {
                     hikingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<DirectionWalk />} type='hiking' />
+                        return <Result key={i} trail={trail} icon={<DirectionWalk style={{width:'35px', height:'35px'}}/>} type='hiking' />
                     })
                 }
 
                 {
                     bikingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<DirectionBike />} type='biking'/>
+                        return <Result key={i} trail={trail} icon={<DirectionBike style={{width:'35px', height:'35px'}}/>} type='biking'/>
                     })
                 }
 
                 {
                     climbingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<Terrain />} type='climbing'/>
+                        return <Result key={i} trail={trail} icon={<Terrain style={{width:'35px', height:'35px'}}/>} type='climbing'/>
                     })
                 }
             </div>
