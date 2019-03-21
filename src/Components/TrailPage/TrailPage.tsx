@@ -74,7 +74,7 @@ export interface State {
   color: any;
   open: boolean;
   displayName: string;
-
+  uid:string;
   profilePicture: string;
 }
 
@@ -87,7 +87,7 @@ class TrailPage extends Component<Props, State> {
       color: 'primary',
       open: false,
       displayName: '',
-
+      uid:'',
       profilePicture: ''
     };
   }
@@ -149,7 +149,7 @@ class TrailPage extends Component<Props, State> {
           if (snapshot.val()) {
             this.setState({
               displayName: snapshot.val().displayName.displayName,
-
+              uid:user.uid,
               profilePicture: snapshot.val().profilePicture.profilePicture
             });
           }
@@ -247,12 +247,13 @@ class TrailPage extends Component<Props, State> {
             <Tab label='Trail' />
             <Tab label='Reviews' />
           </Tabs>
-          {this.state.value === 0 && <Map />}
+          {this.state.value === 0 && <Map longitude={trail[0].longitude} latitude={trail[0].latitude}/>}
           {this.state.value === 1 && <div>{Trail0}</div>}
           {this.state.value === 2 && (
             <Reviews
               trailID={this.props.match.params.id}
               profilePicture={this.state.profilePicture}
+              uid={this.state.uid}
               displayName={this.state.displayName}
             />
           )}

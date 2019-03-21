@@ -14,7 +14,7 @@ function MapMarker(props:Props){
     return(
         <div>
         {
-            favorite ? <PlaceIcon color='primary' /> : <PlaceIcon color='secondary' />
+            favorite ? <PlaceIcon color='primary' style={{position: 'absolute', transform: 'translate(-50%, -50%)'}}/> : <PlaceIcon color='secondary' style={{position: 'absolute', transform: 'translate(-50%, -50%)'}}/>
         }
         </div>
     )
