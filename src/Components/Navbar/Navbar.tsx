@@ -32,13 +32,16 @@ const theme = createMuiTheme({
 })
 
 const styles = (theme:Theme) => createStyles({
+    appBarContainer:{
+        marginBottom: theme.spacing.unit * 6,
+    },
     appBar:{
         display: 'flex',
         flexDirection:'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         background: '#fff',
-        position: 'sticky',
+        position: 'fixed',
         zIndex: 9999,
         boxShadow:'none',
     },
@@ -49,8 +52,9 @@ const styles = (theme:Theme) => createStyles({
 
 export interface Props{
     classes:{
-        appBar: any,
-        dropDownMenu: any,
+        appBarContainer:string,
+        appBar: string,
+        dropDownMenu: string,
     }
 }
 
@@ -90,14 +94,16 @@ class Navbar extends Component<Props, State>{
         
         return(
             <MuiThemeProvider theme={theme}>
-                <AppBar className={classes.appBar}>
-                    <Typography component='h6' variant='h6' color='primary'>
-                        WELL TREAD
-                    </Typography>
-                    <IconButton onClick={()=>this.toggleDrawer(true)}>
-                        <Menu color='secondary'/>
-                    </IconButton>
-                </AppBar>
+                <div className={classes.appBarContainer}>
+                    <AppBar className={classes.appBar}>
+                        <Typography component='h6' variant='h6' color='primary'>
+                            WELL TREAD
+                        </Typography>
+                        <IconButton onClick={()=>this.toggleDrawer(true)}>
+                            <Menu color='secondary'/>
+                        </IconButton>
+                    </AppBar>
+                </div>
                 <SwipeableDrawer
                     anchor='top'
                     open={this.state.drawerOpen}

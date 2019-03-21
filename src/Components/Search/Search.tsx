@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 
 const styles = (theme:Theme) => createStyles({
     container:{
-        marginTop: '50px',
+        // marginTop: '50px',
         // padding:'50px 0',
         // height: '500px',
         // display: 'flex',
