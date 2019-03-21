@@ -57,6 +57,12 @@ const styles = (theme: Theme) => createStyles({
       expandMoreIcon:{
           width:30,
           height:30
+      },
+      exPanelSummary:{
+          backgroundColor: 'white',
+          borderBottom: '1px solid rgba(0,0,0,.125)',
+          marginBottom: -1,
+          minHeight: 56,
       }
 });
 
@@ -67,7 +73,8 @@ export interface Props{
         typographyContent:string,
         expansionPanel:string,
         expansionPanelExpanded:string,
-        expandMoreIcon:string
+        expandMoreIcon:string,
+        exPanelSummary:string
     },
     icon:any,
     type:string
@@ -97,7 +104,7 @@ class Result extends Component<Props, State>{
             <ExpansionPanel className={classes.expansionPanel} style={{backgroundImage:`url(${trail.imgMedium})`}} classes={{expanded:classes.expansionPanelExpanded}} >
 
             <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon color='secondary' className={classes.expandMoreIcon} />}
+                expandIcon={<ExpandMoreIcon color='secondary' className={classes.expandMoreIcon}/>}
                 
             >
                 <Typography className={classes.typographyTitle}>{icon} {trail.name}</Typography>

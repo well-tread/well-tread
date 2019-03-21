@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-
 import Navbar from './Components/Navbar/Navbar';
 import routes from './routes';
-
+import { withRouter,RouteComponentProps } from 'react-router';
 import './App.css';
 
-class App extends Component {
+// Type whatever you expect in 'this.props.match.params.*'
+type PathParamsType = {
+  param1: string,
+}
+
+// Your component own properties
+type PropsType = RouteComponentProps<PathParamsType> & {
+  // someString: string,
+}
+
+class App extends React.Component<PropsType> {
   render() {
     return (
       <div className="App">
-      <Navbar/>
+      {this.props.history.location.pathname === '/' ? null : <Navbar/>}
       {routes}
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
