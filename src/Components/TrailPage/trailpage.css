@@ -20,12 +20,15 @@
   text-align: left;
 }
 
-.trailImage{
-  opacity: .8;
+.trailImage {
+  opacity: 0.8;
   overflow: hidden;
 }
 
-.trailImage > img{
+.trailImage > img {
   width: 100%;
   overflow: hidden;
+}
+#popular {
+  margin: 1em;
 }
