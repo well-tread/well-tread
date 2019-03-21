@@ -44,11 +44,11 @@ class Quote extends Component<Props, State>{
         const {classes} = this.props
         return(
             <MuiThemeProvider theme={theme}>
-                <div>
-                    <Typography variant='subtitle1' className={classes.quote}>
+                <div style={{width:'70%', margin:'auto', marginTop:'120px'}}>
+                    <Typography variant='subtitle1' className={classes.quote} color='primary'>
                             "Look deep into nature, and then you will understand everything better."
                     </Typography>
-                    <Typography variant='subtitle2'>
+                    <Typography variant='subtitle2' color='primary'>
                             -Albert Einstein 
                     </Typography>
                 </div>

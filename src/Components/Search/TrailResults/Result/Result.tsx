@@ -11,6 +11,7 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
+import { Hidden } from '@material-ui/core';
 
 const theme = createMuiTheme({
     palette: {
@@ -25,10 +26,10 @@ const theme = createMuiTheme({
   
 const styles = (theme: Theme) => createStyles({
       typographyTitle:{
-          opacity:1, 
-          color:'#F7F7F7',
-          textShadow:'1px 1px 4px black',
-          fontSize:'1.3em',
+        opacity:1, 
+        color:'#F7F7F7',
+        textShadow:'1px 1px 4px black',
+        fontSize:'1.3em',
       },
       typographyContent:{
         opacity:1, 
@@ -39,20 +40,23 @@ const styles = (theme: Theme) => createStyles({
       },
       expansionPanel:{
         backgroundColor:'#757575', 
-        backgroundSize:`100% 100%`, 
+        backgroundSize:`cover`,
+        backgroundPosition:'center',
         backgroundBlendMode:'overlay',
-        paddingTop:25,
-        paddingBottom:25,
-        width:'100%'
+        paddingTop:35,
+        paddingBottom:35,
+        width:'100vw'
       },
       expansionPanelExpanded:{
         backgroundColor:'#757575', 
-        backgroundSize:`100% 100%`, 
+        backgroundSize:`cover`,
+        backgroundPosition:'center',
         backgroundBlendMode:'overlay',
-        paddingTop:25,
-        paddingBottom:25,
-        margin:0,
-        width:'100%'
+        paddingTop:35,
+        paddingBottom:35,
+        // margin:0,
+        width:'100vw',
+        overflow: 'hidden'
       },
       expandMoreIcon:{
           width:30,
@@ -101,7 +105,9 @@ class Result extends Component<Props, State>{
         const {trail, classes, icon, type} = this.props;
         return(
             <MuiThemeProvider theme={theme}>
-            <ExpansionPanel className={classes.expansionPanel} style={{backgroundImage:`url(${trail.imgMedium})`}} classes={{expanded:classes.expansionPanelExpanded}} >
+            <ExpansionPanel 
+              className={classes.expansionPanel} 
+              style={{backgroundImage:`url(${trail.imgMedium})`}} classes={{expanded:classes.expansionPanelExpanded}} >
 
             <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon color='secondary' className={classes.expandMoreIcon}/>}
@@ -115,8 +121,8 @@ class Result extends Component<Props, State>{
             </ExpansionPanelDetails>
 
             <ExpansionPanelActions>
-                <Button color='secondary' onClick={()=>this.redirectToTrailPage()} fullWidth>Trail Page</Button>
-                <Button color='secondary' fullWidth>Favorite</Button>
+                <Button style={{fontSize:'1.2em', fontWeight:'bold'}} color='secondary' variant='flat' onClick={()=>this.redirectToTrailPage()} fullWidth>Trail Page</Button>
+                <Button style={{fontSize:'1.2em', fontWeight:'bold'}} color='secondary' variant='flat' fullWidth>Favorite</Button>
             </ExpansionPanelActions>
 
             </ExpansionPanel>

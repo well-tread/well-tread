@@ -12,7 +12,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import {ButtonProps} from '@material-ui/core/Button'
-import Divider from '@material-ui/core/Divider'
 
 // Material-UI Icon Imports
 import Menu from '@material-ui/icons/Menu';
@@ -40,10 +39,16 @@ const styles = (theme:Theme) => createStyles({
         flexDirection:'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        background: '#fff',
+        background: '0,0,0,00',
         position: 'fixed',
-        zIndex: 9999,
+        zIndex: 9998,
         boxShadow:'none',
+    },
+    blurBg:{
+        backgroundColor: 'black',
+        width: '100%',
+        zIndex:9999,
+        position:'absolute'
     },
     dropDownMenu:{
         paddingTop: '50px'
@@ -55,6 +60,7 @@ export interface Props{
         appBarContainer:string,
         appBar: string,
         dropDownMenu: string,
+        blurBg:string
     }
 }
 
@@ -103,6 +109,7 @@ class Navbar extends Component<Props, State>{
                             <Menu color='secondary'/>
                         </IconButton>
                     </AppBar>
+                    <div className={classes.blurBg}></div>
                 </div>
                 <SwipeableDrawer
                     anchor='top'
