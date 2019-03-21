@@ -1,13 +1,13 @@
-require("dotenv").config();
-const express = require("express");
-const session = require("express-session");
-const { json } = require("body-parser");
-const cors = require("cors");
+require('dotenv').config();
+const express = require('express');
+const session = require('express-session');
+const { json } = require('body-parser');
+const cors = require('cors');
 
-const bikeCtrl = require("./controllers/bike_controller");
-const hikeCtrl = require("./controllers/hike_controller");
-const climbCtrl = require("./controllers/climb_controller");
-const shredCtrl = require("./controllers/shred_controller");
+const bikeCtrl = require('./controllers/bike_controller');
+const hikeCtrl = require('./controllers/hike_controller');
+const climbCtrl = require('./controllers/climb_controller');
+const shredCtrl = require('./controllers/shred_controller');
 
 const app = express();
 app.use(json());
@@ -25,21 +25,22 @@ app.use(
 );
 
 //biking
-app.get("/trails/biking", bikeCtrl.getBtrails);
-app.post("/trails/biking", bikeCtrl.postBtrails);
-app.post("/trails/bikingOne", bikeCtrl.getOneBtrail);
+app.get('/trails/biking', bikeCtrl.getBtrails);
+app.post('/trails/biking', bikeCtrl.postBtrails);
+app.post('/trails/bikingOne', bikeCtrl.getOneBtrail);
+app.post('/trails/getPopularTrails', bikeCtrl.getPopularBtrails);
 
 //hiking
-app.get("/trails/hiking", hikeCtrl.getHtrails);
-app.post("/trails/hiking", hikeCtrl.postHtrails);
-app.post("/trails/hikingOne", hikeCtrl.getOneHtrail);
+app.get('/trails/hiking', hikeCtrl.getHtrails);
+app.post('/trails/hiking', hikeCtrl.postHtrails);
+app.post('/trails/hikingOne', hikeCtrl.getOneHtrail);
 
 //climbing
-app.get("/trails/climbing", climbCtrl.getCtrails);
-app.post("/trails/climbing", climbCtrl.postCtrails);
-app.post("/trails/climbingOne", climbCtrl.getOneCtrail);
+app.get('/trails/climbing', climbCtrl.getCtrails);
+app.post('/trails/climbing', climbCtrl.postCtrails);
+app.post('/trails/climbingOne', climbCtrl.getOneCtrail);
 
 //shredding
-app.get("/trails/shredding", shredCtrl.getStrails);
+app.get('/trails/shredding', shredCtrl.getStrails);
 
 app.listen(5050, () => console.log(`listening on port ${5050}`));
