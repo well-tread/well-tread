@@ -8,7 +8,7 @@ import {withStyles, createStyles, Theme} from '@material-ui/core/styles';
 const styles = (theme:Theme) => createStyles({
   mapDiv:{
     height:'80vh',
-    width:'90vw',
+    width:'90%',
     marginLeft:'auto',
     marginRight:'auto',
     border:'2px solid #757575'
@@ -18,7 +18,9 @@ const styles = (theme:Theme) => createStyles({
 export interface Props {
   classes:{
     mapDiv:string;
-  }
+  },
+  longitude:number,
+  latitude:number
 }
 
 export interface State {}
@@ -30,17 +32,17 @@ class Map extends Component<Props, State> {
   }
 
   render() {
-    const {classes} = this.props;
+    const {classes, longitude, latitude} = this.props;
     return (
     <div className={classes.mapDiv}>
       <GoogleMapReact
                 bootstrapURLKeys={{ key: ''}}
                 yesIWantToUseGoogleMapApiInternals
-                defaultCenter={{lat:38.4855, lng: -109.232}}
-                defaultZoom={8}
+                center={{lat:latitude, lng: longitude}}
+                zoom={8}
                 options={{mapTypeId:'terrain'}}
             >   
-                <MapMarker lat={38.4855} lng={-109.232} favorite={false} />
+                <MapMarker lat={latitude} lng={longitude} favorite={false} />
             </GoogleMapReact>
     </div>
     );

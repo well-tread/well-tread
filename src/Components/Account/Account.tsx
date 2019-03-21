@@ -60,7 +60,8 @@ const styles = (theme: Theme) =>
       height: 100,
       fontSize: '2em',
       backgroundColor: '#FF5722',
-      margin: 'auto'
+      margin: 'auto',
+      transform:'rotate(90deg)'
     },
     mapDiv: {
       height: '60vh',

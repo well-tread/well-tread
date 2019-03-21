@@ -3,6 +3,8 @@ import Comment from './Comment/Comment';
 import '../trailpage.css';
 import firebase from '../../../firebase';
 
+
+//materialUI icons
 import {
   createMuiTheme,
   createStyles,
@@ -12,12 +14,36 @@ import {
 } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+
+import CreateIcon from '@material-ui/icons/Create';
+import { Typography } from '@material-ui/core';
+
+
+const styles = (theme: Theme) =>
+  createStyles({
+    div:{
+      backgroundColor:'#fcfcfc'
+    },
+    fab:{
+      position:'fixed',
+      bottom:10,
+      right:10
+    }
+  });
 
 export interface Props {
   trailID: number;
-
   profilePicture: string;
   displayName: string;
+  uid:string;
+  classes:{
+    div:string,
+    fab:string
+  }
 }
 
 export interface State {
@@ -28,6 +54,7 @@ export interface State {
     review: string;
   }[];
   reviewInput: string;
+  isReviewDialogOpen: boolean;
 }
 
 class Reviews extends Component<Props, State> {
@@ -35,7 +62,8 @@ class Reviews extends Component<Props, State> {
     super(props);
     this.state = {
       reviews: [],
-      reviewInput: ''
+      reviewInput: '',
+      isReviewDialogOpen:false
     };
   }
   componentDidMount() {
@@ -58,11 +86,16 @@ class Reviews extends Component<Props, State> {
     });
   };
 
+  toggleReviewDialog(){
+    const {isReviewDialogOpen} = this.state;
+    this.setState({isReviewDialogOpen:!isReviewDialogOpen, reviewInput:''})
+  }
+
   postReview = () => {
     let { reviews, reviewInput } = this.state;
 
     reviews.push({
-      uid: 'test',
+      uid: this.props.uid,
       profilePicture: this.props.profilePicture,
       username: this.props.displayName,
       review: reviewInput
@@ -75,11 +108,15 @@ class Reviews extends Component<Props, State> {
       });
     this.setState({
       reviews: reviews,
-      reviewInput: ''
+      reviewInput: '',
+      isReviewDialogOpen:false
     });
   };
 
   render() {
+    const {classes} = this.props;
+    const {isReviewDialogOpen, reviews} = this.state;
+
     let allReviews = this.state.reviews ? (
       this.state.reviews.map((element: any, index: number) => {
         return (
@@ -91,26 +128,54 @@ class Reviews extends Component<Props, State> {
     ) : (
       <div>loading...</div>
     );
+
     return (
-      <div>
-        <TextField
-          label='Review'
-          value={this.state.reviewInput}
-          onChange={e => this.handleChange(e)}
-          // className={classes.reviewField}
-        />
-        <Button
-          // className={classes.button}
-          // color={this.state.color}
-          variant='outlined'
-          onClick={() => this.postReview()}
-        >
-          Submit Review
-        </Button>
-        {allReviews}
+      <div className={classes.div}>
+        <Dialog fullWidth open={isReviewDialogOpen}>
+            <DialogContent>
+              <TextField
+                fullWidth
+                multiline
+                rows={8}
+                placeholder='Write how you felt about this trail here!'
+                label='Review'
+                value={this.state.reviewInput}
+                onChange={e => this.handleChange(e)}
+                variant='outlined'
+                
+                // className={classes.reviewField}
+              />
+            </DialogContent>
+
+            <DialogActions>
+              <Button 
+              onClick={()=>this.toggleReviewDialog()}
+              variant='outlined'>
+                Cancel
+              </Button>
+
+              <Button
+                // className={classes.button}
+                // color={this.state.color}
+                variant='outlined'
+                onClick={() => this.postReview()}
+              >
+                Submit Review
+              </Button>
+
+            </DialogActions>
+        </Dialog>
+        
+        {
+         reviews.length >0 ? allReviews : <Typography component='h3' variant='h3'>Be the first to leave a review!</Typography>
+        }
+
+        <Fab onClick={()=>this.toggleReviewDialog()} className={classes.fab}>
+          <CreateIcon color='secondary'/>
+        </Fab>
       </div>
     );
   }
 }
 
-export default Reviews;
+export default withStyles(styles)(Reviews);
