@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {NavLink} from 'react-router-dom'
+import './Navbar.css'
 
 // Material-UI Core Imports
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
@@ -18,6 +19,7 @@ import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const theme = createMuiTheme({
     palette:{
@@ -39,16 +41,18 @@ const styles = (theme:Theme) => createStyles({
         flexDirection:'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        background: '0,0,0,00',
+        // background: '0,0,0,00',
+        background:'white',
         position: 'fixed',
-        zIndex: 9998,
+        zIndex: 9999,
         boxShadow:'none',
     },
     blurBg:{
-        backgroundColor: 'black',
-        width: '100%',
-        zIndex:9999,
-        position:'absolute'
+        // overflow: 'hidden',
+        // zIndex: 9998,
+        // backgroundColor: '#fff',
+        // width: '100%',
+        // filter:'10px'
     },
     dropDownMenu:{
         paddingTop: '50px'
@@ -75,7 +79,7 @@ export interface LinkButtonProps extends ButtonProps{
 }
 
 const LinkItem = (props:LinkButtonProps) => (
-    <ListItem {...props} component={NavLink as any} alignItems='center'/>
+    <ListItem {...props} component={NavLink as any}/>
 )
 
 
@@ -102,7 +106,7 @@ class Navbar extends Component<Props, State>{
             <MuiThemeProvider theme={theme}>
                 <div className={classes.appBarContainer}>
                     <AppBar className={classes.appBar}>
-                        <Typography component='h6' variant='h6' color='primary'>
+                        <Typography component='h6' variant='h6' color='secondary'>
                             WELL TREAD
                         </Typography>
                         <IconButton onClick={()=>this.toggleDrawer(true)}>
@@ -118,7 +122,7 @@ class Navbar extends Component<Props, State>{
                     onOpen={()=>this.toggleDrawer(true)}
                 >
                     <List component='nav' className={classes.dropDownMenu}>
-                            <LinkItem to='/' onClick={()=>this.toggleDrawer(false)}>
+                            <LinkItem to='/home' onClick={()=>this.toggleDrawer(false)}>
                                 <ListItemIcon>
                                     <Home/>
                                 </ListItemIcon>
