@@ -1,11 +1,12 @@
 import React,{Component} from 'react';
-import {NavLink} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import './Navbar.css'
 
 // Material-UI Core Imports
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import List from '@material-ui/core/List'
@@ -19,7 +20,6 @@ import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
-import zIndex from '@material-ui/core/styles/zIndex';
 
 const theme = createMuiTheme({
     palette:{
@@ -55,7 +55,7 @@ const styles = (theme:Theme) => createStyles({
         // filter:'10px'
     },
     dropDownMenu:{
-        paddingTop: '50px'
+        paddingTop: '50px',
     }
 })
 
@@ -65,11 +65,14 @@ export interface Props{
         appBar: string,
         dropDownMenu: string,
         blurBg:string
-    }
+    },
+    // location:any,
+    // pathname:any,
 }
 
 export interface State{
-    drawerOpen: boolean
+    drawerOpen: boolean,
+    navLinkColor: string,
 }
 
 
@@ -79,16 +82,15 @@ export interface LinkButtonProps extends ButtonProps{
 }
 
 const LinkItem = (props:LinkButtonProps) => (
-    <ListItem {...props} component={NavLink as any}/>
+    <ListItem {...props} component={Link as any}/>
 )
-
-
 
 class Navbar extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            drawerOpen: false
+            drawerOpen: false,
+            navLinkColor: 'primary'
         }
         this.toggleDrawer = this.toggleDrawer.bind(this)
     }
@@ -99,6 +101,12 @@ class Navbar extends Component<Props, State>{
         });
       };
 
+    // toggleCurrentLink=()=>{
+    //     if(this.props.location.pathname === this.props.location.pathname){
+    //         this.setState({navLinkColor:'secondary'})
+    //     }
+    // }
+
     render(){
         const {classes} = this.props
         
@@ -106,11 +114,11 @@ class Navbar extends Component<Props, State>{
             <MuiThemeProvider theme={theme}>
                 <div className={classes.appBarContainer}>
                     <AppBar className={classes.appBar}>
-                        <Typography component='h6' variant='h6' color='secondary'>
+                        <Typography component='h6' variant='h6' color='primary'>
                             WELL TREAD
                         </Typography>
                         <IconButton onClick={()=>this.toggleDrawer(true)}>
-                            <Menu color='secondary'/>
+                            <Menu color='secondary' className={this.state.navLinkColor}/>
                         </IconButton>
                     </AppBar>
                     <div className={classes.blurBg}></div>
@@ -124,7 +132,7 @@ class Navbar extends Component<Props, State>{
                     <List component='nav' className={classes.dropDownMenu}>
                             <LinkItem to='/home' onClick={()=>this.toggleDrawer(false)}>
                                 <ListItemIcon>
-                                    <Home/>
+                                    <Home className={this.state.navLinkColor}/>
                                 </ListItemIcon>
                                 <ListItemText primary='Home'/>
                             </LinkItem>
@@ -147,4 +155,4 @@ class Navbar extends Component<Props, State>{
     }
 }
 
-export default withStyles(styles)(Navbar);
+export default withStyles(styles)(Navbar)
