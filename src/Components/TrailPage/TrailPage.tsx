@@ -29,7 +29,10 @@ const theme = createMuiTheme({
     secondary: {
       main: '#FF5722'
     }
-  }
+  },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 // const styles = {
@@ -135,8 +138,8 @@ class TrailPage extends Component<Props, State> {
         });
       break;
 
-      case 'climbing':
-        axios.post(`http://localhost:5050/trails/climbingOne`,{id:id}).then(res => {
+      case 'running':
+        axios.post(`http://localhost:5050/trails/runningOne`,{id:id}).then(res => {
           console.log(res.data);
           const response = res.data;
           this.setState({

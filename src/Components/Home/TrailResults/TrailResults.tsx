@@ -9,7 +9,7 @@ import DirectionRun from '@material-ui/icons/DirectionsRun';
 export interface Props {
   hikingArr: any;
   bikingArr: any;
-  climbingArr: any;
+  runningArr: any;
   popularBikingTrails: any;
   popularHikingTrails: any;
 }
@@ -26,7 +26,7 @@ class TrailResults extends Component<Props, State> {
     const {
       hikingArr,
       bikingArr,
-      climbingArr,
+      runningArr,
       popularBikingTrails,
       popularHikingTrails
     } = this.props;
@@ -74,9 +74,9 @@ class TrailResults extends Component<Props, State> {
           );
         })}
 
-        {climbingArr.map((trail: any, i: number) => {
+        {runningArr.map((trail: any, i: number) => {
           return (
-            <Result key={i} trail={trail} icon={<DirectionRun />} type='climbing' />
+            <Result key={i} trail={trail} icon={<DirectionRun />} type='running' />
           );
         })}
       </div>
