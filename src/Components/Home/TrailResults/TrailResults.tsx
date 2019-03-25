@@ -4,7 +4,7 @@ import Result from './Result/Result';
 //MaterialUI imports
 import DirectionWalk from '@material-ui/icons/DirectionsWalk';
 import DirectionBike from '@material-ui/icons/DirectionsBike';
-import Terrain from '@material-ui/icons/Terrain';
+import DirectionRun from '@material-ui/icons/DirectionsRun';
 
 export interface Props {
   hikingArr: any;
@@ -76,7 +76,7 @@ class TrailResults extends Component<Props, State> {
 
         {climbingArr.map((trail: any, i: number) => {
           return (
-            <Result key={i} trail={trail} icon={<Terrain />} type='climbing' />
+            <Result key={i} trail={trail} icon={<DirectionRun />} type='climbing' />
           );
         })}
       </div>
