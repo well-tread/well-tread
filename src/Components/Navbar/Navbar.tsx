@@ -56,6 +56,22 @@ const styles = (theme:Theme) => createStyles({
     },
     dropDownMenu:{
         paddingTop: '50px',
+        [theme.breakpoints.up('sm')]:{
+            paddingRight: '80px',
+        }
+    },
+    topNavDropdown:{
+        [theme.breakpoints.up('sm')]:{
+            display: 'none'
+        }
+    },
+    rightNavDropdown:{
+        [theme.breakpoints.down('xs')]:{
+            display:'none'
+        },
+        [theme.breakpoints.up('sm')]:{
+            display:'block',
+        }
     }
 })
 
@@ -64,7 +80,9 @@ export interface Props{
         appBarContainer:string,
         appBar: string,
         dropDownMenu: string,
-        blurBg:string
+        blurBg:string,
+        topNavDropdown:string,
+        rightNavDropdown: string,
     },
     // location:any,
     // pathname:any,
@@ -125,6 +143,41 @@ class Navbar extends Component<Props, State>{
                 </div>
                 <SwipeableDrawer
                     anchor='top'
+                    className={classes.topNavDropdown}
+                    open={this.state.drawerOpen}
+                    onClose={()=>this.toggleDrawer(false)}
+                    onOpen={()=>this.toggleDrawer(true)}
+                >
+                    <List component='nav' className={classes.dropDownMenu}>
+                            <LinkItem to='/home' onClick={()=>this.toggleDrawer(false)}>
+                                <ListItemIcon>
+                                    <Home className={this.state.navLinkColor}/>
+                                </ListItemIcon>
+                                <ListItemText primary='Home'/>
+                            </LinkItem>
+                            <LinkItem to='/account' onClick={()=>this.toggleDrawer(false)}>
+                                <ListItemIcon>
+                                    <AccountBox/>
+                                </ListItemIcon>
+                                <ListItemText primary='Account'/>
+                            </LinkItem>
+                        <LinkItem to='/search' onClick={()=>this.toggleDrawer(false)}>
+                            <ListItemIcon>
+                                <Search/>
+                            </ListItemIcon>
+                            <ListItemText primary='Search for Trails'/>
+                        </LinkItem>
+                        <LinkItem to='/login' onClick={()=>this.toggleDrawer(false)}>
+                            <ListItemIcon>
+                                <Person/>
+                            </ListItemIcon>
+                            <ListItemText primary='Sign In'/>
+                        </LinkItem>
+                    </List>
+                </SwipeableDrawer>
+                <SwipeableDrawer
+                    anchor='right'
+                    className={classes.rightNavDropdown}
                     open={this.state.drawerOpen}
                     onClose={()=>this.toggleDrawer(false)}
                     onOpen={()=>this.toggleDrawer(true)}
