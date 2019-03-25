@@ -76,6 +76,8 @@ export interface State {
   displayName: string;
   uid:string;
   profilePicture: string;
+  isAnonymous:boolean
+  favorites:{id:number, trailtype:string, trail:any}[]
 }
 
 class TrailPage extends Component<Props, State> {
@@ -88,10 +90,18 @@ class TrailPage extends Component<Props, State> {
       open: false,
       displayName: '',
       uid:'',
-      profilePicture: ''
+      profilePicture: '',
+      isAnonymous:true,
+      favorites:[]
     };
   }
   handleClick = (e: any) => {
+    const {id, trailtype} = this.props.match.params;
+    const {uid, trail, favorites} = this.state;
+    favorites.push({id:id, trailtype:trailtype, trail:trail})
+    firebase.database().ref(`users/${uid}/favorites`).set({
+      favorites:favorites
+    })
     this.setState({ color: 'secondary', open: true });
   };
   handleChange = (e: any, value: number) => {
@@ -101,9 +111,9 @@ class TrailPage extends Component<Props, State> {
     this.setState({ open: false });
   };
   componentDidMount() {
-    console.log(this.props);
     const {id, trailtype} = this.props.match.params;
-
+    const {uid} = this.state;
+    
     switch(trailtype){
       case 'hiking':
         axios.post(`http://localhost:5050/trails/hikingOne`,{id:id}).then(res => {
@@ -147,10 +157,41 @@ class TrailPage extends Component<Props, State> {
         .once(`value`)
         .then(snapshot => {
           if (snapshot.val()) {
+
+            let displayName = snapshot.val().displayName;
+            if (displayName && displayName.displayName) {
+              displayName = displayName;
+            } else {
+              displayName = '';
+            }
+
+            let zipCode = snapshot.val().zipCode;
+            if (zipCode && zipCode.zipCode) {
+              zipCode = zipCode;
+            } else {
+              zipCode = '';
+            }
+
+            let profilePicture = snapshot.val().profilePicture;
+            if (profilePicture && profilePicture.profilePicture) {
+              profilePicture = profilePicture;
+            } else {
+              profilePicture = '';
+            }
+
+            let favorites = snapshot.val().favorites;
+            if (favorites && favorites.favorites) {
+              favorites = favorites.favorites;
+            } else {
+              favorites = [];
+            }
+
             this.setState({
-              displayName: snapshot.val().displayName.displayName,
+              displayName: displayName,
               uid:user.uid,
-              profilePicture: snapshot.val().profilePicture.profilePicture
+              profilePicture: profilePicture,
+              isAnonymous:user.isAnonymous,
+              favorites:favorites
             });
           }
         });
@@ -255,6 +296,7 @@ class TrailPage extends Component<Props, State> {
               profilePicture={this.state.profilePicture}
               uid={this.state.uid}
               displayName={this.state.displayName}
+              isAnonymous={this.state.isAnonymous}
             />
           )}
           {/* </Paper> */}

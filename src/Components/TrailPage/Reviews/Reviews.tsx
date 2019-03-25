@@ -44,6 +44,7 @@ export interface Props {
     div:string,
     fab:string
   }
+  isAnonymous:boolean;
 }
 
 export interface State {
@@ -65,6 +66,7 @@ class Reviews extends Component<Props, State> {
       reviewInput: '',
       isReviewDialogOpen:false
     };
+    this.deleteReview = this.deleteReview.bind(this);
   }
   componentDidMount() {
     firebase
@@ -113,15 +115,28 @@ class Reviews extends Component<Props, State> {
     });
   };
 
+  deleteReview(index:number){
+    let {reviews} = this.state;
+
+    reviews.splice(index, 1);
+    firebase
+      .database()
+      .ref(`/trails/${this.props.trailID}`)
+      .set({
+        reviews: reviews
+      });
+    this.setState({reviews})
+  }
+
   render() {
-    const {classes} = this.props;
+    const {classes, isAnonymous} = this.props;
     const {isReviewDialogOpen, reviews} = this.state;
 
     let allReviews = this.state.reviews ? (
       this.state.reviews.map((element: any, index: number) => {
         return (
           <div className='trailContainer' key={index}>
-            <Comment review={element} />
+            <Comment review={element} uid={this.props.uid} deleteReview={this.deleteReview} index={index}/>
           </div>
         );
       })
@@ -170,9 +185,15 @@ class Reviews extends Component<Props, State> {
          reviews.length >0 ? allReviews : <Typography component='h3' variant='h3'>Be the first to leave a review!</Typography>
         }
 
-        <Fab onClick={()=>this.toggleReviewDialog()} className={classes.fab}>
-          <CreateIcon color='secondary'/>
-        </Fab>
+        {
+          isAnonymous ?
+            (<Typography>Login/Register to leave a review</Typography>)
+            : 
+            (<Fab onClick={()=>this.toggleReviewDialog()} className={classes.fab}>
+              <CreateIcon color='secondary'/>
+            </Fab>) 
+        }
+        
       </div>
     );
   }
