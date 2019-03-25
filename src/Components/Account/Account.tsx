@@ -49,7 +49,20 @@ const styles = (theme: Theme) =>
     },
     expansionPanels: {},
     expansionPanel: {
-      backgroundColor: '#F7F7F7'
+      backgroundColor: '#F7F7F7',
+      width: '90%',
+      margin: 'auto',
+      [theme.breakpoints.up('sm')]:{
+        width: '80%',
+        // margin: 'auto'
+      },
+      [theme.breakpoints.up('md')]:{
+        width: '75%',
+        // margin: 'auto'
+      },
+      [theme.breakpoints.up('lg')]:{
+        width: '60%'
+      }
     },
     userBar: {
       display: 'flex',
@@ -86,7 +99,17 @@ const styles = (theme: Theme) =>
       width: '90vw',
       marginLeft: 'auto',
       marginRight: 'auto',
-      border: '2px solid #757575'
+      marginBottom: theme.spacing.unit * 2,
+      border: '2px solid #757575',
+      [theme.breakpoints.up('sm')]:{
+        width:'80vw'
+      },
+      [theme.breakpoints.up('md')]:{
+        width:'75vw'
+      },
+      [theme.breakpoints.up('lg')]:{
+        width:'60vw'
+      }
     },
     expansionPanelDetails:{
       display:'flex',
@@ -95,7 +118,16 @@ const styles = (theme: Theme) =>
     registerBtn:{
       marginTop:theme.spacing.unit *2,
       marginBottom:theme.spacing.unit *2,
-      width: '65%'
+      width: '90%',
+      [theme.breakpoints.up('sm')]:{
+        width: '80%'
+      },
+      [theme.breakpoints.up('md')]:{
+        width: '75%'
+      },
+      [theme.breakpoints.up('lg')]:{
+        width: '60%'
+      },
     }
   });
 
