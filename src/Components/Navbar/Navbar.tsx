@@ -45,20 +45,22 @@ const styles = (theme:Theme) => createStyles({
         justifyContent: 'space-around',
         alignItems: 'center',
         // background: '0,0,0,00',
-        background:'white',
+        background:'#F7F7F7',
         position: 'fixed',
         zIndex: 9999,
         boxShadow:'none',
     },
     blurBg:{
         // overflow: 'hidden',
-        // zIndex: 9998,
+        // position: 'absolute',
+        // filter:'Blur(10px)',
+        // zIndex: 9999,
         // backgroundColor: '#fff',
         // width: '100%',
-        // filter:'10px'
     },
     dropDownMenu:{
         paddingTop: '50px',
+        background:'#F7F7F7',
         [theme.breakpoints.up('sm')]:{
             paddingRight: '80px',
         }
@@ -134,7 +136,7 @@ class Navbar extends Component<Props, State>{
         return(
             <MuiThemeProvider theme={theme}>
                 <div className={classes.appBarContainer}>
-                    <AppBar className={classes.appBar}>
+                    <AppBar className={classes.appBar} id='container'>
                         <Typography component='h6' variant='h6' color='primary'>
                             WELL TREAD
                         </Typography>
