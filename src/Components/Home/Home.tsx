@@ -31,6 +31,7 @@ export interface Props {}
 export interface State {
   popularBikingTrails: any;
   popularHikingTrails: any;
+  popularRunningTrails: any;
   hikingArr: any;
   bikingArr: any;
   climbingArr: any;
@@ -45,6 +46,7 @@ class Home extends Component<Props, State> {
     this.state = {
       popularBikingTrails: [],
       popularHikingTrails: [],
+      popularRunningTrails: [],
       hikingArr: [],
       bikingArr: [],
       climbingArr: [],
@@ -101,6 +103,19 @@ class Home extends Component<Props, State> {
           popularHikingTrails: response
         });
       });
+      axios
+      .post('/trails/getPopularRTrails', {
+        lat: lat,
+        lng: lng
+      })
+
+      .then(res => {
+        const response = res.data;
+        
+        this.setState({
+          popularRunningTrails: response
+        });
+      });
 
     
   };
@@ -117,7 +132,8 @@ class Home extends Component<Props, State> {
       bikingArr,
       climbingArr,
       popularBikingTrails,
-      popularHikingTrails
+      popularHikingTrails,
+      popularRunningTrails
     } = this.state;
     
     return (
@@ -151,6 +167,20 @@ class Home extends Component<Props, State> {
               // popularHikingTrails={popularHikingTrails}
               bikingArr={[]}
               climbingArr={[]}
+            />
+          ) : (
+            <CircularProgress color='secondary' />
+          )}
+          <Typography variant='h5' color='primary' id='popular'>
+            Top 5 Running Trails Near You
+          </Typography>
+          {this.state.popularRunningTrails.length > 0 ? (
+            <TrailResults
+              // popularBikingTrails={[]}
+              hikingArr={[]}
+              // popularHikingTrails={popularHikingTrails}
+              bikingArr={[]}
+              climbingArr={popularRunningTrails}
             />
           ) : (
             <CircularProgress color='secondary' />

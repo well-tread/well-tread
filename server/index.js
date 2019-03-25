@@ -4,9 +4,11 @@ const session = require('express-session');
 const { json } = require('body-parser');
 const cors = require('cors');
 
+//controllers
 const bikeCtrl = require('./controllers/bike_controller');
 const hikeCtrl = require('./controllers/hike_controller');
 const climbCtrl = require('./controllers/climb_controller');
+const runCtrl = require('./controllers/run_controller');
 const shredCtrl = require('./controllers/shred_controller');
 const weatherCtrl = require('./controllers/weather_controller');
 
@@ -48,5 +50,11 @@ app.post('/trails/climbingOne', climbCtrl.getOneCtrail);
 
 //shredding
 app.get('/trails/shredding', shredCtrl.getStrails);
+
+//running
+//app.get('/trails/biking', runCtrl.getBtrails);
+app.post('/trails/running', runCtrl.postRtrails);
+app.post('/trails/runningOne', runCtrl.getOneRtrail);
+app.post('/trails/getPopularRTrails', runCtrl.getPopularRtrails);
 
 app.listen(5050, () => console.log(`listening on port ${5050}`));
