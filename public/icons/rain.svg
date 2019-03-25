@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 240 240">
+  <path fill="url(#logo-gradient)" d="M172 39h-3a65 65 0 0 0-60-39C74 0 45 28 45 63 22 65 3 84 3 108c0 25 21 45 46 45h123c32 0 59-25 59-57s-27-57-59-57zm0 99H49c-17 0-31-13-31-30a31 31 0 0 1 35-30 7 7 0 0 0 8-8l-1-7c0-27 22-48 49-48 22 0 41 14 47 34 2 4 5 6 9 5h7c24 0 44 19 44 42s-20 42-44 42zM40 197l21-22a7 7 0 1 0-11-10l-21 21a8 8 0 0 0 11 11zm45 0l22-22a8 8 0 0 0-11-10l-21 21a8 8 0 0 0 10 11zm46 0l22-22a8 8 0 0 0-11-10l-21 21a8 8 0 0 0 10 11zm57-32l-21 21a8 8 0 0 0 10 11l22-22a7 7 0 1 0-11-10zM54 199l-22 22a8 8 0 0 0 11 10l21-21a8 8 0 0 0-10-11zm46 0l-22 22a8 8 0 0 0 11 10l21-21a8 8 0 0 0-10-11zm46 0l-22 22a8 8 0 0 0 11 10l21-21a8 8 0 0 0-10-11z"/>
+<defs>  
+        <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%" > 
+            
+            <stop offset="0%" stop-color="#7A5FFF">
+                <animate attributeName="stop-color" values="#000046; #1CB5E0; #000046" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+            <stop offset="100%" stop-color="#01FF89">
+                <animate attributeName="stop-color" values="#1CB5E0; #000046; #1CB5E0" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+        </linearGradient> 
+
+    </defs>
+</svg>

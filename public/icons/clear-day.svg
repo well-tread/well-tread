@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 220 220">
+  <g fill="url(#logo-gradient)">
+    <path d="M110 183c-4 0-8 4-8 8v21a8 8 0 0 0 15 0v-21c0-4-3-8-7-8zM110 36c4 0 7-3 7-7V8a7 7 0 1 0-15 0v21c0 4 4 7 8 7zM47 162l-15 15a7 7 0 1 0 11 11l15-15a7 7 0 1 0-11-11zM167 60l6-2 15-15a8 8 0 0 0-11-11l-15 15a8 8 0 0 0 5 13zM36 110c0-4-3-8-7-8H8a8 8 0 0 0 0 15h21c4 0 7-3 7-7zM212 102h-21a7 7 0 1 0 0 15h21a7 7 0 1 0 0-15zM47 58a7 7 0 0 0 11 0c3-3 3-8 0-11L43 32a7 7 0 1 0-11 11l15 15zM173 162a8 8 0 0 0-11 11l15 15a7 7 0 0 0 11 0c3-3 3-8 0-11l-15-15zM110 52a58 58 0 1 0 0 116 58 58 0 0 0 0-116zm0 101a43 43 0 1 1 0-87 43 43 0 0 1 0 87z"/>
+  </g>
+  <defs>  
+        <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%" > 
+            
+            <stop offset="0%" stop-color="#7A5FFF">
+                <animate attributeName="stop-color" values="#FF5722; #ffd200; #FF5722" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+            <stop offset="100%" stop-color="#01FF89">
+                <animate attributeName="stop-color" values="#ffd200; #FF5722; #ffd200" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+        </linearGradient> 
+
+    </defs>
+</svg>
+

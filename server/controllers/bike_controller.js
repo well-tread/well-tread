@@ -9,16 +9,12 @@ module.exports = {
         `https://www.mtbproject.com/data/get-trails?lat=40.0274&lon=-105.2519&maxDistance=10&key=200430946-fc66551e94fef44057cb0cc88316bbec`
       )
       .then(result => res.send(result.data.trails))
-      //   .then(function(response) {
-
-      //     console.log(response.data.trails);
-      //   })
       .catch(function(error) {
         console.log(error);
       });
   },
   getPopularBtrails: (req, res) => {
-    // console.log(req.body.lat);
+    
     axios
       .get(
         `https://www.mtbproject.com/data/get-trails?lat=${req.body.lat}&lon=${
@@ -26,9 +22,6 @@ module.exports = {
         }&maxDistance=30&minStars=4&maxResults=5&key=${HIKING_API_KEY}`
       )
       .then(result => res.send(result.data.trails))
-      // .then(function(response) {
-      //   console.log(response.data.trails);
-      // })
       .catch(function(error) {
         console.log(error);
       });
@@ -41,10 +34,6 @@ module.exports = {
         }&key=200430946-fc66551e94fef44057cb0cc88316bbec`
       )
       .then(result => res.send(result.data.trails))
-      //   .then(function(response) {
-
-      //     console.log(response.data.trails);
-      //   })
       .catch(function(error) {
         console.log(error);
       });
@@ -67,14 +56,10 @@ module.exports = {
             `https://www.mtbproject.com/data/get-trails?lat=${lat}&lon=${lng}&maxDistance=10&key=${HIKING_API_KEY}`
           )
           .then(result => res.send(result.data.trails))
-          //   .then(function(response) {
-          //     console.log(response.data.trails);
-          //   })
-          .catch(function(error) {
-            console.log(error);
-          });
-        // console.log(response.data.results[0].geometry.location)
-      })
-      .catch(err => console.log(err));
-  }
-};
+        .catch(error => {
+            console.log(error)
+          })
+          
+  })
+}
+}
