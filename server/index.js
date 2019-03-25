@@ -8,6 +8,7 @@ const bikeCtrl = require('./controllers/bike_controller');
 const hikeCtrl = require('./controllers/hike_controller');
 const climbCtrl = require('./controllers/climb_controller');
 const shredCtrl = require('./controllers/shred_controller');
+const weatherCtrl = require('./controllers/weather_controller');
 
 const app = express();
 app.use(json());
@@ -24,16 +25,21 @@ app.use(
   })
 );
 
+//weather
+app.post('/trails/weather', weatherCtrl.getWeather);
+app.post('/trails/weatherP', weatherCtrl.postWeather);
+
 //biking
 app.get('/trails/biking', bikeCtrl.getBtrails);
 app.post('/trails/biking', bikeCtrl.postBtrails);
 app.post('/trails/bikingOne', bikeCtrl.getOneBtrail);
-app.post('/trails/getPopularTrails', bikeCtrl.getPopularBtrails);
+app.post('/trails/getPopularBTrails', bikeCtrl.getPopularBtrails);
 
 //hiking
 app.get('/trails/hiking', hikeCtrl.getHtrails);
 app.post('/trails/hiking', hikeCtrl.postHtrails);
 app.post('/trails/hikingOne', hikeCtrl.getOneHtrail);
+app.post('/trails/getPopularHTrails', hikeCtrl.getPopularHtrails);
 
 //climbing
 app.get('/trails/climbing', climbCtrl.getCtrails);

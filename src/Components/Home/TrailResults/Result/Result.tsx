@@ -99,11 +99,12 @@ class Result extends Component<Props, State> {
   render() {
     const { isRedirecting } = this.state;
     const { trail, classes, icon, type } = this.props;
+    
     return (
       <MuiThemeProvider theme={theme}>
         <ExpansionPanel
           className={classes.expansionPanel}
-          style={{ backgroundImage: `url(${trail.imgMedium})` }}
+          style={{backgroundImage:`url(${trail.imgMedium})`}}
           classes={{ expanded: classes.expansionPanelExpanded }}
         >
           <ExpansionPanelSummary

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 260 260">
+  <path fill="url(#logo-gradient)" d="M174 78c-24 0-43 20-43 44 0 20 16 36 36 36a7 7 0 1 0 0-15c-12 0-21-9-21-21 0-16 12-29 28-29 21 0 38 17 38 38 0 27-22 49-49 49H8a7 7 0 1 0 0 15h155c35 0 64-29 64-64 0-29-24-53-53-53zM8 110h69c24 0 43-19 43-42 0-20-16-36-36-36-16 0-30 13-30 30 0 14 12 26 26 26a7 7 0 1 0 0-15c-6 0-11-5-11-11 0-8 7-15 15-15 12 0 21 9 21 21 0 15-12 27-28 27H8a7 7 0 1 0 0 15z"/>
+<defs>  
+        <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%" > 
+            
+            <stop offset="0%" stop-color="#7A5FFF">
+                <animate attributeName="stop-color" values="#bdc3c7; #757575; #bdc3c7" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+            <stop offset="100%" stop-color="#01FF89">
+                <animate attributeName="stop-color" values="#757575; #bdc3c7; #757575" dur="4s" repeatCount="indefinite"></animate>
+            </stop>
+
+        </linearGradient> 
+
+    </defs>
+</svg>
