@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Preferences from './Preferences/Preferences';
+import ConversionDialog from './ConversionDialog/ConversionDialog';
 import MapMarker from './MapMarker/MapMarker';
 import GoogleMapReact from 'google-map-react';
 import firebase from '../../firebase';
+import ReactExifImg from 'react-exif-orientation-img';
+import Result from '../Search/TrailResults/Result/Result';
 
 //materialUI imports
 import {
@@ -20,8 +23,12 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DirectionWalk from '@material-ui/icons/DirectionsWalk'
+import DirectionBike from '@material-ui/icons/DirectionsBike'
+import Terrain from '@material-ui/icons/Terrain'
 
 const theme = createMuiTheme({
   palette: {
@@ -56,12 +63,21 @@ const styles = (theme: Theme) =>
       marginRight: 'auto'
     },
     avatar: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
       width: 100,
       height: 100,
-      fontSize: '2em',
-      backgroundColor: '#FF5722',
-      margin: 'auto',
-      transform:'rotate(90deg)'
+      fontFamily: theme.typography.fontFamily,
+      fontSize: theme.typography.pxToRem(20),
+      borderRadius: '50%',
+      overflow: 'hidden',
+      userSelect: 'none',
+      textAlign: 'center',
+      // Handle non-square image. The property isn't supported by IE 11.
+      objectFit: 'cover',
     },
     mapDiv: {
       height: '60vh',
@@ -69,6 +85,11 @@ const styles = (theme: Theme) =>
       marginLeft: 'auto',
       marginRight: 'auto',
       border: '2px solid #757575'
+    },
+    expansionPanelDetails:{
+      display:'flex',
+      flexDirection:'column',
+      
     }
   });
 
@@ -81,6 +102,7 @@ export interface Props {
     avatar: string;
     iconButton: string;
     mapDiv: string;
+    expansionPanelDetails:string;
   };
 }
 
@@ -93,6 +115,9 @@ export interface State {
   isLoading: boolean;
   isAnonymous: boolean;
   isBadgeHidden: boolean;
+  isConversionDialogOpen: boolean;
+  favorites:{id:number, trailtype:string, trail:any}[];
+  completes:{id:number, trailtype:string, trail:any}[]
 }
 
 class Account extends Component<Props, State> {
@@ -103,17 +128,22 @@ class Account extends Component<Props, State> {
       displayName: '',
       zipCode: '',
       uid: '',
+      favorites:[],
+      completes:[],
       preferencesIsOpen: false,
       isLoading: true,
       isAnonymous: true,
-      isBadgeHidden: true
+      isBadgeHidden: true,
+      isConversionDialogOpen:false
     };
     this.togglePreferences = this.togglePreferences.bind(this);
+    this.toggleConversionDialog = this.toggleConversionDialog.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user: any) => {
+      console.log(user);
       firebase
         .database()
         .ref(`/users/${user.uid}`)
@@ -122,45 +152,77 @@ class Account extends Component<Props, State> {
           // console.log(user)
 
           if (snapshot1.val()) {
-            const displayName = snapshot1.val().displayName;
+            let displayName = snapshot1.val().displayName;
+            if (displayName && displayName.displayName) {
+              displayName = displayName.displayName;
+            } else {
+              displayName = '';
+            }
 
             let zipCode = snapshot1.val().zipCode;
             if (zipCode && zipCode.zipCode) {
-              zipCode = zipCode;
+              zipCode = zipCode.zipCode;
             } else {
               zipCode = '';
             }
 
             let profilePicture = snapshot1.val().profilePicture;
             if (profilePicture && profilePicture.profilePicture) {
-              profilePicture = profilePicture;
+              profilePicture = profilePicture.profilePicture;
             } else {
               profilePicture = '';
             }
 
-            console.log(snapshot1.val());
+            let favorites = snapshot1.val().favorites;
+            if (favorites && favorites.favorites) {
+              favorites = favorites.favorites;
+            } else {
+              favorites = [];
+            }
+
+            let completes = snapshot1.val().completes;
+            if (completes && completes.completes) {
+              completes = completes.completes;
+            } else {
+              completes = [];
+            }
 
             this.setState({
-              profilePicture: profilePicture.profilePicture,
-              displayName: displayName.displayName,
-              zipCode: zipCode.zipCode,
+              profilePicture: profilePicture,
+              displayName: displayName,
+              zipCode: zipCode,
               uid: user.uid,
-              isBadgeHidden: true
+              isBadgeHidden: true,
+              isAnonymous:user.isAnonymous,
+              favorites:favorites,
+              completes:completes
             });
           } else {
+
+            var displayName ='';
+            if(user.displayName){
+              displayName=user.displayName;
+            }
+            else if(user.email){
+              displayName=user.email
+            }
+            else{
+              displayName='Username'
+            }
+
             firebase
               .database()
               .ref(`users/${user.uid}/displayName`)
               .set({
-                displayName: user.displayName
+                displayName: displayName,
               });
-            this.setState({ displayName: user.displayName, uid: user.uid });
+            this.setState({ displayName: user.displayName, uid: user.uid, isAnonymous:user.isAnonymous});
           }
         });
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps:Props, prevState:State) {
     const { zipCode, isBadgeHidden } = this.state;
     if (zipCode && !isBadgeHidden) {
       this.setState({ isBadgeHidden: true });
@@ -170,6 +232,42 @@ class Account extends Component<Props, State> {
   togglePreferences() {
     const { preferencesIsOpen } = this.state;
     this.setState({ preferencesIsOpen: !preferencesIsOpen });
+  }
+
+  toggleConversionDialog(){
+    const {isConversionDialogOpen} =this.state;
+    this.setState({isConversionDialogOpen: !isConversionDialogOpen})
+  }
+
+  addToCompletes(index:number){
+    const {favorites, completes, uid} = this.state;
+    completes.push(favorites[index]);
+    favorites.splice(index, 1);
+    firebase.database().ref(`users/${uid}/favorites`).set({
+      favorites:favorites
+    })
+    firebase.database().ref(`users/${uid}/completes`).set({
+      completes:completes
+    })
+    this.setState({favorites, completes})
+  }
+
+  removeFromCompletes(index:number){
+    const {completes, uid} = this.state;
+    completes.splice(index, 1);
+    firebase.database().ref(`users/${uid}/completes`).set({
+      completes:completes
+    })
+    this.setState({completes})
+  }
+
+  removeFromFavorites(index:number){
+    const {favorites, uid} = this.state;
+    favorites.splice(index, 1);
+    firebase.database().ref(`users/${uid}/favorites`).set({
+      favorites:favorites
+    })
+    this.setState({favorites})
   }
 
   handleChange(value: string, id: string) {
@@ -189,24 +287,36 @@ class Account extends Component<Props, State> {
       zipCode,
       uid,
       isBadgeHidden,
-      profilePicture
+      isAnonymous,
+      isConversionDialogOpen,
+      profilePicture,
+      favorites,
+      completes
     } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
         <Paper className={classes.paper}>
-          <div className={classes.userBar}>
-            <IconButton
-              className={classes.iconButton}
-              onClick={() => this.togglePreferences()}
-            >
-              <Badge color='secondary' variant='dot' invisible={isBadgeHidden}>
-                <Avatar className={classes.avatar} src={profilePicture}>
-                  T
-                </Avatar>
-              </Badge>
-            </IconButton>
-            <Typography component='p'>{displayName}</Typography>
-          </div>
+          
+          
+          {
+            isAnonymous ? 
+            <Button variant='outlined' color='secondary' onClick={()=>this.toggleConversionDialog()}>Register to save your trail information</Button> 
+            : 
+            (<div className={classes.userBar}>
+              <IconButton
+                className={classes.iconButton}
+                onClick={() => this.togglePreferences()}
+              >
+                <Badge color='secondary' variant='dot' invisible={isBadgeHidden}>
+                
+                <ReactExifImg src={profilePicture} className={classes.avatar}/>
+
+                </Badge>
+              </IconButton>
+              <Typography component='p'>{displayName}</Typography>
+            </div>)
+          }
+            
 
           <div className={classes.mapDiv}>
             <GoogleMapReact
@@ -217,8 +327,20 @@ class Account extends Component<Props, State> {
               defaultZoom={4}
               options={{ mapTypeId: 'terrain' }}
             >
-              <MapMarker lat={38.4855} lng={-109.232} favorite={false} />
-              <MapMarker lat={39.4855} lng={-109.232} favorite={true} />
+              {
+                favorites.map((val, i) => {
+                  console.log(val)
+                  return <MapMarker key={i} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={true} />
+                })
+              }
+
+              {
+                completes.map((val, i) => {
+                  console.log(val)
+                  return <MapMarker key={i} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={false} />
+                })
+              }
+              
             </GoogleMapReact>
           </div>
 
@@ -230,8 +352,31 @@ class Account extends Component<Props, State> {
                 <Typography>Favorited Trails</Typography>
               </ExpansionPanelSummary>
 
-              <ExpansionPanelDetails>
-                <Typography>All your favorited trails will go here</Typography>
+              <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+                {
+                  
+                    favorites.length > 0 ? favorites.map((val, i) => {
+                      let icon = <DirectionWalk />
+                      switch(val.trailtype){
+                        case 'hiking':
+                          icon=<DirectionWalk />
+                          break;
+                        case 'biking':
+                          icon=<DirectionBike />
+                          break;
+                      }
+                      return (
+                      <div key={i}>
+                        
+                        <Button color='secondary' onClick={()=>this.removeFromFavorites(i)}>Remove</Button>
+                        <Button color='secondary' onClick={()=>this.addToCompletes(i)}>Mark Complete</Button>
+                        
+                        <Result icon={icon} type={val.trailtype} trail={val.trail[0]}  />
+                      </div>
+                      )
+                    }):<Typography>You haven't favorited any trails yet!</Typography>
+                  
+                }
               </ExpansionPanelDetails>
             </ExpansionPanel>
 
@@ -242,8 +387,28 @@ class Account extends Component<Props, State> {
                 <Typography>Completed Trails</Typography>
               </ExpansionPanelSummary>
 
-              <ExpansionPanelDetails>
-                <Typography>All your Completed trails will go here</Typography>
+              <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+                {
+                  
+                    completes.length >0 ? completes.map((val, i) => {
+                      let icon = <DirectionWalk />
+                      switch(val.trailtype){
+                        case 'hiking':
+                          icon=<DirectionWalk />
+                          break;
+                        case 'biking':
+                          icon=<DirectionBike />
+                          break;
+                      }
+                      return (
+                      <div key={i}>
+                        <Button color='secondary' onClick={()=>this.removeFromCompletes(i)}>Remove</Button>
+                        <Result icon={icon} type={val.trailtype} trail={val.trail[0]}  />
+                      </div>
+                      )
+                    }): <Typography>You haven't marked any trails as complete yet!</Typography>
+                  
+                }
               </ExpansionPanelDetails>
             </ExpansionPanel>
 
@@ -255,6 +420,12 @@ class Account extends Component<Props, State> {
               togglePreferences={this.togglePreferences}
               handleChange={this.handleChange}
             />
+
+            <ConversionDialog
+              isConversionDialogOpen={isConversionDialogOpen}
+              toggleConversionDialog={this.toggleConversionDialog}
+            />
+
           </div>
         </Paper>
       </MuiThemeProvider>

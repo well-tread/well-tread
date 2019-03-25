@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import firebase from '../../../../firebase';
+import ReactExifImg from 'react-exif-orientation-img';
 
 //materialUI imports
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import {
   createMuiTheme,
@@ -13,6 +15,7 @@ import {
   withStyles
 } from '@material-ui/core/styles';
 
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,11 +39,22 @@ const styles = (theme: Theme) =>
       justifyContent:'flex-start',
       backgroundColor:'#f7f7f7'
     },
-    avatar:{
-      width:50,
-      height:50,
-      margin:5,
-      transform:'rotate(90deg)'
+    avatar: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+      width: 50,
+      height: 50,
+      fontFamily: theme.typography.fontFamily,
+      fontSize: theme.typography.pxToRem(20),
+      borderRadius: '50%',
+      overflow: 'hidden',
+      userSelect: 'none',
+      textAlign: 'center',
+      // Handle non-square image. The property isn't supported by IE 11.
+      objectFit: 'cover',
     },
     typographyDiv:{
       display:'flex',
@@ -59,12 +73,15 @@ export interface Props {
     avatar:string,
     paper:string,
     typographyDiv:string
-  }
+  },
+  uid:string,
+  deleteReview:(index:number)=>void,
+  index:number
 }
 
 export interface State {
   username:string,
-  profilePicture:string
+  profilePicture:string,
 }
 
 class Comment extends Component<Props, State> {
@@ -72,7 +89,7 @@ class Comment extends Component<Props, State> {
     super(props);
     this.state = {
       username:'',
-      profilePicture:''
+      profilePicture:'',
     };
   }
 
@@ -95,19 +112,24 @@ class Comment extends Component<Props, State> {
   }
 
   render() {
-    const {classes} = this.props;
-    const {review} = this.props.review;
+    const {classes, deleteReview, index} = this.props;
+    const {review, uid} = this.props.review;
     const {username, profilePicture} = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar} src={profilePicture} alt=''>{profilePicture.charAt(0)}</Avatar>
+        
+        <ReactExifImg className={classes.avatar} src={profilePicture} alt='' />
 
         <div className={classes.typographyDiv}>
         <Typography color='primary' component='h6' variant='h6'>{username}</Typography>
         <Typography color='primary'>{review}</Typography>
         </div>
+
+        {
+          this.props.uid === uid ? <IconButton onClick={()=>deleteReview(index)} style={{alignSelf:'flex-end'}}><DeleteIcon /> </IconButton> : <div />
+        }
 
       </Paper>
       </MuiThemeProvider>
