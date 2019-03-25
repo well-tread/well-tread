@@ -14,11 +14,13 @@ type PropsType = RouteComponentProps<PathParamsType> & {
   // someString: string,
 }
 
+
 class App extends React.Component<PropsType> {
   render() {
     return (
       <div className="App">
       {this.props.history.location.pathname === '/' ? null : <Navbar/>}
+      {/* <Navbar/> */}
       {routes}
       </div>
     );

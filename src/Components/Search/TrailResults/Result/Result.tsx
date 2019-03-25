@@ -26,26 +26,26 @@ const theme = createMuiTheme({
   
 const styles = (theme: Theme) => createStyles({
       typographyTitle:{
-        opacity:1, 
+        // opacity:1, 
         color:'#F7F7F7',
         textShadow:'1px 1px 4px black',
         fontSize:'1.3em',
       },
       typographyContent:{
-        opacity:1, 
+        // opacity:1, 
         color:'#F7F7F7',
         textShadow:'1px 1px 4px black',
-        textAlign:'left',
-        fontSize:'1.1em'
+        // textAlign:'left',
+        // fontSize:'1.1em'
       },
       expansionPanel:{
         backgroundColor:'#757575', 
         backgroundSize:`cover`,
         backgroundPosition:'center',
-        backgroundBlendMode:'overlay',
+        // backgroundBlendMode:'overlay',
         paddingTop:35,
         paddingBottom:35,
-        width:'100vw'
+        // width:'100vw'
       },
       expansionPanelExpanded:{
         backgroundColor:'#757575', 
@@ -55,8 +55,8 @@ const styles = (theme: Theme) => createStyles({
         paddingTop:35,
         paddingBottom:35,
         // margin:0,
-        width:'100vw',
-        overflow: 'hidden'
+        // width:'100vw',
+        // overflow: 'hidden'
       },
       expandMoreIcon:{
           width:30,
@@ -64,9 +64,13 @@ const styles = (theme: Theme) => createStyles({
       },
       exPanelSummary:{
           backgroundColor: 'white',
-          borderBottom: '1px solid rgba(0,0,0,.125)',
-          marginBottom: -1,
-          minHeight: 56,
+          // borderBottom: '1px solid rgba(0,0,0,.125)',
+          // marginBottom: -1,
+          // minHeight: 56,
+      },
+      buttons:{
+        display:'flex',
+        justifyContent:'space-between'
       }
 });
 
@@ -78,7 +82,8 @@ export interface Props{
         expansionPanel:string,
         expansionPanelExpanded:string,
         expandMoreIcon:string,
-        exPanelSummary:string
+        exPanelSummary:string,
+        buttons:string
     },
     icon:any,
     type:string
@@ -120,9 +125,25 @@ class Result extends Component<Props, State>{
                 <Typography className={classes.typographyContent}>{trail.summary}</Typography>
             </ExpansionPanelDetails>
 
-            <ExpansionPanelActions>
-                <Button style={{fontSize:'1.2em', fontWeight:'bold'}} color='secondary' variant='flat' onClick={()=>this.redirectToTrailPage()} fullWidth>Trail Page</Button>
-                <Button style={{fontSize:'1.2em', fontWeight:'bold'}} color='secondary' variant='flat' fullWidth>Favorite</Button>
+            <ExpansionPanelActions className={classes.buttons}>
+                <Button 
+                  style={{fontSize:'.9em', fontWeight:'bold',}} 
+                  color='secondary'
+                  size='small'
+                  variant='raised' 
+                  onClick={()=>this.redirectToTrailPage()} 
+                  >
+                    Trail Page
+                </Button>
+                <Button 
+                  style={{fontSize:'.9em', fontWeight:'bold'}} 
+                  color='secondary' 
+                  size='small'
+                  variant='raised'
+                  // fullWidth
+                >
+                    Favorite
+                </Button>
             </ExpansionPanelActions>
 
             </ExpansionPanel>

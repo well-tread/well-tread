@@ -38,7 +38,6 @@ const styles = (theme:Theme) => createStyles({
         // justifyContent:'center',
         width:'70%',
         margin: 'auto',
-        // position:'fixed'
     },
     formGroup:{
         paddingBottom: theme.spacing.unit * 1.5,
@@ -76,7 +75,7 @@ export interface Props{
         button: string,
         quote: string,
         formGroupContainer:string,
-    }
+    },
 }
 
 export interface State{
@@ -118,7 +117,6 @@ class Search extends Component<Props, State>{
     }
 
     toggleCheckboxes=(value:any, id:string)=>{
-        console.log(value)
         this.setState(()=>{
             return {...this.state, [id]:!value}
         })
