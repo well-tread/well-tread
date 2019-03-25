@@ -44,7 +44,8 @@ const theme = createMuiTheme({
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
-      backgroundColor: '#F7F7F7'
+      backgroundColor: '#F7F7F7',
+      paddingBottom: theme.spacing.unit * 6,
     },
     expansionPanels: {},
     expansionPanel: {
@@ -54,11 +55,12 @@ const styles = (theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      marginTop: '15%'
+      paddingTop:theme.spacing.unit *2,
+      paddingBottom:theme.spacing.unit *2,
     },
     iconButton: {
-      width: 120,
-      height: 120,
+      // width: 100,
+      // height: 110,
       marginLeft: 'auto',
       marginRight: 'auto'
     },
@@ -89,7 +91,11 @@ const styles = (theme: Theme) =>
     expansionPanelDetails:{
       display:'flex',
       flexDirection:'column',
-      
+    },
+    registerBtn:{
+      marginTop:theme.spacing.unit *2,
+      marginBottom:theme.spacing.unit *2,
+      width: '65%'
     }
   });
 
@@ -103,6 +109,7 @@ export interface Props {
     iconButton: string;
     mapDiv: string;
     expansionPanelDetails:string;
+    registerBtn: string;
   };
 }
 
@@ -300,7 +307,7 @@ class Account extends Component<Props, State> {
           
           {
             isAnonymous ? 
-            <Button variant='outlined' color='secondary' onClick={()=>this.toggleConversionDialog()}>Register to save your trail information</Button> 
+            <Button variant='outlined' className={classes.registerBtn} color='secondary' onClick={()=>this.toggleConversionDialog()}>Register to save your trail information</Button> 
             : 
             (<div className={classes.userBar}>
               <IconButton
@@ -313,7 +320,7 @@ class Account extends Component<Props, State> {
 
                 </Badge>
               </IconButton>
-              <Typography component='p'>{displayName}</Typography>
+              <Typography component='p' variant='display1'>{displayName}</Typography>
             </div>)
           }
             

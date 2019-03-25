@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 
+import firebase from '../../../../firebase';
 import {Redirect} from 'react-router-dom';
 
 //materialUI imports
@@ -89,7 +90,9 @@ export interface Props{
         buttons:string
     },
     icon:any,
-    type:string
+    type:string,
+    uid?:string,
+    favorites?:{id:number, trailtype:string, trail:any}[]
 }
 
 export interface State{
@@ -106,6 +109,21 @@ class Result extends Component<Props, State>{
 
     redirectToTrailPage(){
       this.setState({isRedirecting:true})
+    }
+
+    addToFavorites(){
+      const {type, uid} = this.props;
+      let trail =[];
+      trail.push(this.props.trail);
+      let favorites:{id:number, trailtype:string, trail:any}[] = [];
+      if(this.props.favorites){
+        favorites=this.props.favorites;
+      }
+      
+      favorites.push({id:this.props.trail.id, trail:trail, trailtype:type})
+      firebase.database().ref(`users/${uid}/favorites`).set({
+        favorites:favorites
+      })
     }
     
     render(){
@@ -143,7 +161,7 @@ class Result extends Component<Props, State>{
                   color='secondary' 
                   size='small'
                   variant='raised'
-                  // fullWidth
+                  onClick={()=>this.addToFavorites()}
                 >
                     Favorite
                 </Button>

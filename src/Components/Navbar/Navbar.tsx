@@ -6,7 +6,6 @@ import './Navbar.css'
 import {createMuiTheme, createStyles, Theme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton'
-import Icon from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import List from '@material-ui/core/List'
@@ -20,6 +19,7 @@ import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
+import Person from '@material-ui/icons/Person'
 
 const theme = createMuiTheme({
     palette:{
@@ -147,6 +147,12 @@ class Navbar extends Component<Props, State>{
                                 <Search/>
                             </ListItemIcon>
                             <ListItemText primary='Search for Trails'/>
+                        </LinkItem>
+                        <LinkItem to='/login' onClick={()=>this.toggleDrawer(false)}>
+                            <ListItemIcon>
+                                <Person/>
+                            </ListItemIcon>
+                            <ListItemText primary='Sign In'/>
                         </LinkItem>
                     </List>
                 </SwipeableDrawer>

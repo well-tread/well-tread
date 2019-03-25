@@ -19,7 +19,7 @@ class App extends React.Component<PropsType> {
   render() {
     return (
       <div className="App">
-      {this.props.history.location.pathname === '/' ? null : <Navbar/>}
+      {this.props.history.location.pathname === '/login' ? null : <Navbar/>}
       {/* <Navbar/> */}
       {routes}
       </div>
