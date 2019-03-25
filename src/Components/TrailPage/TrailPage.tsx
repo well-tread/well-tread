@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import {connect} from 'react-redux';
+
 import {
   withStyles,
   Theme,
@@ -68,7 +71,8 @@ export interface Props {
     leftIcon: string;
     indicator: string;
   };
-  match:any
+  match:any,
+  uid:string
 }
 
 export interface State {
@@ -191,7 +195,7 @@ class TrailPage extends Component<Props, State> {
 
             this.setState({
               displayName: displayName,
-              uid:user.uid,
+              uid:this.props.uid,
               profilePicture: profilePicture,
               isAnonymous:user.isAnonymous,
               favorites:favorites
@@ -309,4 +313,10 @@ class TrailPage extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(TrailPage);
+const mapStateToProps =(state:any) => {
+  return{
+    uid:state.uid
+  }
+}
+
+export default withStyles(styles)(connect(mapStateToProps)(TrailPage));

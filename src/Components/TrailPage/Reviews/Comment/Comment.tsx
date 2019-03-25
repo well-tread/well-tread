@@ -25,7 +25,10 @@ const theme = createMuiTheme({
     secondary: {
       main: '#FF5722'
     }
-  }
+  },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 const styles = (theme: Theme) =>

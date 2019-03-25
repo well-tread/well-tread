@@ -7,6 +7,8 @@ import firebase from '../../firebase';
 import ReactExifImg from 'react-exif-orientation-img';
 import Result from '../Search/TrailResults/Result/Result';
 
+import {connect} from 'react-redux';
+
 //materialUI imports
 import {
   withStyles,
@@ -38,7 +40,10 @@ const theme = createMuiTheme({
     secondary: {
       main: '#FF5722'
     }
-  }
+  },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 const styles = (theme: Theme) =>
@@ -142,7 +147,13 @@ export interface Props {
     mapDiv: string;
     expansionPanelDetails:string;
     registerBtn: string;
-  };
+  },
+  uid:string,
+  profilePicture:string,
+  displayName:string,
+  favorites:any,
+  completes:any,
+  isAnonymous:boolean
 }
 
 export interface State {
@@ -181,90 +192,99 @@ class Account extends Component<Props, State> {
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user: any) => {
-      console.log(user);
-      firebase
-        .database()
-        .ref(`/users/${user.uid}`)
-        .once('value')
-        .then(snapshot1 => {
-          // console.log(user)
-
-          if (snapshot1.val()) {
-            let displayName = snapshot1.val().displayName;
-            if (displayName && displayName.displayName) {
-              displayName = displayName.displayName;
-            } else {
-              displayName = '';
-            }
-
-            let zipCode = snapshot1.val().zipCode;
-            if (zipCode && zipCode.zipCode) {
-              zipCode = zipCode.zipCode;
-            } else {
-              zipCode = '';
-            }
-
-            let profilePicture = snapshot1.val().profilePicture;
-            if (profilePicture && profilePicture.profilePicture) {
-              profilePicture = profilePicture.profilePicture;
-            } else {
-              profilePicture = '';
-            }
-
-            let favorites = snapshot1.val().favorites;
-            if (favorites && favorites.favorites) {
-              favorites = favorites.favorites;
-            } else {
-              favorites = [];
-            }
-
-            let completes = snapshot1.val().completes;
-            if (completes && completes.completes) {
-              completes = completes.completes;
-            } else {
-              completes = [];
-            }
-
-            this.setState({
-              profilePicture: profilePicture,
-              displayName: displayName,
-              zipCode: zipCode,
-              uid: user.uid,
-              isBadgeHidden: true,
-              isAnonymous:user.isAnonymous,
-              favorites:favorites,
-              completes:completes
-            });
-          } else {
-
-            var displayName ='';
-            if(user.displayName){
-              displayName=user.displayName;
-            }
-            else if(user.email){
-              displayName=user.email
-            }
-            else{
-              displayName='Username'
-            }
-
-            firebase
-              .database()
-              .ref(`users/${user.uid}/displayName`)
-              .set({
-                displayName: displayName,
-              });
-            this.setState({ displayName: user.displayName, uid: user.uid, isAnonymous:user.isAnonymous});
-          }
-        });
+    this.setState({
+      profilePicture: this.props.profilePicture,
+      displayName: this.props.displayName,
+      uid: this.props.uid,
+      isBadgeHidden: true,
+      isAnonymous:this.props.isAnonymous,
+      favorites:this.props.favorites,
+      completes:this.props.completes
     });
+    // firebase.auth().onAuthStateChanged((user: any) => {
+    //   console.log(user);
+    //   firebase
+    //     .database()
+    //     .ref(`/users/${user.uid}`)
+    //     .once('value')
+    //     .then(snapshot1 => {
+    //       // console.log(user)
+
+    //       if (snapshot1.val()) {
+    //         // let displayName = snapshot1.val().displayName;
+    //         // if (displayName && displayName.displayName) {
+    //         //   displayName = displayName.displayName;
+    //         // } else {
+    //         //   displayName = '';
+    //         // }
+
+    //         // let zipCode = snapshot1.val().zipCode;
+    //         // if (zipCode && zipCode.zipCode) {
+    //         //   zipCode = zipCode.zipCode;
+    //         // } else {
+    //         //   zipCode = '';
+    //         // }
+
+    //         // let profilePicture = snapshot1.val().profilePicture;
+    //         // if (profilePicture && profilePicture.profilePicture) {
+    //         //   profilePicture = profilePicture.profilePicture;
+    //         // } else {
+    //         //   profilePicture = '';
+    //         // }
+
+    //         // let favorites = snapshot1.val().favorites;
+    //         // if (favorites && favorites.favorites) {
+    //         //   favorites = favorites.favorites;
+    //         // } else {
+    //         //   favorites = [];
+    //         // }
+
+    //         // let completes = snapshot1.val().completes;
+    //         // if (completes && completes.completes) {
+    //         //   completes = completes.completes;
+    //         // } else {
+    //         //   completes = [];
+    //         // }
+    //       } else {
+
+    //         var displayName ='';
+    //         if(user.displayName){
+    //           displayName=user.displayName;
+    //         }
+    //         else if(user.email){
+    //           displayName=user.email
+    //         }
+    //         else{
+    //           displayName='Username'
+    //         }
+
+    //         firebase
+    //           .database()
+    //           .ref(`users/${user.uid}/displayName`)
+    //           .set({
+    //             displayName: displayName,
+    //           });
+    //         this.setState({ displayName: user.displayName, uid: user.uid, isAnonymous:user.isAnonymous});
+    //       }
+    //     });
+    // });
   }
 
   componentDidUpdate(prevProps:Props, prevState:State) {
     const { zipCode, isBadgeHidden } = this.state;
     if (zipCode && !isBadgeHidden) {
       this.setState({ isBadgeHidden: true });
+    }
+    if(prevProps !== this.props){
+      this.setState({
+        profilePicture: this.props.profilePicture,
+        displayName: this.props.displayName,
+        uid: this.props.uid,
+        isBadgeHidden: true,
+        isAnonymous:this.props.isAnonymous,
+        favorites:this.props.favorites,
+        completes:this.props.completes
+      });
     }
   }
 
@@ -472,4 +492,15 @@ class Account extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Account);
+const mapStateToProps =(state:any) => {
+  return{
+    uid:state.uid,
+    profilePicture:state.profilePicture,
+    displayName:state.displayName,
+    favorites:state.favorites,
+    completes:state.completes,
+    isAnonymous:state.isAnonymous
+  }
+}
+
+export default withStyles(styles)(connect(mapStateToProps)(Account));

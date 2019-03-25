@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {connect} from 'react-redux';
 // import TrailResults from './TrailResults/TrailResults';
 import TrailResults from '../Search/TrailResults/TrailResults';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +12,7 @@ import {
   MuiThemeProvider
 } from '@material-ui/core/styles';
 import Weather from './Weather/Weather';
+import { updateTopHiking } from '../../ducks/reducer';
 
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +28,11 @@ const theme = createMuiTheme({
   },
 });
 
-export interface Props {}
+export interface Props {
+  topBiking:any,
+  topHiking:any,
+  topRunning:any
+}
 
 export interface State {
   popularBikingTrails: any;
@@ -56,16 +62,7 @@ class Home extends Component<Props, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    const { hikingArr, bikingArr, runningArr, isResultsBack } = this.state;
-    if (
-      !isResultsBack &&
-      (hikingArr.length > 0 || bikingArr.length > 0 || runningArr.length > 0)
-    ) {
-      console.log('updating');
-      this.setState({ isResultsBack: true });
-    }
-  }
+  
   displayLocationInfo = (position: any) => {
     this.setState({
       latitude: position.coords.latitude,
@@ -120,10 +117,36 @@ class Home extends Component<Props, State> {
     
   };
   componentDidMount() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
+    // }
+    console.log(this.props.topBiking, 'Initial topBiking results')
+    this.setState({
+      popularBikingTrails:this.props.topBiking,
+      popularHikingTrails:this.props.topHiking,
+      popularRunningTrails:this.props.topRunning
+    })
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    // const { hikingArr, bikingArr, runningArr, isResultsBack } = this.state;
+    // if (
+    //   !isResultsBack &&
+    //   (hikingArr.length > 0 || bikingArr.length > 0 || runningArr.length > 0)
+    // ) {
+    //   console.log('updating');
+    //   this.setState({ isResultsBack: true });
+    // }
+    if(prevProps.topBiking !== this.props.topBiking && prevProps.topHiking !== this.props.topHiking && prevProps.topRunning !== this.props.topRunning){
+      this.setState({
+        popularBikingTrails:this.props.topBiking,
+        popularHikingTrails:this.props.topHiking,
+        popularRunningTrails:this.props.topRunning
+      })
     }
   }
+
+
 
   render() {
     const {
@@ -191,4 +214,12 @@ class Home extends Component<Props, State> {
   }
 }
 
-export default Home;
+const mapStateToProps =(state:any) => {
+  return{
+    topHiking:state.topHiking,
+    topBiking:state.topBiking,
+    topRunning:state.topRunning
+  }
+}
+
+export default connect(mapStateToProps)(Home);
