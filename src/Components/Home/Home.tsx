@@ -34,7 +34,7 @@ export interface State {
   popularRunningTrails: any;
   hikingArr: any;
   bikingArr: any;
-  climbingArr: any;
+  runningArr: any;
   isResultsBack: boolean;
   latitude: number;
   longitude: number;
@@ -49,7 +49,7 @@ class Home extends Component<Props, State> {
       popularRunningTrails: [],
       hikingArr: [],
       bikingArr: [],
-      climbingArr: [],
+      runningArr: [],
       isResultsBack: false,
       latitude: 0,
       longitude: 0
@@ -57,10 +57,10 @@ class Home extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { hikingArr, bikingArr, climbingArr, isResultsBack } = this.state;
+    const { hikingArr, bikingArr, runningArr, isResultsBack } = this.state;
     if (
       !isResultsBack &&
-      (hikingArr.length > 0 || bikingArr.length > 0 || climbingArr.length > 0)
+      (hikingArr.length > 0 || bikingArr.length > 0 || runningArr.length > 0)
     ) {
       console.log('updating');
       this.setState({ isResultsBack: true });
@@ -130,7 +130,7 @@ class Home extends Component<Props, State> {
       isResultsBack,
       hikingArr,
       bikingArr,
-      climbingArr,
+      runningArr,
       popularBikingTrails,
       popularHikingTrails,
       popularRunningTrails
@@ -152,7 +152,7 @@ class Home extends Component<Props, State> {
               // popularHikingTrails={[]}
               hikingArr={[]}
               bikingArr={popularBikingTrails}
-              climbingArr={[]}
+              runningArr={[]}
             />
           ) : (
             <CircularProgress color='secondary' />
@@ -166,7 +166,7 @@ class Home extends Component<Props, State> {
               hikingArr={popularHikingTrails}
               // popularHikingTrails={popularHikingTrails}
               bikingArr={[]}
-              climbingArr={[]}
+              runningArr={[]}
             />
           ) : (
             <CircularProgress color='secondary' />
@@ -180,7 +180,7 @@ class Home extends Component<Props, State> {
               hikingArr={[]}
               // popularHikingTrails={popularHikingTrails}
               bikingArr={[]}
-              climbingArr={popularRunningTrails}
+              runningArr={popularRunningTrails}
             />
           ) : (
             <CircularProgress color='secondary' />

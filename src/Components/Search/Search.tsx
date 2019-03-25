@@ -14,6 +14,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 //Material-UI Icon Imports
 import DirectionWalk from '@material-ui/icons/DirectionsWalk'
 import DirectionBike from '@material-ui/icons/DirectionsBike'
+import DirectionRun from '@material-ui/icons/DirectionsRun'
 import Terrain from '@material-ui/icons/Terrain'
 import SearchIcon from '@material-ui/icons/Search'
 
@@ -82,11 +83,11 @@ export interface State{
     address:any,
     isHikingChecked: boolean,
     isBikingChecked: boolean,
-    isClimbingChecked: boolean,
+    isRunningChecked: boolean,
     isResultsBack:boolean,
     hikingArr:any,
     bikingArr:any,
-    climbingArr:any,
+    runningArr:any,
 }
 
 class Search extends Component<Props, State>{
@@ -96,17 +97,17 @@ class Search extends Component<Props, State>{
             address:'',
             hikingArr:[],
             bikingArr:[],
-            climbingArr:[],
+            runningArr:[],
             isHikingChecked: false,
             isBikingChecked: false,
-            isClimbingChecked: false,
+            isRunningChecked: false,
             isResultsBack:false
         }
     }
 
     componentDidUpdate(prevProps:Props, prevState:State){
-        const {hikingArr, bikingArr, climbingArr, isResultsBack} = this.state;
-        if(!isResultsBack && (hikingArr.length>0 || bikingArr.length>0 || climbingArr.length>0)){
+        const {hikingArr, bikingArr, runningArr, isResultsBack} = this.state;
+        if(!isResultsBack && (hikingArr.length>0 || bikingArr.length>0 || runningArr.length>0)){
             console.log('updating');
             this.setState({isResultsBack:true})
         }
@@ -123,7 +124,7 @@ class Search extends Component<Props, State>{
     }
 
     submitLocationSearch=()=>{
-        this.setState({hikingArr:[],bikingArr:[],climbingArr:[]}, ()=>{
+        this.setState({hikingArr:[],bikingArr:[],runningArr:[]}, ()=>{
             if(this.state.isHikingChecked){
                 axios.post(`/trails/hiking`, {address:this.state.address}).then(response=>{
                     this.setState({hikingArr:response.data})
@@ -140,10 +141,10 @@ class Search extends Component<Props, State>{
                     console.log(err)
                 })
             }
-            if(this.state.isClimbingChecked){
-                axios.post(`/trails/climbing`, {address:this.state.address}).then(response=>{
-                    this.setState({climbingArr:response.data})
-                    console.log('climb', response.data)
+            if(this.state.isRunningChecked){
+                axios.post(`/trails/running`, {address:this.state.address}).then(response=>{
+                    this.setState({runningArr:response.data})
+                    console.log('run', response.data)
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -154,7 +155,7 @@ class Search extends Component<Props, State>{
     
     render(){
         const {classes} = this.props
-        const {isResultsBack ,hikingArr, bikingArr, climbingArr} = this.state;
+        const {isResultsBack ,hikingArr, bikingArr, runningArr} = this.state;
         return(
             <MuiThemeProvider theme={theme}>
                 <div className={classes.container}>
@@ -195,13 +196,13 @@ class Search extends Component<Props, State>{
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            icon={<Terrain color='primary'/>}
-                                            checkedIcon={<Terrain color='secondary'/>}
-                                            checked={this.state.isClimbingChecked}
-                                            onChange={(e)=>this.toggleCheckboxes(this.state.isClimbingChecked, 'isClimbingChecked')}
+                                            icon={<DirectionRun color='primary'/>}
+                                            checkedIcon={<DirectionRun color='secondary'/>}
+                                            checked={this.state.isRunningChecked}
+                                            onChange={(e)=>this.toggleCheckboxes(this.state.isRunningChecked, 'isRunningChecked')}
                                         />
                                     }
-                                    label='Climbing'
+                                    label='Running'
                                     labelPlacement='bottom'
                                 />
                             </div>
@@ -218,7 +219,7 @@ class Search extends Component<Props, State>{
                     </div>
                 </div>
                 {
-                    isResultsBack ? <TrailResults hikingArr={hikingArr} bikingArr={bikingArr} climbingArr={climbingArr}/> : <Quote/>
+                    isResultsBack ? <TrailResults hikingArr={hikingArr} bikingArr={bikingArr} runningArr={runningArr}/> : <Quote/>
                 }
             </MuiThemeProvider>
         )

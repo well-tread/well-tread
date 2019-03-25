@@ -5,11 +5,12 @@ import Result from './Result/Result';
 import DirectionWalk from '@material-ui/icons/DirectionsWalk'
 import DirectionBike from '@material-ui/icons/DirectionsBike'
 import Terrain from '@material-ui/icons/Terrain'
+import DirectionRun from '@material-ui/icons/DirectionsRun'
 
 export interface Props{
     hikingArr:any;
     bikingArr:any;
-    climbingArr:any;
+    runningArr:any;
 }
 
 export interface State{
@@ -25,7 +26,7 @@ class TrailResults extends Component<Props, State>{
     }
     
     render(){
-        const {hikingArr, bikingArr, climbingArr} = this.props;
+        const {hikingArr, bikingArr, runningArr} = this.props;
         return(
             <div style={{width:'100%', marginTop:'20px'}}>
                 {
@@ -41,8 +42,8 @@ class TrailResults extends Component<Props, State>{
                 }
 
                 {
-                    climbingArr.map((trail:any, i:number) => {
-                        return <Result key={i} trail={trail} icon={<Terrain style={{width:'35px', height:'35px'}}/>} type='climbing'/>
+                    runningArr.map((trail:any, i:number) => {
+                        return <Result key={i} trail={trail} icon={<DirectionRun style={{width:'35px', height:'35px'}}/>} type='running'/>
                     })
                 }
             </div>
