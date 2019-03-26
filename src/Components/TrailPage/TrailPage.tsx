@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import {updateFavorites} from '../../ducks/reducer';
 import {connect} from 'react-redux';
 
 import {
@@ -72,7 +73,12 @@ export interface Props {
     indicator: string;
   };
   match:any,
-  uid:string
+  uid:string,
+  displayName:string,
+  profilePicture:string,
+  isAnonymous:boolean,
+  favorites:any,
+  updateFavorites:(favorites:any)=>void;
 }
 
 export interface State {
@@ -104,12 +110,28 @@ class TrailPage extends Component<Props, State> {
   }
   handleClick = (e: any) => {
     const {id, trailtype} = this.props.match.params;
-    const {uid, trail, favorites} = this.state;
-    favorites.push({id:id, trailtype:trailtype, trail:trail})
-    firebase.database().ref(`users/${uid}/favorites`).set({
-      favorites:favorites
-    })
-    this.setState({ color: 'secondary', open: true });
+    const {uid, trail, favorites, color} = this.state;
+    if(color === 'primary'){
+      favorites.push({id:id, trailtype:trailtype, trail:trail})
+      firebase.database().ref(`users/${uid}/favorites`).set({
+        favorites:favorites
+      })
+      this.props.updateFavorites(favorites);
+      this.setState({ color: 'secondary', open: true });
+    }
+    else{
+      for(let i=0; i<favorites.length; i++){
+        if(favorites[i].id === id){
+          favorites.splice(i, 1);
+          firebase.database().ref(`users/${uid}/favorites`).set({
+            favorites:favorites
+          })
+          this.props.updateFavorites(favorites);
+          this.setState({ color: 'primary' });
+        }
+      }
+
+    }
   };
   handleChange = (e: any, value: number) => {
     this.setState({ value });
@@ -157,53 +179,59 @@ class TrailPage extends Component<Props, State> {
       break;
     }
 
-    firebase.auth().onAuthStateChanged((user: any) => {
-      firebase
-        .database()
-        .ref(`/users/${user.uid}`)
-        .once(`value`)
-        .then(snapshot => {
-          if (snapshot.val()) {
+    let color='primary';
+    for(let i=0; i<this.props.favorites.length; i++){
+      console.log(color)
+      if(this.props.favorites[i].id == this.props.match.params.id){
+        color='secondary';
+      }
+    }
 
-            let displayName = snapshot.val().displayName;
-            if (displayName && displayName.displayName) {
-              displayName = displayName;
-            } else {
-              displayName = '';
-            }
+    console.log(color)
 
-            let zipCode = snapshot.val().zipCode;
-            if (zipCode && zipCode.zipCode) {
-              zipCode = zipCode;
-            } else {
-              zipCode = '';
-            }
-
-            let profilePicture = snapshot.val().profilePicture;
-            if (profilePicture && profilePicture.profilePicture) {
-              profilePicture = profilePicture;
-            } else {
-              profilePicture = '';
-            }
-
-            let favorites = snapshot.val().favorites;
-            if (favorites && favorites.favorites) {
-              favorites = favorites.favorites;
-            } else {
-              favorites = [];
-            }
-
-            this.setState({
-              displayName: displayName,
-              uid:this.props.uid,
-              profilePicture: profilePicture,
-              isAnonymous:user.isAnonymous,
-              favorites:favorites
-            });
-          }
-        });
+    this.setState({
+      displayName: this.props.displayName,
+      uid:this.props.uid,
+      profilePicture: this.props.profilePicture,
+      isAnonymous:this.props.isAnonymous,
+      favorites:this.props.favorites,
+      color:color
     });
     
+  }
+
+  componentDidUpdate(prevProps:Props){
+    if(prevProps.favorites !== this.props.favorites){
+
+      let color='primary';
+      for(let i=0; i<this.props.favorites.length; i++){
+        console.log(color)
+        if(this.props.favorites[i].id == this.props.match.params.id){
+          color='secondary';
+        }
+      }
+      this.setState({
+        displayName: this.props.displayName,
+        uid:this.props.uid,
+        profilePicture: this.props.profilePicture,
+        isAnonymous:this.props.isAnonymous,
+        favorites:this.props.favorites,
+        color:color
+      });
+
+    }
+    else if(prevProps !== this.props){
+
+      this.setState({
+        displayName: this.props.displayName,
+        uid:this.props.uid,
+        profilePicture: this.props.profilePicture,
+        isAnonymous:this.props.isAnonymous,
+        favorites:this.props.favorites
+      });
+
+    }
+
   }
 
   render() {
@@ -211,6 +239,12 @@ class TrailPage extends Component<Props, State> {
     const {trail} = this.state;
     let Trail0 = this.state.trail ? (
       this.state.trail.map((element: any, index: number) => {
+
+        let conditionDate = (element.conditionDate.slice(0,4));
+        console.log(conditionDate)
+        //2019 is a placeholder for now, will make it more dynamic in the future
+        let displayConditionDate = (+conditionDate>=2019);
+
         return (
           <div className='trailContainer' key={index}>
             <div className='trailImage'>
@@ -233,9 +267,24 @@ class TrailPage extends Component<Props, State> {
                 <Typography variant='h5' id='info' color='primary'>
                   <strong>Difficulty: </strong> {element.difficulty}
                 </Typography>
-                <Typography variant='h5' id='info' color='primary'>
-                  <strong>Condition: </strong> {element.conditionDetails}
-                </Typography>
+                {
+                  element.conditionDetails && displayConditionDate ? 
+                  (<Typography variant='h5' id='info' color='primary'>
+                    <strong>Condition: </strong> {element.conditionDetails}
+                  </Typography>)
+                  :
+                  <div />
+                }
+                {
+                  element.conditionDetails && displayConditionDate ?
+                  (<Typography variant='h5' id='info' color='primary'>
+                    <strong>Condition last updated: </strong> {element.conditionDate.slice(0,10)}
+                  </Typography>)
+                  :
+                  <div />
+                }
+                
+                
 
                 <Typography variant='h5' id='info' color='primary'>
                   <strong>Description: </strong> {element.summary}
@@ -257,6 +306,7 @@ class TrailPage extends Component<Props, State> {
                 horizontal: 'left'
               }}
               open={this.state.open}
+              onClose={(e)=>this.handleClose(e)}
               autoHideDuration={2500}
               color='primary'
               message={<span>Trail Saved to Favorites</span>}
@@ -315,8 +365,13 @@ class TrailPage extends Component<Props, State> {
 
 const mapStateToProps =(state:any) => {
   return{
-    uid:state.uid
+    uid:state.uid,
+    profilePicture:state.profilePicture,
+    displayName:state.displayName,
+    favorites:state.favorites,
+    completes:state.completes,
+    isAnonymous:state.isAnonymous
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(TrailPage));
+export default withStyles(styles)(connect(mapStateToProps, {updateFavorites})(TrailPage));

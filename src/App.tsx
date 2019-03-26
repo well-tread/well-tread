@@ -74,6 +74,7 @@ class App extends React.Component<PropsType> {
             } else {
               favorites = [];
             }
+            
 
             let completes = snapshot1.val().completes;
             if (completes && completes.completes) {

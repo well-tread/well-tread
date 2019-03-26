@@ -182,7 +182,7 @@ class Reviews extends Component<Props, State> {
         </Dialog>
         
         {
-         reviews.length >0 ? allReviews : <Typography component='h3' variant='h3'>Be the first to leave a review!</Typography>
+         reviews.length >0 ? allReviews : <Typography component='h3' variant='h3' color='primary' style={{backgroundColor:'#f7f7f7'}}>Be the first to leave a review!</Typography>
         }
 
         {

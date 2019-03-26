@@ -48,8 +48,8 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       flexShrink: 0,
-      width: 50,
-      height: 50,
+      width: 75,
+      height: 75,
       fontFamily: theme.typography.fontFamily,
       fontSize: theme.typography.pxToRem(20),
       borderRadius: '50%',
@@ -58,6 +58,7 @@ const styles = (theme: Theme) =>
       textAlign: 'center',
       // Handle non-square image. The property isn't supported by IE 11.
       objectFit: 'cover',
+      margin:10
     },
     typographyDiv:{
       display:'flex',

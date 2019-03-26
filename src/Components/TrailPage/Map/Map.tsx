@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import GoogleMapReact from 'google-map-react';
 import MapMarker from '../../Account/MapMarker/MapMarker';
+import Button from '@material-ui/core/Button';
 
 //materialUI imports
 import {withStyles, createStyles, Theme} from '@material-ui/core/styles';
@@ -12,12 +13,17 @@ const styles = (theme:Theme) => createStyles({
     marginLeft:'auto',
     marginRight:'auto',
     border:'2px solid #757575'
+  },
+  aTag:{
+    textDecoration:'none',
+    color:'#FF5722'
   }
 })
 
 export interface Props {
   classes:{
-    mapDiv:string;
+    mapDiv:string,
+    aTag:string
   },
   longitude:number,
   latitude:number
@@ -36,14 +42,16 @@ class Map extends Component<Props, State> {
     return (
     <div className={classes.mapDiv}>
       <GoogleMapReact
-                bootstrapURLKeys={{ key: ''}}
-                yesIWantToUseGoogleMapApiInternals
-                center={{lat:latitude, lng: longitude}}
-                zoom={8}
-                options={{mapTypeId:'terrain'}}
-            >   
-                <MapMarker lat={latitude} lng={longitude} favorite={false} />
-            </GoogleMapReact>
+          bootstrapURLKeys={{ key: ''}}
+          yesIWantToUseGoogleMapApiInternals
+          center={{lat:latitude, lng: longitude}}
+          zoom={8}
+          options={{mapTypeId:'terrain'}}
+      >   
+          <MapMarker lat={latitude} lng={longitude} favorite={true} />
+      </GoogleMapReact>
+      
+      <Button><a className={classes.aTag} target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}>Open in Google Maps</a></Button>
     </div>
     );
   }
