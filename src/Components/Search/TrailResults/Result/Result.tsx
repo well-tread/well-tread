@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 
 import firebase from '../../../../firebase';
 import {Redirect} from 'react-router-dom';
+import './Result.css'
 
 //materialUI imports
 import { withStyles, Theme, createMuiTheme, createStyles, MuiThemeProvider} from '@material-ui/core/styles';
@@ -12,6 +13,7 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
+import Zoom from '@material-ui/core/Zoom'
 import { Hidden } from '@material-ui/core';
 
 const theme = createMuiTheme({
@@ -46,10 +48,20 @@ const styles = (theme: Theme) => createStyles({
         backgroundColor:'#757575', 
         backgroundSize:`cover`,
         backgroundPosition:'center',
-        // backgroundBlendMode:'overlay',
+        backgroundBlendMode:'overlay',
         paddingTop:35,
         paddingBottom:35,
-        // width:'100vw'
+        margin: 'auto',
+        // width:'100vw',
+        [theme.breakpoints.up('sm')]:{
+          width: '80vw'
+        },
+        [theme.breakpoints.up('md')]:{
+          width: '70vw'
+        },
+        [theme.breakpoints.up('lg')]:{
+          width: '50vw'
+        }
       },
       expansionPanelExpanded:{
         backgroundColor:'#757575', 
@@ -58,7 +70,8 @@ const styles = (theme: Theme) => createStyles({
         backgroundBlendMode:'overlay',
         paddingTop:35,
         paddingBottom:35,
-        // margin:0,
+        marginTop:15,
+        marginBottom:15,
         // width:'100vw',
         // overflow: 'hidden'
       },
@@ -92,19 +105,26 @@ export interface Props{
     icon:any,
     type:string,
     uid?:string,
-    favorites?:{id:number, trailtype:string, trail:any}[]
+    favorites?:{id:number, trailtype:string, trail:any}[],
 }
 
 export interface State{
-    isRedirecting:boolean
+    isRedirecting:boolean;
+    checked:boolean;
 }
 
 class Result extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            isRedirecting:false
+            isRedirecting:false,
+            checked: false
         }
+        // this.myRef =  React.createRef<HTMLDivElement>()
+      }
+
+    componentDidMount(){
+      this.setState({checked:true})
     }
 
     redirectToTrailPage(){
@@ -125,49 +145,61 @@ class Result extends Component<Props, State>{
         favorites:favorites
       })
     }
+
+    scroll=(e:any)=>{
+      e.scrollIntoView({behavior:'smooth'})
+    }
     
     render(){
         const {isRedirecting} = this.state;
         const {trail, classes, icon, type} = this.props;
         return(
             <MuiThemeProvider theme={theme}>
-            <ExpansionPanel 
-              className={classes.expansionPanel} 
-              style={{backgroundImage:`url(${trail.imgMedium})`}} classes={{expanded:classes.expansionPanelExpanded}} >
-
-            <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon color='secondary' className={classes.expandMoreIcon}/>}
-                
-            >
-                <Typography className={classes.typographyTitle}>{icon} {trail.name}</Typography>
-            </ExpansionPanelSummary>
-
-            <ExpansionPanelDetails>
-                <Typography className={classes.typographyContent}>{trail.summary}</Typography>
-            </ExpansionPanelDetails>
-
-            <ExpansionPanelActions className={classes.buttons}>
-                <Button 
-                  style={{fontSize:'.9em', fontWeight:'bold',}} 
-                  color='secondary'
-                  size='small'
-                  variant='raised' 
-                  onClick={()=>this.redirectToTrailPage()} 
+             <div>
+                <Zoom in={this.state.checked} style={{transitionDelay: this.state.checked ? '500ms' : '0ms'}}>
+                  <ExpansionPanel 
+                    className={classes.expansionPanel} 
+                    style={{backgroundImage:`url(${trail.imgMedium})`}} 
+                    classes={{expanded:classes.expansionPanelExpanded}}
+                    // onClick={(e)=>this.scroll(e)}
                   >
-                    Trail Page
-                </Button>
-                <Button 
-                  style={{fontSize:'.9em', fontWeight:'bold'}} 
-                  color='secondary' 
-                  size='small'
-                  variant='raised'
-                  onClick={()=>this.addToFavorites()}
-                >
-                    Favorite
-                </Button>
-            </ExpansionPanelActions>
-
-            </ExpansionPanel>
+      
+                  <ExpansionPanelSummary
+                      expandIcon={<ExpandMoreIcon color='secondary' className={classes.expandMoreIcon}/>}
+                      
+                  >
+                      <Typography className={classes.typographyTitle}>{icon} {trail.name}</Typography>
+                  </ExpansionPanelSummary>
+      
+                  <ExpansionPanelDetails>
+                      <Typography className={classes.typographyContent}>{trail.summary}</Typography>
+                  </ExpansionPanelDetails>
+      
+                  <ExpansionPanelActions className={classes.buttons}>
+                      <Button 
+                        style={{fontSize:'.9em', fontWeight:'bold',}} 
+                        color='secondary'
+                        size='small'
+                        variant='raised' 
+                        onClick={()=>this.redirectToTrailPage()} 
+                        >
+                          Trail Page
+                      </Button>
+                      <Button 
+                        style={{fontSize:'.9em', fontWeight:'bold'}} 
+                        color='secondary' 
+                        size='small'
+                        variant='raised'
+                        onClick={()=>this.addToFavorites()}
+                      >
+                          Favorite
+                      </Button>
+                  </ExpansionPanelActions>
+      
+                  </ExpansionPanel>
+                </Zoom>
+                {/* <div className='blurBetween'></div> */}
+             </div>
 
             {
               isRedirecting ? <Redirect to={`/trails/${type}/${trail.id}`} /> : <div />
