@@ -55,10 +55,10 @@ const styles = (theme: Theme) => createStyles({
         margin: 'auto',
         // width:'100vw',
         [theme.breakpoints.up('sm')]:{
-          width: '80vw'
+          width: '70vw',
         },
         [theme.breakpoints.up('md')]:{
-          width: '70vw'
+          width: '60vw'
         },
         [theme.breakpoints.up('lg')]:{
           width: '50vw'
