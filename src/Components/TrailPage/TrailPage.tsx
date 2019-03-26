@@ -17,7 +17,11 @@ import Whatshot from '@material-ui/icons/Whatshot';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
+
 import CloseIcon from '@material-ui/icons/Close';
+
+import Dialog from '@material-ui/core/Dialog';
+
 import './trailpage.css';
 import axios from 'axios';
 import Reviews from './Reviews/Reviews';
@@ -62,6 +66,9 @@ const styles = (theme: any) => ({
   },
   indicator: {
     indicatorColor: 'white'
+  },
+  dialog:{
+    marginTop:50
   }
 });
 
@@ -71,14 +78,18 @@ export interface Props {
     button: string;
     leftIcon: string;
     indicator: string;
+    dialog:string;
   };
-  match:any,
+  trailtype:string,
+  trail:any,
   uid:string,
   displayName:string,
   profilePicture:string,
   isAnonymous:boolean,
   favorites:any,
   updateFavorites:(favorites:any)=>void;
+  closeDialog:()=>void;
+  isDialogOpen:boolean;
 }
 
 export interface State {
@@ -109,10 +120,10 @@ class TrailPage extends Component<Props, State> {
     };
   }
   handleClick = (e: any) => {
-    const {id, trailtype} = this.props.match.params;
+    const {trailtype} = this.props;
     const {uid, trail, favorites, color} = this.state;
     if(color === 'primary'){
-      favorites.push({id:id, trailtype:trailtype, trail:trail})
+      favorites.push({id:trail[0].id, trailtype:trailtype, trail:trail})
       firebase.database().ref(`users/${uid}/favorites`).set({
         favorites:favorites
       })
@@ -121,7 +132,7 @@ class TrailPage extends Component<Props, State> {
     }
     else{
       for(let i=0; i<favorites.length; i++){
-        if(favorites[i].id === id){
+        if(favorites[i].id === trail[0].id){
           favorites.splice(i, 1);
           firebase.database().ref(`users/${uid}/favorites`).set({
             favorites:favorites
@@ -140,49 +151,50 @@ class TrailPage extends Component<Props, State> {
     this.setState({ open: false });
   };
   componentDidMount() {
-    const {id, trailtype} = this.props.match.params;
+    const id = this.props.trail.id;
+    const {trailtype} = this.props;
     const {uid} = this.state;
     
-    switch(trailtype){
-      case 'hiking':
-        axios.post(`http://localhost:5050/trails/hikingOne`,{id:id}).then(res => {
-          console.log(res.data);
-          const response = res.data;
-          this.setState({
-            trail: response
-          });
-        });
-      break;
+    // switch(trailtype){
+    //   case 'hiking':
+    //     axios.post(`http://localhost:5050/trails/hikingOne`,{id:id}).then(res => {
+    //       console.log(res.data);
+    //       const response = res.data;
+    //       this.setState({
+    //         trail: response
+    //       });
+    //     });
+    //   break;
 
-      case 'biking':
-        axios.post(`http://localhost:5050/trails/bikingOne`,{id:id}).then(res => {
-          console.log(res.data);
-          const response = res.data;
-          this.setState({
-            trail: response
-          });
-        });
-      break;
+    //   case 'biking':
+    //     axios.post(`http://localhost:5050/trails/bikingOne`,{id:id}).then(res => {
+    //       console.log(res.data);
+    //       const response = res.data;
+    //       this.setState({
+    //         trail: response
+    //       });
+    //     });
+    //   break;
 
-      case 'running':
-        axios.post(`http://localhost:5050/trails/runningOne`,{id:id}).then(res => {
-          console.log(res.data);
-          const response = res.data;
-          this.setState({
-            trail: response
-          });
-        });
-      break;
+    //   case 'running':
+    //     axios.post(`http://localhost:5050/trails/runningOne`,{id:id}).then(res => {
+    //       console.log(res.data);
+    //       const response = res.data;
+    //       this.setState({
+    //         trail: response
+    //       });
+    //     });
+    //   break;
 
-      default:
-      alert('Incorrect trailtype at TrailPage.tsx');
-      break;
-    }
+    //   default:
+    //   alert('Incorrect trailtype at TrailPage.tsx');
+    //   break;
+    // }
 
     let color='primary';
     for(let i=0; i<this.props.favorites.length; i++){
       console.log(color)
-      if(this.props.favorites[i].id == this.props.match.params.id){
+      if(this.props.favorites[i].id == id){
         color='secondary';
       }
     }
@@ -195,18 +207,20 @@ class TrailPage extends Component<Props, State> {
       profilePicture: this.props.profilePicture,
       isAnonymous:this.props.isAnonymous,
       favorites:this.props.favorites,
-      color:color
+      color:color,
+      trail:[this.props.trail]
     });
     
   }
 
   componentDidUpdate(prevProps:Props){
+    const {trail} = this.props;
     if(prevProps.favorites !== this.props.favorites){
 
       let color='primary';
       for(let i=0; i<this.props.favorites.length; i++){
         console.log(color)
-        if(this.props.favorites[i].id == this.props.match.params.id){
+        if(this.props.favorites[i].id == trail.id){
           color='secondary';
         }
       }
@@ -235,8 +249,8 @@ class TrailPage extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
-    const {trail} = this.state;
+    const { classes, trail} = this.props;
+    //const {trail} = this.state;
     let Trail0 = this.state.trail ? (
       this.state.trail.map((element: any, index: number) => {
 
@@ -326,9 +340,13 @@ class TrailPage extends Component<Props, State> {
       <div>loading...</div>
     );
     return (
+      <Dialog open={this.props.isDialogOpen} fullScreen className={classes.dialog}>
       <MuiThemeProvider theme={theme}>
         <div>
           {/* <Paper className={classes.root}> */}
+          <IconButton onClick={()=>this.props.closeDialog()}>
+            <CloseIcon />
+          </IconButton>
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
@@ -345,11 +363,11 @@ class TrailPage extends Component<Props, State> {
             <Tab label='Trail' />
             <Tab label='Reviews' />
           </Tabs>
-          {this.state.value === 0 && <Map longitude={trail[0].longitude} latitude={trail[0].latitude}/>}
+          {this.state.value === 0 && <Map longitude={trail.longitude} latitude={trail.latitude}/>}
           {this.state.value === 1 && <div>{Trail0}</div>}
           {this.state.value === 2 && (
             <Reviews
-              trailID={this.props.match.params.id}
+              trailID={trail.id}
               profilePicture={this.state.profilePicture}
               uid={this.state.uid}
               displayName={this.state.displayName}
@@ -358,7 +376,9 @@ class TrailPage extends Component<Props, State> {
           )}
           {/* </Paper> */}
         </div>
+        
       </MuiThemeProvider>
+      </Dialog>
     );
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import GoogleMapReact from 'google-map-react';
 import MapMarker from '../../Account/MapMarker/MapMarker';
+import googleMapKey from '../../../googleMapKey';
 import Button from '@material-ui/core/Button';
 
 //materialUI imports
@@ -42,7 +43,7 @@ class Map extends Component<Props, State> {
     return (
     <div className={classes.mapDiv}>
       <GoogleMapReact
-          bootstrapURLKeys={{ key: ''}}
+          bootstrapURLKeys={{ key: googleMapKey.key}}
           yesIWantToUseGoogleMapApiInternals
           center={{lat:latitude, lng: longitude}}
           zoom={8}

@@ -6,6 +6,7 @@ import GoogleMapReact from 'google-map-react';
 import firebase from '../../firebase';
 import ReactExifImg from 'react-exif-orientation-img';
 import Result from '../Search/TrailResults/Result/Result';
+import googleMapKey from '../../googleMapKey';
 
 import {connect} from 'react-redux';
 
@@ -381,7 +382,7 @@ class Account extends Component<Props, State> {
           <div className={classes.mapDiv}>
             <GoogleMapReact
               bootstrapURLKeys={{
-                key: ''
+                key: googleMapKey.key
               }}
               defaultCenter={{ lat: 39.8333333, lng: -98.585522 }}
               defaultZoom={4}
