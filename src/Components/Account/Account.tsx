@@ -30,7 +30,7 @@ import Button from '@material-ui/core/Button'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DirectionWalk from '@material-ui/icons/DirectionsWalk'
 import DirectionBike from '@material-ui/icons/DirectionsBike'
-import Terrain from '@material-ui/icons/Terrain'
+import DirectionRun from '@material-ui/icons/DirectionsRun'
 
 const theme = createMuiTheme({
   palette: {
@@ -98,6 +98,7 @@ const styles = (theme: Theme) =>
       textAlign: 'center',
       // Handle non-square image. The property isn't supported by IE 11.
       objectFit: 'cover',
+      
     },
     mapDiv: {
       height: '60vh',
@@ -372,7 +373,7 @@ class Account extends Component<Props, State> {
 
                 </Badge>
               </IconButton>
-              <Typography component='p' variant='display1'>{displayName}</Typography>
+              <Typography color='primary' component='p' variant='display1'>{displayName}</Typography>
             </div>)
           }
             
@@ -389,14 +390,14 @@ class Account extends Component<Props, State> {
               {
                 favorites.map((val, i) => {
                   console.log(val)
-                  return <MapMarker key={i} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={true} />
+                  return <MapMarker key={i} trailtype={val.trailtype} trail={val.trail[0]} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={true} />
                 })
               }
 
               {
                 completes.map((val, i) => {
                   console.log(val)
-                  return <MapMarker key={i} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={false} />
+                  return <MapMarker key={i} trailtype={val.trailtype} trail={val.trail[0]} lat={val.trail[0].latitude} lng={val.trail[0].longitude} favorite={false} />
                 })
               }
               
@@ -408,7 +409,7 @@ class Account extends Component<Props, State> {
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon color='secondary' />}
               >
-                <Typography>Favorited Trails</Typography>
+                <Typography color='primary'>Favorited Trails</Typography>
               </ExpansionPanelSummary>
 
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
@@ -423,6 +424,9 @@ class Account extends Component<Props, State> {
                         case 'biking':
                           icon=<DirectionBike />
                           break;
+                        case 'running':
+                          icon=<DirectionRun />
+                          break;
                       }
                       return (
                       <div key={i}>
@@ -433,7 +437,7 @@ class Account extends Component<Props, State> {
                         <Result icon={icon} type={val.trailtype} trail={val.trail[0]}  />
                       </div>
                       )
-                    }):<Typography>You haven't favorited any trails yet!</Typography>
+                    }):<Typography color='primary'>You haven't favorited any trails yet!</Typography>
                   
                 }
               </ExpansionPanelDetails>
@@ -443,7 +447,7 @@ class Account extends Component<Props, State> {
               <ExpansionPanelSummary
                 expandIcon={<ExpandMoreIcon color='secondary' />}
               >
-                <Typography>Completed Trails</Typography>
+                <Typography color='primary'>Completed Trails</Typography>
               </ExpansionPanelSummary>
 
               <ExpansionPanelDetails className={classes.expansionPanelDetails}>
@@ -458,6 +462,9 @@ class Account extends Component<Props, State> {
                         case 'biking':
                           icon=<DirectionBike />
                           break;
+                        case 'running':
+                          icon=<DirectionRun />
+                          break;
                       }
                       return (
                       <div key={i}>
@@ -465,7 +472,7 @@ class Account extends Component<Props, State> {
                         <Result icon={icon} type={val.trailtype} trail={val.trail[0]}  />
                       </div>
                       )
-                    }): <Typography>You haven't marked any trails as complete yet!</Typography>
+                    }): <Typography color='primary'>You haven't marked any trails as complete yet!</Typography>
                   
                 }
               </ExpansionPanelDetails>

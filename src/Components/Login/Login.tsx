@@ -107,6 +107,7 @@ export interface Props{
 export interface State{
     dialogIsOpen:boolean;
     anonymousLogin:boolean;
+    isRedirecting:boolean;
 }
 
 
@@ -116,7 +117,8 @@ class Login extends Component<Props, State>{
         super(props);
         this.state={
             dialogIsOpen:false,
-            anonymousLogin:false
+            anonymousLogin:false,
+            isRedirecting:false
         }
 
         
@@ -125,7 +127,9 @@ class Login extends Component<Props, State>{
 
     componentDidMount(){
         firebase.auth().onAuthStateChanged((user) => {
-            console.log('USER', user)
+            if(user){
+                this.setState({isRedirecting:true})
+            }
         })
         if(this.props.location.search === '?mode=select'){
             this.setState({dialogIsOpen:true})
@@ -145,7 +149,7 @@ class Login extends Component<Props, State>{
 
     render(){
         const {classes} = this.props;
-        const {dialogIsOpen, anonymousLogin} = this.state;
+        const {dialogIsOpen, anonymousLogin, isRedirecting} = this.state;
         
         return(
             
@@ -165,6 +169,9 @@ class Login extends Component<Props, State>{
 
                 {
                     anonymousLogin ? <Redirect to='/account' /> : <div />
+                }
+                {
+                    isRedirecting ? <Redirect to='/home' /> :<div />
                 }
 
             </Paper>

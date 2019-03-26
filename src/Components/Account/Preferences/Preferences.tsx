@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import firebase from '../../../firebase';
-
+import {Redirect} from 'react-router-dom';
 
 //materialUI imports
 import { withStyles, createStyles, Theme , createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
@@ -85,14 +85,16 @@ export interface Props{
 }
 
 export interface State{
-    confirmChangesIsVisible:boolean
+    confirmChangesIsVisible:boolean,
+    isRedirecting:boolean
 }
 
 class Preferences extends Component<Props, State>{
     constructor(props:Props){
         super(props);
         this.state={
-            confirmChangesIsVisible:false
+            confirmChangesIsVisible:false,
+            isRedirecting:false
         }
     }
 
@@ -101,6 +103,11 @@ class Preferences extends Component<Props, State>{
         if(prevProps.displayName !== '' && (prevProps.zipCode !== this.props.zipCode || prevProps.displayName !== this.props.displayName) && !confirmChangesIsVisible){
             this.setState({confirmChangesIsVisible:true})
         }
+    }
+
+    logout(){
+        firebase.auth().signOut();
+        this.setState({isRedirecting:true})
     }
 
     uploadProfilePicture(e:any){
@@ -134,7 +141,7 @@ class Preferences extends Component<Props, State>{
     }
     
     render(){
-        const {confirmChangesIsVisible} = this.state;
+        const {confirmChangesIsVisible, isRedirecting} = this.state;
         const {classes, preferencesIsOpen, togglePreferences, displayName, zipCode, handleChange} = this.props;
 
         return(
@@ -161,8 +168,8 @@ class Preferences extends Component<Props, State>{
                     </InputLabel>
 
                     <TextField required={true} className={classes.textField} onChange={(e)=>handleChange(e.target.value, 'displayName')} fullWidth variant='outlined' placeholder='Display Name' label='Display Name' value={displayName} />
-                    <TextField className={classes.textField} onChange={(e)=>handleChange(e.target.value, 'zipCode')} fullWidth variant='outlined' placeholder='Home ZIP' label='Home ZIP' value={zipCode} />
-                    
+                    {/* <TextField className={classes.textField} onChange={(e)=>handleChange(e.target.value, 'zipCode')} fullWidth variant='outlined' placeholder='Home ZIP' label='Home ZIP' value={zipCode} /> */}
+                    <Button variant='outlined' color='primary' fullWidth onClick={()=>this.logout()}>Logout</Button>
                     <div className={classes.buttonDiv}>
                     <Button color='secondary' variant='contained' className={classes.button} onClick={()=>togglePreferences()}>Close</Button>
                     {
@@ -176,6 +183,9 @@ class Preferences extends Component<Props, State>{
                 
             </div>
             </Dialog>
+            {
+                isRedirecting ? <Redirect to='/' /> : <div />
+            }
             </MuiThemeProvider>
         )
     }

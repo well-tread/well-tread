@@ -13,6 +13,6 @@ export default (
     <Route path='/account' component={Account} />
     <Route path='/trails/:trailtype/:id' component={TrailPage} />
     <Route path='/search' component={Search} />
-    <Route exact path='/login' component={Login} />
+    <Route exact path='/' component={Login} />
   </Switch>
 );
