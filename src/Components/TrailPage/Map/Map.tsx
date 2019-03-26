@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import GoogleMapReact from 'google-map-react';
-import MapMarker from '../../Account/MapMarker/MapMarker';
+import DullMapMarker from './DullMapMarker/DullMapMarker';
 import googleMapKey from '../../../googleMapKey';
 import Button from '@material-ui/core/Button';
+
 
 //materialUI imports
 import {withStyles, createStyles, Theme} from '@material-ui/core/styles';
@@ -49,7 +50,8 @@ class Map extends Component<Props, State> {
           zoom={8}
           options={{mapTypeId:'terrain'}}
       >   
-          <MapMarker lat={latitude} lng={longitude} favorite={true} />
+          {/* <PlaceIcon lat={latitude} lng={longitude}  /> */}
+          <DullMapMarker lat={latitude} lng={longitude}/>
       </GoogleMapReact>
       
       <Button><a className={classes.aTag} target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}>Open in Google Maps</a></Button>
