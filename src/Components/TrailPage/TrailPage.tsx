@@ -151,6 +151,7 @@ class TrailPage extends Component<Props, State> {
     this.setState({ open: false });
   };
   componentDidMount() {
+    console.log(this.props.trail, 'THIS DOT PROPS DOT TRAIL')
     const id = this.props.trail.id;
     const {trailtype} = this.props;
     const {uid} = this.state;
@@ -219,7 +220,6 @@ class TrailPage extends Component<Props, State> {
 
       let color='primary';
       for(let i=0; i<this.props.favorites.length; i++){
-        console.log(color)
         if(this.props.favorites[i].id == trail.id){
           color='secondary';
         }
@@ -235,7 +235,7 @@ class TrailPage extends Component<Props, State> {
 
     }
     else if(prevProps !== this.props){
-
+      console.log('UPDATING TRAIL', this.props.trail)
       this.setState({
         displayName: this.props.displayName,
         uid:this.props.uid,
@@ -255,7 +255,6 @@ class TrailPage extends Component<Props, State> {
       this.state.trail.map((element: any, index: number) => {
 
         let conditionDate = (element.conditionDate.slice(0,4));
-        console.log(conditionDate)
         //2019 is a placeholder for now, will make it more dynamic in the future
         let displayConditionDate = (+conditionDate>=2019);
 
