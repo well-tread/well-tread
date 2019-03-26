@@ -26,3 +26,5 @@ yarn-error.log*
 firebase.tsx
 src/firebase.tsx
 
+googleMapKey.ts
+src/googleMapKey.ts

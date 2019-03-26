@@ -129,21 +129,25 @@ class Home extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    // const { hikingArr, bikingArr, runningArr, isResultsBack } = this.state;
-    // if (
-    //   !isResultsBack &&
-    //   (hikingArr.length > 0 || bikingArr.length > 0 || runningArr.length > 0)
-    // ) {
-    //   console.log('updating');
-    //   this.setState({ isResultsBack: true });
-    // }
-    if(prevProps.topBiking !== this.props.topBiking && prevProps.topHiking !== this.props.topHiking && prevProps.topRunning !== this.props.topRunning){
+    
+    if(prevProps.topBiking !== this.props.topBiking){
       this.setState({
-        popularBikingTrails:this.props.topBiking,
-        popularHikingTrails:this.props.topHiking,
+        popularBikingTrails:this.props.topBiking
+      })
+    }
+
+    if(prevProps.topHiking !== this.props.topHiking){
+      this.setState({
+        popularHikingTrails:this.props.topHiking
+      })
+    }
+
+    if(prevProps.topRunning !== this.props.topRunning){
+      this.setState({
         popularRunningTrails:this.props.topRunning
       })
     }
+
   }
 
 

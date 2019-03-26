@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 
 import firebase from '../../../../firebase';
 import {Redirect} from 'react-router-dom';
+import TrailPage from '../../../TrailPage/TrailPage';
 import './Result.css'
 
 //materialUI imports
@@ -111,6 +112,7 @@ export interface Props{
 export interface State{
     isRedirecting:boolean;
     checked:boolean;
+    isDialogOpen:boolean;
 }
 
 class Result extends Component<Props, State>{
@@ -118,7 +120,8 @@ class Result extends Component<Props, State>{
         super(props);
         this.state={
             isRedirecting:false,
-            checked: false
+            checked: false,
+            isDialogOpen:false
         }
         // this.myRef =  React.createRef<HTMLDivElement>()
       }
@@ -127,8 +130,8 @@ class Result extends Component<Props, State>{
       this.setState({checked:true})
     }
 
-    redirectToTrailPage(){
-      this.setState({isRedirecting:true})
+    openDialog(){
+      this.setState({isDialogOpen:true})
     }
 
     addToFavorites(){
@@ -151,7 +154,7 @@ class Result extends Component<Props, State>{
     }
     
     render(){
-        const {isRedirecting} = this.state;
+        const {isRedirecting, isDialogOpen} = this.state;
         const {trail, classes, icon, type} = this.props;
         return(
             <MuiThemeProvider theme={theme}>
@@ -181,7 +184,7 @@ class Result extends Component<Props, State>{
                         color='secondary'
                         size='small'
                         variant='raised' 
-                        onClick={()=>this.redirectToTrailPage()} 
+                        onClick={()=>this.openDialog()} 
                         >
                           Trail Page
                       </Button>
@@ -200,10 +203,10 @@ class Result extends Component<Props, State>{
                 </Zoom>
                 {/* <div className='blurBetween'></div> */}
              </div>
-
-            {
+            <TrailPage trail={trail} trailtype={type} isDialogOpen={isDialogOpen} closeDialog={()=>this.setState({isDialogOpen:false})}/>
+            {/* {
               isRedirecting ? <Redirect to={`/trails/${type}/${trail.id}`} /> : <div />
-            }
+            } */}
             </MuiThemeProvider>
         )
     }
