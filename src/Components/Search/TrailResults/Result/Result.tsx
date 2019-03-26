@@ -49,7 +49,17 @@ const styles = (theme: Theme) => createStyles({
         // backgroundBlendMode:'overlay',
         paddingTop:35,
         paddingBottom:35,
-        // width:'100vw'
+        margin: 'auto',
+        // width:'100vw',
+        [theme.breakpoints.up('sm')]:{
+          width: '80vw'
+        },
+        [theme.breakpoints.up('md')]:{
+          width: '70vw'
+        },
+        [theme.breakpoints.up('lg')]:{
+          width: '50vw'
+        }
       },
       expansionPanelExpanded:{
         backgroundColor:'#757575', 
@@ -58,7 +68,8 @@ const styles = (theme: Theme) => createStyles({
         backgroundBlendMode:'overlay',
         paddingTop:35,
         paddingBottom:35,
-        // margin:0,
+        marginTop:15,
+        marginBottom:15,
         // width:'100vw',
         // overflow: 'hidden'
       },

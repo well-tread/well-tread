@@ -33,7 +33,8 @@ const styles = (theme:Theme) =>createStyles({
         flexDirection:'column',
         justifyContent:'center',
         background:'url(https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/displayImages%2FLoginPageBackground.jpg?alt=media&token=7418d340-f063-46e4-8442-207b4a97e583)',
-        backgroundSize:'100vw 100vh',
+        backgroundSize:'cover',
+        backgroundPosition:'center',
         height:'100vh'
     },
     textField:{
@@ -46,12 +47,13 @@ const styles = (theme:Theme) =>createStyles({
         fontSize:'1.2em'
     },
     button:{
-        width:'60%',
-        margin:'4vh auto',
+        // width:'60%',
+        marginTop: theme.spacing.unit * 1,
+        marginBottom: theme.spacing.unit * 1,
         fontSize:'1em',
         fontWeight:'bold',
         backgroundColor:'rgba(247, 247, 247, 0.1)',
-        borderWidth:3
+        borderWidth:3,
     },
     typography:{
         margin:'4vh auto',
@@ -60,11 +62,28 @@ const styles = (theme:Theme) =>createStyles({
     title:{
         alignSelf:'center',
         color:'#F7F7F7',
-        position:'absolute',
-        top:0
+        // paddingTop: theme.spacing.unit * 10,
+        // position:'absolute',
+        // top:0
     },
     firebaseUI:{
        
+    },
+    loginContainer:{
+        display: 'flex',
+        flexDirection:'column',
+        alignItems:'stretch',
+        margin: '0 auto',
+        width: '90%',
+        [theme.breakpoints.up('sm')]:{
+            width: '70%'
+        },
+        [theme.breakpoints.up('md')]:{
+            width: '55%'
+        },
+        [theme.breakpoints.up('lg')]:{
+            width: '40%'
+        },
     }
 })
 
@@ -77,6 +96,7 @@ export interface Props{
         typography:string;
         title:string;
         firebaseUI:string;
+        loginContainer:string;
     }
     location:{
         search:string;
@@ -132,7 +152,7 @@ class Login extends Component<Props, State>{
             <MuiThemeProvider theme={theme}>
             <Paper className={classes.paper}>
                 <Typography component='h2' variant='h2' className={classes.title}>Well Tread</Typography>
-                <div>
+                <div className={classes.loginContainer}>
                 <Button className={classes.button} color='secondary' variant='outlined' onClick={()=>this.toggleDialog()}>Sign in / Register</Button>
                 <Button className={classes.button} color='secondary' variant='outlined' onClick={()=>this.signInAnonymously()}>Continue without account</Button>
                 </div>
