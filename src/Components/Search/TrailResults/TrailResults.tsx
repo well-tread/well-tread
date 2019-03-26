@@ -45,7 +45,7 @@ class TrailResults extends Component<Props, State> {
 
             this.setState({
               uid: user.uid,
-              favorites: favorites
+              favorites: favorites,
             });
           }
         });
