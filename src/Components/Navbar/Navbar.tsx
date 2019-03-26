@@ -63,6 +63,7 @@ const styles = (theme:Theme) => createStyles({
         background:'#F7F7F7',
         [theme.breakpoints.up('sm')]:{
             paddingRight: '80px',
+            height: '100vw',
         }
     },
     topNavDropdown:{
@@ -71,6 +72,7 @@ const styles = (theme:Theme) => createStyles({
         }
     },
     rightNavDropdown:{
+        
         [theme.breakpoints.down('xs')]:{
             display:'none'
         },

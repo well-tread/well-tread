@@ -42,6 +42,15 @@ const styles = (theme:Theme) => createStyles({
         // justifyContent:'center',
         width:'70%',
         margin: 'auto',
+        [theme.breakpoints.up('sm')]:{
+            width:'50%'
+        },
+        [theme.breakpoints.up('md')]:{
+            width:'45%'
+        },
+        [theme.breakpoints.up('lg')]:{
+            width:'30%'
+        },
     },
     formGroup:{
         paddingBottom: theme.spacing.unit * 1.5,
@@ -67,6 +76,14 @@ const styles = (theme:Theme) => createStyles({
     },
     formGroupContainer:{
         width: '100%'
+    },
+    checkboxIcon:{
+        [theme.breakpoints.up('sm')]:{
+            transform:'scale(1.2)'
+        },
+        [theme.breakpoints.up('md')]:{
+            transform:'scale(1.3)'
+        }
     }
 })
 
@@ -79,6 +96,7 @@ export interface Props{
         button: string,
         quote: string,
         formGroupContainer:string,
+        checkboxIcon:string,
     },
 }
 
@@ -175,8 +193,8 @@ class Search extends Component<Props, State>{
                                 <FormControlLabel
                                     control={
                                        <Checkbox
-                                            icon={<DirectionWalk color='primary'/>}
-                                            checkedIcon={<DirectionWalk color='secondary'/>}
+                                            icon={<DirectionWalk className={classes.checkboxIcon} color='primary'/>}
+                                            checkedIcon={<DirectionWalk className={classes.checkboxIcon} color='secondary'/>}
                                             checked={this.state.isHikingChecked}
                                             onChange={(e)=>this.toggleCheckboxes(this.state.isHikingChecked, 'isHikingChecked')}
                                        /> 
@@ -187,8 +205,8 @@ class Search extends Component<Props, State>{
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            icon={<DirectionBike color='primary'/>}
-                                            checkedIcon={<DirectionBike color='secondary'/>}
+                                            icon={<DirectionBike className={classes.checkboxIcon} color='primary'/>}
+                                            checkedIcon={<DirectionBike className={classes.checkboxIcon} color='secondary'/>}
                                             checked={this.state.isBikingChecked}
                                             onChange={(e)=>this.toggleCheckboxes(this.state.isBikingChecked, 'isBikingChecked')}
                                         />
@@ -199,8 +217,8 @@ class Search extends Component<Props, State>{
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            icon={<DirectionRun color='primary'/>}
-                                            checkedIcon={<DirectionRun color='secondary'/>}
+                                            icon={<DirectionRun className={classes.checkboxIcon} color='primary'/>}
+                                            checkedIcon={<DirectionRun className={classes.checkboxIcon} color='secondary'/>}
                                             checked={this.state.isRunningChecked}
                                             onChange={(e)=>this.toggleCheckboxes(this.state.isRunningChecked, 'isRunningChecked')}
                                         />
