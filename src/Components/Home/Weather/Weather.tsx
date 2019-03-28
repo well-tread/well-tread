@@ -58,10 +58,10 @@ export interface State {
   weatherColor: string;
   weatherIconOne: string;
   latitude: number;
-      longitude: number;
-      dateToday: number;
-      dateTomorrow: number;
-      dateNextDay: number;
+  longitude: number;
+  dateToday: number;
+  dateTomorrow: number;
+  dateNextDay: number;
 }
 
 class Weather extends Component<Props, State> {
@@ -97,13 +97,14 @@ class Weather extends Component<Props, State> {
     });
     const lng = position.coords.longitude;
     const lat = position.coords.latitude;
-    axios.post('http://localhost:5050/trails/weather', {
-      lat: lat,
-      lng: lng
-    }).then(res => {
-        
+    axios
+      .post('http://localhost:5050/trails/weather', {
+        lat: lat,
+        lng: lng
+      })
+      .then(res => {
         const response = res.data;
-  
+
         this.setState({
           // temperature: response.main.temp,
           city: response.city.name,
@@ -142,7 +143,7 @@ class Weather extends Component<Props, State> {
           this.setState({
             icon: '/icons/cloudy.svg'
           });
-        }else if (this.state.weatherMain === 'Snow') {
+        } else if (this.state.weatherMain === 'Snow') {
           this.setState({
             icon: '/icons/snow.svg'
           });
@@ -202,15 +203,14 @@ class Weather extends Component<Props, State> {
           });
         }
       });
+  };
+  componentDidMount() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
     }
-      componentDidMount() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
-        }
-      }
+  }
 
   render() {
-    
     const { classes } = this.props;
     const {
       weatherColor,
@@ -223,10 +223,16 @@ class Weather extends Component<Props, State> {
       dateTomorrow,
       dateNextDay
     } = this.state;
-    var Today = new Date(dateToday * 1000).toLocaleDateString("en-US", {weekday: 'long'})
-    var Tomorrow = new Date(dateTomorrow * 1000).toLocaleDateString("en-US", {weekday: 'long'})
-    var NextDay = new Date(dateNextDay * 1000).toLocaleDateString("en-US", {weekday: 'long'})
-    
+    var Today = new Date(dateToday * 1000).toLocaleDateString('en-US', {
+      weekday: 'long'
+    });
+    var Tomorrow = new Date(dateTomorrow * 1000).toLocaleDateString('en-US', {
+      weekday: 'long'
+    });
+    var NextDay = new Date(dateNextDay * 1000).toLocaleDateString('en-US', {
+      weekday: 'long'
+    });
+
     return (
       <div>
         <Typography
@@ -236,7 +242,6 @@ class Weather extends Component<Props, State> {
           gutterBottom
         >
           {this.state.city} Weather Forecast
-          
         </Typography>
         <div className={classes.cardContainer}>
           <Card className={classes.card}>
