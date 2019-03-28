@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the navbar correctly 1`] = `
+Array [
+  <div
+    className="Navbar-appBarContainer-1"
+  >
+    <header
+      className="MuiPaper-root-16 MuiPaper-elevation4-22 MuiAppBar-root-7 MuiAppBar-positionFixed-8 MuiAppBar-colorPrimary-14 mui-fixed Navbar-appBar-2"
+    >
+      <h6
+        className="MuiTypography-root-43 MuiTypography-h6-60 MuiTypography-colorPrimary-73"
+      >
+        WELL TREAD
+      </h6>
+      <button
+        className="MuiButtonBase-root-85 MuiIconButton-root-79"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex="0"
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label-84"
+        >
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root-88 MuiSvgIcon-colorSecondary-90 primary"
+            focusable="false"
+            role="presentation"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+            />
+          </svg>
+        </span>
+        <span
+          className="MuiTouchRipple-root-111"
+        />
+      </button>
+    </header>
+    <div
+      className="Navbar-blurBg-3"
+    />
+  </div>,
+  <div
+    className="MuiPrivateSwipeArea-root-118 MuiPrivateSwipeArea-anchorTop-121"
+    style={
+      Object {
+        "height": 20,
+      }
+    }
+  />,
+  <div
+    className="MuiPrivateSwipeArea-root-118 MuiPrivateSwipeArea-anchorRight-120"
+    style={
+      Object {
+        "width": 20,
+      }
+    }
+  />,
+]
+`;
