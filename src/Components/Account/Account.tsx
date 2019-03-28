@@ -374,7 +374,7 @@ class Account extends Component<Props, State> {
 
                 </Badge>
               </IconButton>
-              <Typography color='primary' component='p' variant='display1'>{displayName}</Typography>
+              <Typography color='primary' component='p' variant='h4'>{displayName}</Typography>
             </div>)
           }
             
@@ -500,7 +500,7 @@ class Account extends Component<Props, State> {
   }
 }
 
-const mapStateToProps =(state:any) => {
+export const mapStateToProps =(state:any) => {
   return{
     uid:state.uid,
     profilePicture:state.profilePicture,
