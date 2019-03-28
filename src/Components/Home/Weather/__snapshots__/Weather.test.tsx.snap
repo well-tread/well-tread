@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checking if Weather component is rendering correctly 1`] = `
+<div>
+  <h5
+    className="MuiTypography-root-8 MuiTypography-h5-24 MuiTypography-colorPrimary-38 MuiTypography-gutterBottom-35 Weather-title-3"
+  >
+    city
+     Weather Forecast
+  </h5>
+  <div
+    className="Weather-cardContainer-6"
+  >
+    <div
+      className="MuiPaper-root-45 MuiPaper-elevation1-48 MuiPaper-rounded-46 MuiCard-root-44 Weather-card-1"
+    >
+      <div
+        className="MuiCardContent-root-72"
+      >
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          Wednesday
+        </p>
+        <img
+          className="Weather-icon-7"
+          src=""
+        />
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-deg-4"
+        >
+          0
+          º
+        </p>
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          
+        </p>
+      </div>
+    </div>
+    <div
+      className="MuiPaper-root-45 MuiPaper-elevation1-48 MuiPaper-rounded-46 MuiCard-root-44 Weather-card-1"
+    >
+      <div
+        className="MuiCardContent-root-72"
+      >
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          Wednesday
+        </p>
+        <img
+          className="Weather-icon-7"
+          src=""
+        />
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-deg-4"
+        >
+          0
+          º
+        </p>
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          
+        </p>
+      </div>
+    </div>
+    <div
+      className="MuiPaper-root-45 MuiPaper-elevation1-48 MuiPaper-rounded-46 MuiCard-root-44 Weather-card-1"
+    >
+      <div
+        className="MuiCardContent-root-72"
+      >
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          Wednesday
+        </p>
+        <img
+          className="Weather-icon-7"
+          src=""
+        />
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-deg-4"
+        >
+          0
+          º
+        </p>
+        <p
+          className="MuiTypography-root-8 MuiTypography-body1-17 MuiTypography-colorPrimary-38 Weather-desc-5"
+        >
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
