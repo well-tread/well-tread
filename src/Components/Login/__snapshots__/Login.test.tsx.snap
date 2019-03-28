@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`login dialog renders correctly 1`] = `
+<div
+  className="MuiPaper-root-9 MuiPaper-elevation2-13 MuiPaper-rounded-10 Login-paper-1"
+>
+  <h2
+    className="MuiTypography-root-36 MuiTypography-h2-49 Login-title-6"
+  >
+    Well Tread
+  </h2>
+  <div
+    className="Login-loginContainer-8"
+  >
+    <button
+      className="MuiButtonBase-root-98 MuiButton-root-72 MuiButton-outlined-80 MuiButton-outlinedSecondary-82 Login-button-4"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex="0"
+      type="button"
+    >
+      <span
+        className="MuiButton-label-73"
+      >
+        Sign in / Register
+      </span>
+      <span
+        className="MuiTouchRipple-root-117"
+      />
+    </button>
+    <button
+      className="MuiButtonBase-root-98 MuiButton-root-72 MuiButton-outlined-80 MuiButton-outlinedSecondary-82 Login-button-4"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex="0"
+      type="button"
+    >
+      <span
+        className="MuiButton-label-73"
+      >
+        Continue without account
+      </span>
+      <span
+        className="MuiTouchRipple-root-117"
+      />
+    </button>
+  </div>
+  <div />
+  <div />
+</div>
+`;

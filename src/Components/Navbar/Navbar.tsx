@@ -178,7 +178,7 @@ class Navbar extends Component<Props, State> {
               </ListItemIcon>
               <ListItemText primary='Search for Trails' />
             </LinkItem>
-            <LinkItem to='/login' onClick={() => this.toggleDrawer(false)}>
+            <LinkItem to='/' onClick={() => this.toggleDrawer(false)}>
               <ListItemIcon>
                 <Person />
               </ListItemIcon>
