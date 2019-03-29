@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // import TrailResults from './TrailResults/TrailResults';
 import TrailResults from '../Search/TrailResults/TrailResults';
 import Typography from '@material-ui/core/Typography';
@@ -24,14 +24,14 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    useNextVariants: true,
-  },
+    useNextVariants: true
+  }
 });
 
 export interface Props {
-  topBiking:any,
-  topHiking:any,
-  topRunning:any
+  topBiking: any;
+  topHiking: any;
+  topRunning: any;
 }
 
 export interface State {
@@ -62,7 +62,6 @@ class Home extends Component<Props, State> {
     };
   }
 
-  
   displayLocationInfo = (position: any) => {
     this.setState({
       latitude: position.coords.latitude,
@@ -82,7 +81,7 @@ class Home extends Component<Props, State> {
 
       .then(res => {
         const response = res.data;
-        
+
         this.setState({
           popularBikingTrails: response
         });
@@ -95,12 +94,12 @@ class Home extends Component<Props, State> {
 
       .then(res => {
         const response = res.data;
-        
+
         this.setState({
           popularHikingTrails: response
         });
       });
-      axios
+    axios
       .post('/trails/getPopularRTrails', {
         lat: lat,
         lng: lng
@@ -108,49 +107,39 @@ class Home extends Component<Props, State> {
 
       .then(res => {
         const response = res.data;
-        
+
         this.setState({
           popularRunningTrails: response
         });
       });
-
-    
   };
   componentDidMount() {
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
-    // }
-    console.log(this.props.topBiking, 'Initial topBiking results')
     this.setState({
-      popularBikingTrails:this.props.topBiking,
-      popularHikingTrails:this.props.topHiking,
-      popularRunningTrails:this.props.topRunning
-    })
+      popularBikingTrails: this.props.topBiking,
+      popularHikingTrails: this.props.topHiking,
+      popularRunningTrails: this.props.topRunning
+    });
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    
-    if(prevProps.topBiking !== this.props.topBiking){
+    if (prevProps.topBiking !== this.props.topBiking) {
       this.setState({
-        popularBikingTrails:this.props.topBiking
-      })
+        popularBikingTrails: this.props.topBiking
+      });
     }
 
-    if(prevProps.topHiking !== this.props.topHiking){
+    if (prevProps.topHiking !== this.props.topHiking) {
       this.setState({
-        popularHikingTrails:this.props.topHiking
-      })
+        popularHikingTrails: this.props.topHiking
+      });
     }
 
-    if(prevProps.topRunning !== this.props.topRunning){
+    if (prevProps.topRunning !== this.props.topRunning) {
       this.setState({
-        popularRunningTrails:this.props.topRunning
-      })
+        popularRunningTrails: this.props.topRunning
+      });
     }
-
   }
-
-
 
   render() {
     const {
@@ -162,12 +151,11 @@ class Home extends Component<Props, State> {
       popularHikingTrails,
       popularRunningTrails
     } = this.state;
-    
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>
           <div>
-            
             <Weather />
             <Typography variant='h5' color='primary' id='popular'>
               Top 5 Biking Trails Near You
@@ -218,12 +206,12 @@ class Home extends Component<Props, State> {
   }
 }
 
-const mapStateToProps =(state:any) => {
-  return{
-    topHiking:state.topHiking,
-    topBiking:state.topBiking,
-    topRunning:state.topRunning
-  }
-}
+const mapStateToProps = (state: any) => {
+  return {
+    topHiking: state.topHiking,
+    topBiking: state.topBiking,
+    topRunning: state.topRunning
+  };
+};
 
 export default connect(mapStateToProps)(Home);

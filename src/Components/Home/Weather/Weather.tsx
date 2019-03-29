@@ -206,7 +206,114 @@ class Weather extends Component<Props, State> {
   };
   componentDidMount() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
+      navigator.geolocation.getCurrentPosition(this.displayLocationInfo, () => {
+        axios
+          .post('http://localhost:5050/trails/weather', {
+            lat: 40.014,
+            lng: -105.27
+          })
+          .then(res => {
+            const response = res.data;
+
+            this.setState({
+              // temperature: response.main.temp,
+              city: response.city.name,
+              weatherData: response.list[4].main.temp,
+              icon: response.list[4].weather[0].icon,
+              description: response.list[4].weather[0].description,
+              weatherMain: response.list[4].weather[0].main,
+              weatherMainTomorrow: response.list[12].weather[0].main,
+              weatherMainNextDay: response.list[20].weather[0].main,
+              weatherDataTomorrow: response.list[12].main.temp,
+              dateToday: response.list[4].dt,
+              dateTomorrow: response.list[12].dt,
+              dateNextDay: response.list[20].dt,
+              iconTomorrow: response.list[12].weather[0].icon,
+              descriptionTomorrow: response.list[12].weather[0].description,
+              weatherDataNextDay: response.list[20].main.temp,
+              iconNextDay: response.list[20].weather[0].icon,
+              descriptionNextDay: response.list[20].weather[0].description
+              // humidity: response.main.humidity,
+              // description: response.weather[0].description,
+              // error: ""
+            });
+            if (this.state.weatherMain === 'Clear') {
+              this.setState({
+                icon: '/icons/clear-day.svg'
+              });
+            } else if (
+              this.state.weatherMain === 'Rain' ||
+              this.state.weatherMain === 'Drizzle' ||
+              this.state.weatherMain === 'Thunderstorm'
+            ) {
+              this.setState({
+                icon: '/icons/rain.svg'
+              });
+            } else if (this.state.weatherMain === 'Clouds') {
+              this.setState({
+                icon: '/icons/cloudy.svg'
+              });
+            } else if (this.state.weatherMain === 'Snow') {
+              this.setState({
+                icon: '/icons/snow.svg'
+              });
+            } else {
+              this.setState({
+                icon: '/icons/wind.svg'
+              });
+            }
+            if (this.state.weatherMainTomorrow === 'Clear') {
+              this.setState({
+                iconTomorrow: '/icons/clear-day.svg'
+              });
+            } else if (
+              this.state.weatherMainTomorrow === 'Rain' ||
+              this.state.weatherMainTomorrow === 'Drizzle' ||
+              this.state.weatherMainTomorrow === 'Thunderstorm'
+            ) {
+              this.setState({
+                iconTomorrow: '/icons/rain.svg'
+              });
+            } else if (this.state.weatherMainTomorrow === 'Clouds') {
+              this.setState({
+                iconTomorrow: '/icons/cloudy.svg'
+              });
+            } else if (this.state.weatherMainTomorrow === 'Snow') {
+              this.setState({
+                iconTomorrow: '/icons/snow.svg'
+              });
+            } else {
+              this.setState({
+                iconTomorrow: '/icons/wind.svg'
+              });
+            }
+            if (this.state.weatherMainNextDay === 'Clear') {
+              this.setState({
+                iconNextDay: '/icons/clear-day.svg'
+              });
+            } else if (
+              this.state.weatherMainNextDay === 'Rain' ||
+              this.state.weatherMainNextDay === 'Drizzle' ||
+              this.state.weatherMainNextDay === 'Thunderstorm'
+            ) {
+              this.setState({
+                iconNextDay: '/icons/rain.svg'
+              });
+            } else if (this.state.weatherMainNextDay === 'Clouds') {
+              this.setState({
+                iconNextDay: '/icons/cloudy.svg'
+              });
+            } else if (this.state.weatherMainNextDay === 'Snow') {
+              this.setState({
+                iconNextDay: '/icons/snow.svg'
+              });
+            } else {
+              this.setState({
+                iconNextDay: '/icons/wind.svg'
+              });
+            }
+          });
+      });
     }
   }
 

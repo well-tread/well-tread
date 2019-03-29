@@ -18,20 +18,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#757575'
-    },
-    secondary: {
-      main: '#FF5722'
-    }
-  },
-  typography: {
-    useNextVariants: true,
-  },
-});
-
 const styles = (theme: Theme) =>
   createStyles({
     typographyTitle: {
@@ -102,53 +88,45 @@ class Result extends Component<Props, State> {
   render() {
     const { isRedirecting } = this.state;
     const { trail, classes, icon, type } = this.props;
-    
+
     return (
-      <MuiThemeProvider theme={theme}>
-        <ExpansionPanel
-          className={classes.expansionPanel}
-          style={{backgroundImage:`url(${trail.imgMedium})`}}
-          classes={{ expanded: classes.expansionPanelExpanded }}
-        >
-          <ExpansionPanelSummary
-            expandIcon={
-              <ExpandMoreIcon
-                color='secondary'
-                className={classes.expandMoreIcon}
-              />
-            }
-          >
-            <Typography className={classes.typographyTitle}>
-              {icon} {trail.name}
-            </Typography>
-          </ExpansionPanelSummary>
-
-          <ExpansionPanelDetails>
-            <Typography className={classes.typographyContent}>
-              {trail.summary}
-            </Typography>
-          </ExpansionPanelDetails>
-
-          <ExpansionPanelActions>
-            <Button
+      <ExpansionPanel
+        className={classes.expansionPanel}
+        style={{ backgroundImage: `url(${trail.imgMedium})` }}
+        classes={{ expanded: classes.expansionPanelExpanded }}
+      >
+        <ExpansionPanelSummary
+          expandIcon={
+            <ExpandMoreIcon
               color='secondary'
-              onClick={() => this.redirectToTrailPage()}
-              fullWidth
-            >
-              Trail Page
-            </Button>
-            <Button color='secondary' fullWidth>
-              Favorite
-            </Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
+              className={classes.expandMoreIcon}
+            />
+          }
+        >
+          <Typography className={classes.typographyTitle}>
+            {icon} {trail.name}
+          </Typography>
+        </ExpansionPanelSummary>
 
-        {isRedirecting ? (
-          <Redirect to={`/trails/${type}/${trail.id}`} />
-        ) : (
-          <div />
-        )}
-      </MuiThemeProvider>
+        <ExpansionPanelDetails>
+          <Typography className={classes.typographyContent}>
+            {trail.summary}
+          </Typography>
+        </ExpansionPanelDetails>
+
+        <ExpansionPanelActions>
+          <Button
+            color='secondary'
+            onClick={() => this.redirectToTrailPage()}
+            fullWidth
+          >
+            Trail Page
+          </Button>
+          <Button color='secondary' fullWidth>
+            Favorite
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
     );
   }
 }
