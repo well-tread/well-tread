@@ -33,16 +33,18 @@ const styles = (theme: Theme) =>
       addingRight: '2em',
       alignItems: 'center',
       // background: '0,0,0,00',
-      background: 'white',
+      background: '#f7f7f7',
       position: 'fixed',
       zIndex: 9999,
       boxShadow: 'none'
     },
 
     dropDownMenu: {
+      background: '#f7f7f7',
       paddingTop: '50px',
       [theme.breakpoints.up('sm')]: {
-        paddingRight: '80px'
+        paddingRight: '80px',
+        height: '100vh'
       }
     },
     topNavDropdown: {
@@ -55,7 +57,8 @@ const styles = (theme: Theme) =>
         display: 'none'
       },
       [theme.breakpoints.up('sm')]: {
-        display: 'block'
+        display: 'block',
+        
       }
     }
   });

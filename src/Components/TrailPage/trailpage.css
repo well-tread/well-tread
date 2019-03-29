@@ -23,11 +23,13 @@
 .trailImage {
   /* opacity: 0.8; */
   overflow: hidden;
+  margin: auto;
+  max-height: 80vh;
 }
 
 .trailImage > img {
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
 #popular {
   margin: 1em;
