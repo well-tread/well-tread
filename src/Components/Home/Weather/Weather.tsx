@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     width: '30vw',
-    margin: '.25em'
+    margin: '.25em',
+    padding: 0
   },
   bullet: {
     display: 'inline-block',
@@ -28,12 +29,17 @@ const styles = {
   },
   cardContainer: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    padding: 0
   },
   icon: {
     height: '5em',
     width: '5em',
-    margin: '.5em'
+    marginTop: '.5em',
+    marginBottom: '.5em'
+  },
+  cardContent: {
+    padding: '.5em'
   }
 };
 
@@ -352,7 +358,7 @@ class Weather extends Component<Props, State> {
         </Typography>
         <div className={classes.cardContainer}>
           <Card className={classes.card}>
-            <CardContent>
+            <CardContent className={classes.cardContent}>
               <Typography className={classes.desc} color='primary'>
                 {Today}
               </Typography>
@@ -370,7 +376,7 @@ class Weather extends Component<Props, State> {
             </CardContent>
           </Card>
           <Card className={classes.card}>
-            <CardContent>
+            <CardContent className={classes.cardContent}>
               <Typography className={classes.desc} color='primary'>
                 {Tomorrow}
               </Typography>
@@ -388,7 +394,7 @@ class Weather extends Component<Props, State> {
             </CardContent>
           </Card>
           <Card className={classes.card}>
-            <CardContent>
+            <CardContent className={classes.cardContent}>
               <Typography className={classes.desc} color='primary'>
                 {NextDay}
               </Typography>

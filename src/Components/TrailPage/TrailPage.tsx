@@ -27,12 +27,16 @@ const styles = (theme: Theme) => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
     width: '70vw',
+
     margin: '0 auto',
     'margin-bottom': '2em',
-    'margin-top': '2em'
+    'margin-top': '2em',
+    backgroundColor: 'white'
   },
   button: {
-    margin: theme.spacing.unit
+    // margin: theme.spacing.unit,
+    margin: '0 auto',
+    alignSelf: 'center'
   },
   leftIcon: {
     marginRight: theme.spacing.unit
@@ -41,7 +45,8 @@ const styles = (theme: Theme) => ({
     indicatorColor: 'white'
   },
   dialog: {
-    marginTop: theme.spacing.unit * 6
+    marginTop: theme.spacing.unit * 6,
+    backgroundColor: '#F7F7F7'
   }
 });
 
@@ -192,9 +197,17 @@ class TrailPage extends Component<Props, State> {
             </div>
             <Paper className={classes.root}>
               <div className='trailInfo'>
-                <Typography variant='h4' color='secondary'>
-                  {element.name}
-                </Typography>
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Typography variant='h4' color='secondary'>
+                    {element.name}
+                  </Typography>
+                </div>
                 <div className='sideBySide'>
                   <Typography variant='h5' id='miles' color='primary'>
                     <strong>Miles: </strong>
@@ -226,6 +239,14 @@ class TrailPage extends Component<Props, State> {
                 <Typography variant='h5' id='info' color='primary'>
                   <strong>Description: </strong> {element.summary}
                 </Typography>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'center'
+                }}
+              >
                 <Button
                   className={classes.button}
                   color={this.state.color}
@@ -269,9 +290,12 @@ class TrailPage extends Component<Props, State> {
         fullScreen
         className={classes.dialog}
       >
-        <div>
+        <div style={{ backgroundColor: '#F7F7F7' }}>
           <IconButton onClick={() => this.props.closeDialog()}>
-            <CloseIcon />
+            <CloseIcon
+              color='primary'
+              style={{ border: '1px solid #757575', borderRadius: '50%' }}
+            />
           </IconButton>
           <Tabs
             value={this.state.value}
@@ -280,6 +304,7 @@ class TrailPage extends Component<Props, State> {
             textColor='secondary'
             centered
             id='tabs'
+            style={{ marginBottom: '2em' }}
             classes={{
               indicator: classes.indicator
             }}
