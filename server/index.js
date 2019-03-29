@@ -1,3 +1,5 @@
+const path = require('path');
+
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -13,6 +15,7 @@ const shredCtrl = require('./controllers/shred_controller');
 const weatherCtrl = require('./controllers/weather_controller');
 
 const app = express();
+app.use(express.static(`${__dirname}/../build`));
 app.use(json());
 app.use(cors());
 
@@ -56,5 +59,9 @@ app.get('/trails/shredding', shredCtrl.getStrails);
 app.post('/trails/running', runCtrl.postRtrails);
 app.post('/trails/runningOne', runCtrl.getOneRtrail);
 app.post('/trails/getPopularRTrails', runCtrl.getPopularRtrails);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+});
 
 app.listen(5050, () => console.log(`listening on port ${5050}`));
