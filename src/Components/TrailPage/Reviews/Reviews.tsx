@@ -18,7 +18,8 @@ import { Typography } from '@material-ui/core';
 const styles = (theme: Theme) =>
   createStyles({
     div: {
-      backgroundColor: '#fcfcfc'
+      backgroundColor: 'white',
+      height: '100%'
     },
     fab: {
       position: 'fixed',
@@ -184,7 +185,11 @@ class Reviews extends Component<Props, State> {
             component='h3'
             variant='h3'
             color='primary'
-            style={{ backgroundColor: '#f7f7f7' }}
+            style={{
+              backgroundColor: 'white',
+              textAlign: 'center',
+              marginTop: '2em'
+            }}
           >
             Be the first to leave a review!
           </Typography>
