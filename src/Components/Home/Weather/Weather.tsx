@@ -98,7 +98,7 @@ class Weather extends Component<Props, State> {
     const lng = position.coords.longitude;
     const lat = position.coords.latitude;
     axios
-      .post('http://localhost:5050/trails/weather', {
+      .post('/trails/weather', {
         lat: lat,
         lng: lng
       })
@@ -208,7 +208,7 @@ class Weather extends Component<Props, State> {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.displayLocationInfo, () => {
         axios
-          .post('http://localhost:5050/trails/weather', {
+          .post('/trails/weather', {
             lat: 40.014,
             lng: -105.27
           })
