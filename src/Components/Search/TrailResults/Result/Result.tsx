@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import firebase from '../../../../firebase';
-
+import {connect} from 'react-redux';
+import {updateFavorites} from '../../../../ducks/reducer';
 import TrailPage from '../../../TrailPage/TrailPage';
 import './Result.css';
 
@@ -105,7 +106,8 @@ export interface Props {
   icon: any;
   type: string;
   uid?: string;
-  favorites?: { id: number; trailtype: string; trail: any }[];
+  favorites?: { id: string; type: string; trail: any }[];
+  updateFavorites(favorites:{ id: string; type: string; trail: any }[]):void
 }
 
 export interface State {
@@ -133,21 +135,44 @@ class Result extends Component<Props, State> {
   }
 
   addToFavorites() {
-    const { type, uid } = this.props;
-    let trail = [];
-    trail.push(this.props.trail);
-    let favorites: { id: number; trailtype: string; trail: any }[] = [];
-    if (this.props.favorites) {
-      favorites = this.props.favorites;
-    }
+    // const { type, uid } = this.props;
+    // let trail = [];
+    // trail.push(this.props.trail);
+    // let favorites: { id: number; trailtype: string; trail: any }[] = [];
+    // if (this.props.favorites) {
+    //   favorites = this.props.favorites;
+    // }
 
-    favorites.push({ id: this.props.trail.id, trail: trail, trailtype: type });
-    firebase
-      .database()
-      .ref(`users/${uid}/favorites`)
-      .set({
-        favorites: favorites
-      });
+    // favorites.push({ id: this.props.trail.id, trail: trail, trailtype: type });
+    // firebase
+    //   .database()
+    //   .ref(`users/${uid}/favorites`)
+    //   .set({
+    //     favorites: favorites
+    //   });
+    let {trail, type, uid, favorites} = this.props;
+    if(favorites){
+      favorites.push({ id: trail.id, type: type, trail: [trail] });
+      firebase
+        .database()
+        .ref(`users/${uid}/favorites`)
+        .set({
+          favorites: favorites
+        });
+      this.props.updateFavorites(favorites);
+    }
+    else{
+      favorites=[];
+      favorites.push({ id: trail.id, type: type, trail: [trail] });
+      firebase
+        .database()
+        .ref(`users/${uid}/favorites`)
+        .set({
+          favorites: favorites
+        });
+      this.props.updateFavorites(favorites);
+    }
+    
   }
 
   scroll = (e: any) => {
@@ -239,4 +264,10 @@ class Result extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Result);
+const mapStateToProps = (state: any) => {
+  return {
+    
+  };
+};
+
+export default withStyles(styles)(connect(mapStateToProps, {updateFavorites})(Result));

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../../firebase';
+import {connect} from 'react-redux';
+import {updateIsAnonymous, updateDisplayName, updateProfilePicture} from '../../../ducks/reducer';
 
 //materialUI imports
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -36,6 +38,9 @@ export interface Props {
   };
   isConversionDialogOpen: boolean;
   toggleConversionDialog(): void;
+  updateDisplayName(newName:string):void;
+  updateProfilePicture(newPicture:string):void;
+  updateIsAnonymous(isAnonymous:boolean):void;
 }
 
 export interface State {
@@ -73,6 +78,9 @@ class ConversionDialog extends Component<Props, State> {
         user
           .linkAndRetrieveDataWithCredential(credential)
           .then((usercred: any) => {
+            this.props.updateProfilePicture('https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/displayImages%2FBoot.png?alt=media&token=e9b833cb-29af-4140-9838-8307013bdcee');
+            this.props.updateDisplayName(email);
+            this.props.updateIsAnonymous(false);
             this.setState({
               isSnackbarOpen: true,
               snackbarMessage: 'Registration Successful!'
@@ -98,6 +106,9 @@ class ConversionDialog extends Component<Props, State> {
         user
           .linkWithPopup(provider)
           .then((result: any) => {
+            this.props.updateProfilePicture('https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/displayImages%2FBoot.png?alt=media&token=e9b833cb-29af-4140-9838-8307013bdcee');
+            this.props.updateDisplayName(result.email);
+            this.props.updateIsAnonymous(false);
             this.setState({
               isSnackbarOpen: true,
               snackbarMessage: 'Registration Successful!'
@@ -184,4 +195,12 @@ class ConversionDialog extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(ConversionDialog);
+export const mapStateToProps = (state: any) => {
+  return {
+    profilePicture: state.profilePicture,
+    displayName: state.displayName,
+    isAnonymous: state.isAnonymous
+  };
+};
+
+export default withStyles(styles)(connect(mapStateToProps,{updateIsAnonymous, updateProfilePicture, updateDisplayName})(ConversionDialog));

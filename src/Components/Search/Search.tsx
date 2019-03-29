@@ -24,19 +24,6 @@ import DirectionRun from '@material-ui/icons/DirectionsRun';
 import Terrain from '@material-ui/icons/Terrain';
 import SearchIcon from '@material-ui/icons/Search';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#757575'
-    },
-    secondary: {
-      main: '#FF5722'
-    }
-  },
-  typography: {
-    useNextVariants: true
-  }
-});
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -192,7 +179,7 @@ class Search extends Component<Props, State> {
     const { classes } = this.props;
     const { isResultsBack, hikingArr, bikingArr, runningArr } = this.state;
     return (
-      <MuiThemeProvider theme={theme}>
+        <div>
         <div className={classes.container}>
           <div>
             <TextField
@@ -307,7 +294,7 @@ class Search extends Component<Props, State> {
         ) : (
           <Quote />
         )}
-      </MuiThemeProvider>
+      </div>
     );
   }
 }

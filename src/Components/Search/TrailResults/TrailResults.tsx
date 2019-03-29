@@ -16,7 +16,7 @@ export interface Props {
 
 export interface State {
   uid: string;
-  favorites: { id: number; trailtype: string; trail: any }[];
+  favorites: { id: string; type: string; trail: any }[];
 }
 
 class TrailResults extends Component<Props, State> {
