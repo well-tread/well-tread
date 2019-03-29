@@ -3,13 +3,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 // Material-UI Core Imports
-import {
-  createMuiTheme,
-  createStyles,
-  Theme,
-  MuiThemeProvider,
-  withStyles
-} from '@material-ui/core/styles';
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -25,21 +19,6 @@ import Menu from '@material-ui/icons/Menu';
 import Home from '@material-ui/icons/Home';
 import AccountBox from '@material-ui/icons/AccountBox';
 import Search from '@material-ui/icons/Search';
-import Person from '@material-ui/icons/Person';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#757575'
-    },
-    secondary: {
-      main: '#FF5722'
-    }
-  },
-  typography: {
-    useNextVariants: true
-  }
-});
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -59,13 +38,7 @@ const styles = (theme: Theme) =>
       zIndex: 9999,
       boxShadow: 'none'
     },
-    blurBg: {
-      // overflow: 'hidden',
-      // zIndex: 9998,
-      // backgroundColor: '#fff',
-      // width: '100%',
-      // filter:'10px'
-    },
+
     dropDownMenu: {
       paddingTop: '50px',
       [theme.breakpoints.up('sm')]: {
@@ -92,12 +65,10 @@ export interface Props {
     appBarContainer: string;
     appBar: string;
     dropDownMenu: string;
-    blurBg: string;
+
     topNavDropdown: string;
     rightNavDropdown: string;
   };
-  // location:any,
-  // pathname:any,
 }
 
 export interface State {
@@ -130,17 +101,11 @@ class Navbar extends Component<Props, State> {
     });
   };
 
-  // toggleCurrentLink=()=>{
-  //     if(this.props.location.pathname === this.props.location.pathname){
-  //         this.setState({navLinkColor:'secondary'})
-  //     }
-  // }
-
   render() {
     const { classes } = this.props;
 
     return (
-      <MuiThemeProvider theme={theme}>
+      <div>
         <div className={classes.appBarContainer}>
           <AppBar className={classes.appBar}>
             <Typography component='h6' variant='h6' color='primary'>
@@ -150,7 +115,6 @@ class Navbar extends Component<Props, State> {
               <Menu color='secondary' className={this.state.navLinkColor} />
             </IconButton>
           </AppBar>
-          <div className={classes.blurBg} />
         </div>
         <SwipeableDrawer
           anchor='top'
@@ -177,12 +141,6 @@ class Navbar extends Component<Props, State> {
                 <Search />
               </ListItemIcon>
               <ListItemText primary='Search for Trails' />
-            </LinkItem>
-            <LinkItem to='/' onClick={() => this.toggleDrawer(false)}>
-              <ListItemIcon>
-                <Person />
-              </ListItemIcon>
-              <ListItemText primary='Sign In' />
             </LinkItem>
           </List>
         </SwipeableDrawer>
@@ -212,15 +170,9 @@ class Navbar extends Component<Props, State> {
               </ListItemIcon>
               <ListItemText primary='Search for Trails' />
             </LinkItem>
-            <LinkItem to='/login' onClick={() => this.toggleDrawer(false)}>
-              <ListItemIcon>
-                <Person />
-              </ListItemIcon>
-              <ListItemText primary='Sign In' />
-            </LinkItem>
           </List>
         </SwipeableDrawer>
-      </MuiThemeProvider>
+      </div>
     );
   }
 }

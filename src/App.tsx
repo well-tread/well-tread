@@ -3,122 +3,156 @@ import Navbar from './Components/Navbar/Navbar';
 import firebase from './firebase';
 import axios from 'axios';
 
-import {updateUID, updateTopBiking, updateTopHiking, 
-  updateTopRunning, updateDisplayName, updateProfilePicture,
-  updateFavorites, updateCompletes, updateIsAnonymous
+import {
+  updateUID,
+  updateTopBiking,
+  updateTopHiking,
+  updateTopRunning,
+  updateDisplayName,
+  updateProfilePicture,
+  updateFavorites,
+  updateCompletes,
+  updateIsAnonymous
 } from './ducks/reducer';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import routes from './routes';
-import { withRouter,RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps } from 'react-router';
 import './App.css';
+
+import {
+  withStyles,
+  Theme,
+  createMuiTheme,
+  MuiThemeProvider
+} from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#757575'
+    },
+    secondary: {
+      main: '#FF5722'
+    }
+  },
+  typography: {
+    useNextVariants: true
+  }
+});
 
 // Type whatever you expect in 'this.props.match.params.*'
 type PathParamsType = {
-  param1: string,
-}
+  param1: string;
+};
 
 // Your component own properties
 type PropsType = RouteComponentProps<PathParamsType> & {
-  updateUID:(uid:string)=>void,
-  updateTopHiking:(trails:any)=>void,
-  updateTopBiking:(trails:any)=>void,
-  updateTopRunning:(trails:any)=>void,
-  updateDisplayName:(displayName:string)=>void,
-  updateProfilePicture:(profilePicture:string)=>void,
-  updateCompletes:(completes:any)=>void,
-  updateFavorites:(favorites:any)=>void,
-  updateIsAnonymous:(isAnonymous:boolean)=>void
-}
-
+  updateUID: (uid: string) => void;
+  updateTopHiking: (trails: any) => void;
+  updateTopBiking: (trails: any) => void;
+  updateTopRunning: (trails: any) => void;
+  updateDisplayName: (displayName: string) => void;
+  updateProfilePicture: (profilePicture: string) => void;
+  updateCompletes: (completes: any) => void;
+  updateFavorites: (favorites: any) => void;
+  updateIsAnonymous: (isAnonymous: boolean) => void;
+};
 
 class App extends React.Component<PropsType> {
-  constructor(props:PropsType){
+  constructor(props: PropsType) {
     super(props);
     this.displayLocationInfo = this.displayLocationInfo.bind(this);
   }
 
-  componentDidMount(){
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.displayLocationInfo);
-    }
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user){
-        console.log(user.uid, "UPDATING IN APP")
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(this.displayLocationInfo, err => {
+      axios
+        .post('/trails/getPopularBTrails', {
+          lat: 40.014,
+          lng: -105.27
+        })
+
+        .then(res => {
+          const response = res.data;
+
+          this.props.updateTopBiking(response);
+        });
+      axios
+        .post('/trails/getPopularHTrails', {
+          lat: 40.014,
+          lng: -105.27
+        })
+
+        .then(res => {
+          const response = res.data;
+
+          this.props.updateTopHiking(response);
+        });
+      axios
+        .post('/trails/getPopularRTrails', {
+          lat: 40.014,
+          lng: -105.27
+        })
+
+        .then(res => {
+          const response = res.data;
+
+          this.props.updateTopRunning(response);
+        });
+    });
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
         this.props.updateUID(user.uid);
         this.props.updateIsAnonymous(user.isAnonymous);
 
         firebase
-        .database()
-        .ref(`/users/${user.uid}`)
-        .once('value')
-        .then(snapshot1 => {
-          if(snapshot1.val()){
-            let displayName = snapshot1.val().displayName;
-            if (displayName && displayName.displayName) {
-              displayName = displayName.displayName;
-            } else {
-              displayName = '';
-            }
+          .database()
+          .ref(`/users/${user.uid}`)
+          .once('value')
+          .then(snapshot1 => {
+            if (snapshot1.val()) {
+              let displayName = snapshot1.val().displayName;
+              if (displayName && displayName.displayName) {
+                displayName = displayName.displayName;
+              } else {
+                displayName = '';
+              }
 
-            let profilePicture = snapshot1.val().profilePicture;
-            if (profilePicture && profilePicture.profilePicture) {
-              profilePicture = profilePicture.profilePicture;
-            } else {
-              profilePicture = '';
-            }
+              let profilePicture = snapshot1.val().profilePicture;
+              if (profilePicture && profilePicture.profilePicture) {
+                profilePicture = profilePicture.profilePicture;
+              } else {
+                profilePicture = '';
+              }
 
-            let favorites = snapshot1.val().favorites;
-            if (favorites && favorites.favorites) {
-              favorites = favorites.favorites;
-            } else {
-              favorites = [];
-            }
-            
+              let favorites = snapshot1.val().favorites;
+              if (favorites && favorites.favorites) {
+                favorites = favorites.favorites;
+              } else {
+                favorites = [];
+              }
 
-            let completes = snapshot1.val().completes;
-            if (completes && completes.completes) {
-              completes = completes.completes;
-            } else {
-              completes = [];
-            }
+              let completes = snapshot1.val().completes;
+              if (completes && completes.completes) {
+                completes = completes.completes;
+              } else {
+                completes = [];
+              }
 
-            this.props.updateDisplayName(displayName)
-            this.props.updateProfilePicture(profilePicture);
-            this.props.updateFavorites(favorites);
-            this.props.updateCompletes(completes);
-            
-          }
-        })
+              this.props.updateDisplayName(displayName);
+              this.props.updateProfilePicture(profilePicture);
+              this.props.updateFavorites(favorites);
+              this.props.updateCompletes(completes);
+            }
+          });
       }
-      
-    })
+    });
   }
 
-  // componentDidUpdate(prevProps: Props, prevState: State) {
-  //   // // const { hikingArr, bikingArr, runningArr, isResultsBack } = this.state;
-  //   // if (
-  //   //   !isResultsBack &&
-  //   //   (hikingArr.length > 0 || bikingArr.length > 0 || runningArr.length > 0)
-  //   // ) {
-  //   //   console.log('updating');
-  //   //   this.setState({ isResultsBack: true });
-  //   // }
-  // }
-
   displayLocationInfo = (position: any) => {
-    // this.setState({
-    //   latitude: position.coords.latitude,
-    //   longitude: position.coords.longitude
-    // });
-    const lng = position.coords.longitude;
-    const lat = position.coords.latitude;
-    // axios.post('/trails/weatherP', {
-    //   lat: lat,
-    //   lng: lng
-    // });
-
-
+    let lng = position.coords.longitude;
+    let lat = position.coords.latitude;
 
     axios
       .post('/trails/getPopularBTrails', {
@@ -128,7 +162,7 @@ class App extends React.Component<PropsType> {
 
       .then(res => {
         const response = res.data;
-        console.log('updating top biking in app',response)
+
         this.props.updateTopBiking(response);
       });
     axios
@@ -139,12 +173,10 @@ class App extends React.Component<PropsType> {
 
       .then(res => {
         const response = res.data;
-        
-        
+
         this.props.updateTopHiking(response);
-        
       });
-      axios
+    axios
       .post('/trails/getPopularRTrails', {
         lat: lat,
         lng: lng
@@ -152,35 +184,48 @@ class App extends React.Component<PropsType> {
 
       .then(res => {
         const response = res.data;
-        
+
         this.props.updateTopRunning(response);
       });
-
-    
   };
 
   render() {
     return (
-      <div className="App">
-      {this.props.history.location.pathname === '/login' ? null : <Navbar/>}
-      {/* <Navbar/> */}
-      {routes}
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <div className='App'>
+          {this.props.history.location.pathname === '/' ? null : <Navbar />}
+
+          {routes}
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
 
-const mapStateToProps =(state:any) => {
-  return{
-      uid:state.uid,
-      topHiking:state.topHiking,
-      topBiking:state.topBiking,
-      topRunning:state.topRunning,
-      displayName:state.displayName,
-      profilePicture:state.profilePicture
-  }
+const mapStateToProps = (state: any) => {
+  return {
+    uid: state.uid,
+    topHiking: state.topHiking,
+    topBiking: state.topBiking,
+    topRunning: state.topRunning,
+    displayName: state.displayName,
+    profilePicture: state.profilePicture
+  };
 };
 
-export default withRouter(connect(mapStateToProps, 
-  {updateUID, updateTopHiking, updateTopBiking, updateTopRunning,
-  updateDisplayName, updateProfilePicture, updateFavorites, updateCompletes, updateIsAnonymous})(App));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      updateUID,
+      updateTopHiking,
+      updateTopBiking,
+      updateTopRunning,
+      updateDisplayName,
+      updateProfilePicture,
+      updateFavorites,
+      updateCompletes,
+      updateIsAnonymous
+    }
+  )(App)
+);
