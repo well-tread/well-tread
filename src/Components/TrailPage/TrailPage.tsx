@@ -19,6 +19,7 @@ import './trailpage.css';
 import Reviews from './Reviews/Reviews';
 import Map from './Map/Map';
 import firebase from '../../firebase';
+import { element } from 'prop-types';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -40,7 +41,7 @@ const styles = (theme: Theme) => ({
     indicatorColor: 'white'
   },
   dialog: {
-    marginTop: 50
+    marginTop: theme.spacing.unit * 6
   }
 });
 
