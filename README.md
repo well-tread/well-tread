@@ -1,44 +1,49 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Well Tread
 
-## Available Scripts
+Well Tread is a web app that lets users look for and track hiking, mountain biking, and running trails across the US.
 
-In the project directory, you can run:
+### Login
+![Login Page](https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/ReadMe%20Images%2FWell%20Tread%20Login.png?alt=media&token=946a207f-0801-42a9-b572-23d23266048b "Login Page")
 
-### `npm start`
+Here the user can choose to sign-in/register using either their email or their Google account. If they're not willing to do either of those, they can continue without an account and later upgrade it if they so choose. <br>
+Firebase Authentication is used to verify users.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Home Page
+![Home Page](https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/ReadMe%20Images%2FWell%20Tread%20Home.png?alt=media&token=a32643cb-7385-4867-8a03-604e1e310dfe "Home Page")
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+On this page a weather forecast for the next three days is displayed, along with 5 nearby popular hiking, mountain biking, and running trails. Geolocation is used to determine the users location. <br>
+If the user doesn't allow the site to access his/her location then the results are drawn from Boulder, CO
 
-### `npm test`
+### Search Page
+![Search Page](https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/ReadMe%20Images%2FWell%20Tread%20Mobile%20Search.png?alt=media&token=9bb1cc8e-c668-426f-a25f-b5347cf32c3d "Search Page")
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Here the user can enter in any location ranging from a full street address to a zipcode and get trails within a 10 mile radius of that point. The user also has the ability to filter based on hiking, mountain biking, or running.
 
-### `npm run build`
+### Trail Page
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Trail Page](https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/ReadMe%20Images%2FWell%20Tread%20Trail%20Page.png?alt=media&token=3590301a-3c0b-4904-9ffe-f1eb1f528a3d "Trail Page")
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+This displays the length of the trail, its star rating, difficulty, and a short description. In addition, if the trail condition has been updated this year then the trail condition is displayed along with the time the condition was updated. In addition, the user can view reviews of the trail as well as open the trail location in Google Maps.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Account Page
 
-### `npm run eject`
+![Account Page](https://firebasestorage.googleapis.com/v0/b/well-tread.appspot.com/o/ReadMe%20Images%2FWell%20Tread%20Account%20Page.png?alt=media&token=8c390215-04d2-417c-85d6-68f38e67c2d5 "Account Page")
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The account page is where the user can update his/her profile picture and display name, as well as keep track of his/her favorited and completed trails.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Technologies Used
+TypeScript <br>
+React <br>
+Material-UI<br>
+Firebase<br>
+Node.js<br>
+express<br>
+axios<br>
+jest<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### APIs Used
+Google Maps API<br>
+Open Weather API<br>
+Hiking Project trails API<br>
+MTB Project trails API<br>
+Trail Run Project trails API<br>
